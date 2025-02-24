@@ -24,7 +24,17 @@ const loadHomePage = async(req,res)=>{
 
 }
 
+const loadSignup = async(req,res)=>{
+    try {
+        return res.render("signup")
+    } catch (error) {
+        console.log("Sign-Up Not Found")
+        res.status(500).send("Server Error")
+    }
+}
+
 module.exports = {
     loadHomePage,
-    pageNotFound
+    pageNotFound,
+    loadSignup
 } 
