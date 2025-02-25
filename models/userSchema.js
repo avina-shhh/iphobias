@@ -15,17 +15,17 @@ const userSchema = new Schema({
     phone: {
         type:String,
         required:false,
-        unique:false,
-        sparse:true,
-        default:null
+        unique:true,
+        // sparse:true,
+        // default:null
     },
-    googleId:{
-        type:String,
-        unique:true
-    },
+    // googleId:{
+    //     type:String,
+    //     unique:true,
+    // },
     password:{
         type:String,
-        required:false,
+        required:true,
 
     },
     isBlocked:{
@@ -41,8 +41,7 @@ const userSchema = new Schema({
         ref:"Cart"
     }],
     wallet:{
-        type:Number,
-        default:0
+        type:Schema.Types.ObjectId
     },
     wishlist:[{
         type:Schema.Types.ObjectId,
