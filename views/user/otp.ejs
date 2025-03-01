@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OTP Verification Form</title>
+    <link rel="stylesheet" href="css/otp.css" />
+    <!-- Boxicons CSS -->
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <i class="bx bxs-check-shield"></i>
+      </header>
+      <h4>Enter OTP Code</h4>
+      <form action="/verify-otp" method="post" id="otp-form" onsubmit="return validateOTP()">
+        <div class="input-field">
+          <input type="number" />
+          <input type="number" disabled />
+          <input type="number" disabled />
+          <input type="number" disabled />
+          <input type="number" disabled />
+          <input type="number" disabled />
+
+          <input type="hidden" name="otp" id="otp" />
+        </div>
+        <p class="timer">Time remaining: <span id="countdown">01:00</span></p>
+        <button type="submit">Verify OTP</button>
+        <button type="button" id="resend-otp" disabled>Resend OTP</button>
+      </form>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        const inputs = document.querySelectorAll("input"),
+        verifyButton = document.querySelector("button"),
+        resendButton = document.getElementById("resend-otp"),
+        countdownElement = document.getElementById("countdown");
+
+        let timer;
+        let timeLeft = 60; // 1 minute in seconds
+
+        // Function to start the countdown timer
+        function startTimer() {
+        timer = setInterval(() => {
+            timeLeft--;
+            countdownElement.textContent = `00:${timeLeft.toString().padStart(2, "0")}`;
+
+            if (timeLeft <= 0) {
+            clearInterval(timer);
+            countdownElement.textContent = "00:00";
+            resendButton.disabled = false;
+            resendButton.classList.add("active");
+            }
+        }, 1000);
+        }
+
+        // Function to reset the timer and OTP fields
+        function resetOTP() {
+        clearInterval(timer);
+        timeLeft = 60;
+        countdownElement.textContent = "01:00";
+        resendButton.disabled = true;
+        resendButton.classList.remove("active");
+        inputs.forEach((input) => {
+            input.value = "";
+            input.setAttribute("disabled", true);
+        });
+        inputs[0].removeAttribute("disabled");
+        inputs[0].focus();
+        startTimer();
+        }
+
+        // Iterate over all inputs
+        inputs.forEach((input, index1) => {
+        input.addEventListener("keyup", (e) => {
+            const currentInput = input,
+            nextInput = input.nextElementSibling,
+            prevInput = input.previousElementSibling;
+
+            // If the value has more than one character, clear it
+            if (currentInput.value.length > 1) {
+            currentInput.value = "";
+            return;
+            }
+
+            // If the next input is disabled and the current value is not empty, enable the next input and focus on it
+            if (nextInput && nextInput.hasAttribute("disabled") && currentInput.value !== "") {
+            nextInput.removeAttribute("disabled");
+            nextInput.focus();
+            }
+
+            // If the backspace key is pressed
+            if (e.key === "Backspace") {
+            inputs.forEach((input, index2) => {
+                if (index1 <= index2 && prevInput) {
+                input.setAttribute("disabled", true);
+                input.value = "";
+                prevInput.focus();
+                }
+            });
+            }
+
+            // If the sixth input (index 5) is not empty and has no disabled attribute, enable the verify button
+            if (!inputs[5].disabled && inputs[5].value !== "") {
+            verifyButton.classList.add("active");
+            return;
+            }
+            verifyButton.classList.remove("active");
+        });
+        });
+
+        // Focus the first input on window load
+        window.addEventListener("load", () => inputs[0].focus());
+
+        // Start the timer when the page loads
+        startTimer();
+
+        // Resend OTP button functionality
+        resendButton.addEventListener("click", () => {
+        resetOTP();
+        alert("New OTP has been sent!");
+        });
+
+        function validateOTP(){
+          const otpInput = ""
+          const temp = document.querySelectorAll(".input-field input");
+          temp.forEach((val)=>{
+            otpInput += val.value
+          })
+
+          document.getElementById("otp").value = otpInput;
+
+          $.ajax({
+            type:"POST",
+            url:"verify-otp",
+            data:{otp:otpInput},
+            success:function(response){
+              if(response.success){
+                Swal.fire({
+                  icon:"success",
+                  title:"OTP Verified Successfully",
+                  showConfirmButton:false,
+                  timer:1500
+                }).then(()=>{
+                  window.location.href = response.redirectUrl;
+                })
+              }else{
+                Swal.fire({
+                  icon:"error",
+                  title:Error,
+                  text:response.message,
+                })
+              }
+            },
+            error:function(){
+              Swal.fire({
+                icon:"error",
+                title:"Invalid OTP",
+                text:"Please try again"
+              })
+            }
+          })
+          return false
+        }
+    </script>
+  </body>
+</html>

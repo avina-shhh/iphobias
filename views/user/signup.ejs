@@ -17,7 +17,7 @@
     </style>
 </head>
 <body>
-    <div class="container" id="container" style="height: 60%;">
+    <div class="container" id="container" style="height: 80%;">
             <div class="form-container sign-up-container">
                 <form action="#">
                     <h1>Sign in</h1>
@@ -45,6 +45,9 @@
                     <input type="text" placeholder="Name" id="name" name="name"/>
                     <div class="error-msg" id="error1"></div>
                     <input type="email" placeholder="Email" id="email" name="email"/>
+                    <%if (typeof msg !== 'undefined') { %>
+                        <div class="error-msg" style="display: block;"> <%= msg %> </div>
+                    <%}%>
                     <div class="error-msg" id="error2"></div>
                     <input type="text" placeholder="Phone" id="phone" name="phone"/>
                     <div class="error-msg" id="error3"></div>
@@ -83,6 +86,7 @@
         </div>
     </div>
     <script>
+        
         const signUpButton = document.getElementById('signUp');
         const signInButton = document.getElementById('signIn');
         const container = document.getElementById('container');
@@ -112,11 +116,11 @@
 
             if(nameval.trim() === "" ){
                 error1.style.display="block"
-                error1.innerHTML="Please enter your name"
+                error1.innerHTML="*Please enter your name"
                 return false
             }else if(!namepattern.test(nameval)){
                 error1.style.display="block"
-                error1.innerHTML="Name can only contain alphabets and spaces"
+                error1.innerHTML="*Name can only contain alphabets and spaces"
                 return false
             }else{
                 error1.style.display="none"
@@ -131,11 +135,11 @@
 
             if(emailval.trim() === ""){
                 error2.style.display="block"
-                error2.innerHTML="Please enter your email"
+                error2.innerHTML="*Please enter your email"
                 return false
             }else if(!emailpattern.test(emailval)){
                 error2.style.display="block"
-                error2.innerHTML="Invalid email id"
+                error2.innerHTML="*Invalid email id"
                 return false
             }else{
                 error2.style.display="none"
@@ -150,11 +154,11 @@
 
         if(phoneval.trim() === ""){
             error3.style.display="block"
-            error3.innerHTML="Please enter your mobile number"
+            error3.innerHTML="*Please enter your mobile number"
             return false
         }else if(!phonepattern.test(phoneval)){
             error3.style.display="block"
-            error3.innerHTML="Invalid mobile number"
+            error3.innerHTML="*Mobile number should be 10 digit"
             return false
         }else{
             error3.style.display="none"
@@ -170,11 +174,11 @@
 
         if(passval === ""){
             error4.style.display="block"
-            error4.innerHTML="Please enter your password"
+            error4.innerHTML="*Please enter your password"
             return false
         }else if(!passpattern.test(passval)){
             error4.style.display="block"
-            error4.innerHTML="Your password must contain at least one uppercase, one lowercase, one digit, and one special character (e.g., @, $, !, %, , ?, &). It should be at least 8 characters long."
+            error4.innerHTML="*Password must include: 1 uppercase, 1 lowercase, 1 digit, 1 special character (@$!%*?&), and be at least 8 characters long."
             return false
         }else{
             error4.style.display="none"
@@ -191,7 +195,7 @@
 
         if(passval !== cpassval){
             error5.style.display="block"
-            error5.innerHTML="Passwords do not match."
+            error5.innerHTML="*Passwords do not match."
             return false
         }else{
             error5.style.display="none"
@@ -201,7 +205,8 @@
 
     }
 
-    document.addEventListener("DOMContentLoaded", () => {
+    
+
     signupform.addEventListener("submit", (e) => {
         // Run all validations
         const isNameValid = nameValidate();
@@ -215,16 +220,10 @@
             e.preventDefault(); // Stop form submission
         }
     });
-});
+    
 
     </script>
 </body>
 </html>
-
-<script>
-
-    
-
-</script>
 
 
