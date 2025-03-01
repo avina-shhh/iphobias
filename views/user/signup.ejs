@@ -41,13 +41,15 @@
                         <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
                         <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
                     </div>
-                    <span>or use your email for registration</span>
+                    <span>- or use your email for registration -</span>
+                    <%if (typeof msg !== 'undefined') { %>
+                        <br>
+                        <div class="error-msg" style="display: block;"> <%= msg %> </div>
+                    <%}%>
+                    
                     <input type="text" placeholder="Name" id="name" name="name"/>
                     <div class="error-msg" id="error1"></div>
                     <input type="email" placeholder="Email" id="email" name="email"/>
-                    <%if (typeof msg !== 'undefined') { %>
-                        <div class="error-msg" style="display: block;"> <%= msg %> </div>
-                    <%}%>
                     <div class="error-msg" id="error2"></div>
                     <input type="text" placeholder="Phone" id="phone" name="phone"/>
                     <div class="error-msg" id="error3"></div>
@@ -102,11 +104,13 @@
         const phoneid = document.getElementById("phone");
         const passid = document.getElementById("password");
         const cpassid = document.getElementById("confirm-password")
+
         const error1 = document.getElementById("error1")
         const error2 = document.getElementById("error2")
         const error3 = document.getElementById("error3")
         const error4 = document.getElementById("error4")
         const error5 = document.getElementById("error5")
+        
         const signupform = document.getElementById("signup-form")
 
 

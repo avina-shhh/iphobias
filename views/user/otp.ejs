@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="css/otp.css" />
     <!-- Boxicons CSS -->
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
   </head>
   <body>
     <div class="container">
@@ -16,7 +15,7 @@
         <i class="bx bxs-check-shield"></i>
       </header>
       <h4>Enter OTP Code</h4>
-      <form action="/verify-otp" method="post" id="otp-form" onsubmit="return validateOTP()">
+      <form method="post" id="otp-form" onsubmit="return validateOTP()">
         <div class="input-field">
           <input type="number" />
           <input type="number" disabled />
@@ -32,6 +31,7 @@
         <button type="button" id="resend-otp" disabled>Resend OTP</button>
       </form>
     </div>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         const inputs = document.querySelectorAll("input"),
@@ -40,7 +40,7 @@
         countdownElement = document.getElementById("countdown");
 
         let timer;
-        let timeLeft = 60; // 1 minute in seconds
+        let timeLeft = 5; // 1 minute in seconds
 
         // Function to start the countdown timer
         function startTimer() {
@@ -60,7 +60,7 @@
         // Function to reset the timer and OTP fields
         function resetOTP() {
         clearInterval(timer);
-        timeLeft = 60;
+        timeLeft = 10;
         countdownElement.textContent = "01:00";
         resendButton.disabled = true;
         resendButton.classList.remove("active");
@@ -119,23 +119,19 @@
         startTimer();
 
         // Resend OTP button functionality
-        resendButton.addEventListener("click", () => {
-        resetOTP();
-        alert("New OTP has been sent!");
-        });
-
+        
+        
+        
+        
+        
         function validateOTP(){
-          const otpInput = ""
-          const temp = document.querySelectorAll(".input-field input");
-          temp.forEach((val)=>{
-            otpInput += val.value
-          })
+          const otpInput = Array.from(inputs).map(input => input.value).join('');
 
           document.getElementById("otp").value = otpInput;
 
           $.ajax({
             type:"POST",
-            url:"verify-otp",
+            url:"/verify-otp",
             data:{otp:otpInput},
             success:function(response){
               if(response.success){
@@ -150,7 +146,7 @@
               }else{
                 Swal.fire({
                   icon:"error",
-                  title:Error,
+                  title:'Error',
                   text:response.message,
                 })
               }
@@ -165,6 +161,46 @@
           })
           return false
         }
+        
+        
+        function resendOTP(){
+          clearInterval(timer);
+          timeLeft = 10;
+          countdownElement.textContent = "01:00";
+          resendButton.disabled = true;
+          resendButton.classList.remove("active");
+          startTimer();
+
+          $.ajax({
+                type: "POST",
+                url: "/resend-otp",
+                success: function(response) {
+                    if (response.success) {
+                        Swal.fire({
+                            icon: "success",
+                            title: "OTP Resent Successfully",
+                            showConfirmButton: false,
+                            timer: 1500,
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Error",
+                            text: "An error occurred while resending OTP. Please try again",
+                        });
+                    }
+                }
+            });
+
+        }
+        
+
+
+        resendButton.addEventListener("click", () => {
+        resendOTP();
+        });
+    
+    
     </script>
   </body>
-</html>
+  </html>

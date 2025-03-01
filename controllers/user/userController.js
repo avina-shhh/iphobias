@@ -20,17 +20,35 @@ const loadHomePage = async(req,res)=>{
     try {
         
         return res.render("home")
-
+        
     } catch (error) {
         console.log("Home Page Not Found")
         res.status(500).send("Server Error")
-
+        
     }
+    
+}
 
+const loadSignup = async(req,res)=>{
+    try {
+
+        res.render("signup")
+    
+    } catch (error) {
+        console.log("Sign-Up Not Found",error.message)
+        res.status(500).send('Server Error')
+    }
 }
 
 
-async function sendOtp(email,otp,name){
+
+function generateOtp(){
+    return Math.floor(100000 + Math.random() * 900000).toString();
+}
+
+
+
+async function sendOtp(mail,otp,name){
     try {
         
         const transporter = nodemailer.createTransport({
@@ -46,13 +64,13 @@ async function sendOtp(email,otp,name){
 
         const info = await transporter.sendMail({
             from: process.env.NODEMAILER_EMAIL, // Sender email address
-            to: email, // Recipient email address
+            to : mail, 
             subject: "Verify your account for iPhobias", // Email subject
             text: `Dear ${name},
         
             Thank you for signing up for iPhobias! To complete your account verification, please use the following One-Time Password (OTP):
             
-            OTP: ${otp}
+            OTP : ${otp}
             
             This OTP is valid for 5 minutes. Please do not share it with anyone.
         
@@ -73,44 +91,25 @@ async function sendOtp(email,otp,name){
                     <p>Welcome to <strong>iPhobias</strong>! We’re excited to have you on board.</p>
                     <p>Best Regards,<br><strong>iPhobias Ltd.</strong><br>98754XXXXX</p>
                 </div>
-            `,
-        });
+            `
+        })
 
-        return info.accepted.length>0
+        return info.accepted.length > 0
 
     } catch (error) {
-        console.error("Error sending email",email);
+        console.error("Error sending email",error);
         return false
     }
 }
 
-function generateOtp(){
-    return Math.floor(100000 + Math.random() * 900000).toString();
-}
-
-const loadSignup = async(req,res)=>{
-    try {
-        if(req.session.taken){
-            req.session.taken = false;
-            return res.render('signup',{ msg : "*User with this email already exists" })
-        }
-    
-        res.render("signup")
-    
-    } catch (error) {
-        console.log("Sign-Up Not Found",error.message)
-        res.redirect("/pageNotFound")
-    }
-}
 
 const postSignup = async(req,res)=>{
     try {
-        const {email,password,name,phone} = req.body;
+        const {name,email,phone,password} = req.body;
 
-        const findUser = await User.findOne({email});
+        const findUser = await User.findOne({$or : [{email : email},{phone :phone}]});
         if(findUser){
-            req.session.taken = true;
-            return res.redirect("/signup")
+            return res.render('signup',{ msg : "*User with this email or phone already exists" })
         }
 
         const otp = generateOtp();
@@ -147,9 +146,9 @@ const securePass = async(password) => {
 const verifyOTP = async(req,res)=>{
     try {
         const {otp} = req.body;
-        console.log(otp);
+        console.log("OTP Entered :",otp);
 
-        if(otp == req.session.userOTP){
+        if(otp === req.session.userOTP){
             const user = req.session.userData
             const passHash = await securePass(user.password);
 
@@ -162,11 +161,10 @@ const verifyOTP = async(req,res)=>{
 
             await saveUserData.save();
 
+            console.log(saveUserData)
+
             req.session.user = saveUserData._id;
-            res.json({
-                success:true,
-                redirectUrl:"/"
-            })
+            res.json({success:true,redirectUrl:'/'});
 
         }else{
             res.status(400).json({success:false,message:"Invalid OTP, Please try again"})
@@ -178,10 +176,36 @@ const verifyOTP = async(req,res)=>{
     }
 }
 
+const resendOTP = async(req,res)=>{
+    try {
+        
+        const {email,name}  = req.session.userData;
+        if(!email){
+            return res.status(400).json({success:false,message:"Email not found in session"})
+        }
+
+        const otp = generateOtp()
+        req.session.userOTP = otp;
+        const emailSend = await sendOtp(email,otp,name);
+        if(emailSend){
+            return console.log("Resend OTP : ",otp, req.session.userOTP)
+            res.status(200).json({success:true,message:"OTP Resend Successfully"})
+        }else{
+            res.status(500).json({success:false,message:"Failed to resend OTP. Please try again"})
+        }
+
+
+    } catch (error) {
+        console.error("Error Resending OTP",error)
+        res.status(500).json({success:false,message:"Internal Server Error. Please try again"})
+    }
+}
+
 module.exports = {
     loadHomePage,
     pageNotFound,
     loadSignup,
     postSignup,
-    verifyOTP
+    verifyOTP,
+    resendOTP
 } 
