@@ -160,12 +160,11 @@ const verifyOTP = async(req,res)=>{
             })
 
             await saveUserData.save();
-
             console.log(saveUserData)
 
             req.session.user = saveUserData._id;
-            res.json({success:true,redirectUrl:'/'});
 
+            res.json({success:true,redirectUrl:'/'});
         }else{
             res.status(400).json({success:false,message:"Invalid OTP, Please try again"})
 
@@ -186,10 +185,12 @@ const resendOTP = async(req,res)=>{
 
         const otp = generateOtp()
         req.session.userOTP = otp;
+        req.session.save();
+
         const emailSend = await sendOtp(email,otp,name);
         if(emailSend){
-            return console.log("Resend OTP : ",otp, req.session.userOTP)
             res.status(200).json({success:true,message:"OTP Resend Successfully"})
+            return console.log("Resend OTP : ",otp)
         }else{
             res.status(500).json({success:false,message:"Failed to resend OTP. Please try again"})
         }
