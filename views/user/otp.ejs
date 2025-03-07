@@ -8,8 +8,26 @@
     <link rel="stylesheet" href="css/otp.css" />
     <!-- Boxicons CSS -->
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+    <style>
+      .page {
+            opacity: 0;
+            transform: translateY(10px);
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(0);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
   </head>
-  <body>
+  <body class="page">
     <div class="container">
       <header>
         <i class="bx bxs-check-shield"></i>
@@ -40,7 +58,7 @@
         countdownElement = document.getElementById("countdown");
 
         let timer;
-        let timeLeft = 5; // 1 minute in seconds
+        let timeLeft = 60; // 1 minute in seconds
 
         // Function to start the countdown timer
         function startTimer() {
@@ -60,7 +78,7 @@
         // Function to reset the timer and OTP fields
         function resetOTP() {
         clearInterval(timer);
-        timeLeft = 10;
+        timeLeft = 60;
         countdownElement.textContent = "01:00";
         resendButton.disabled = true;
         resendButton.classList.remove("active");
@@ -165,7 +183,7 @@
         
         function resendOTP(){
           clearInterval(timer);
-          timeLeft = 10;
+          timeLeft = 60;
           countdownElement.textContent = "01:00";
           resendButton.disabled = true;
           resendButton.classList.remove("active");
