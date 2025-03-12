@@ -5,15 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Login</title>
     <link rel="stylesheet" type="text/css" href="/css/adminLogin.css">
+    <style>
+      .error-msg{
+            color:#fff;
+            font-size: 0.75rem;
+            display: none;
+        }
+    </style>
 </head>
 <body>
     <div class="login-box">
         <h2>ᴀᴅᴍɪɴ ʟᴏɢɪɴ</h2>
+        <%if (typeof msg !== 'undefined') {%>
+          <div class="error-msg" style="display: block;"> <%= msg %> </div>
+          <br>
+      <%}%>
         <form method="post" action="/admin/login">
           <div class="user-box">
             <input type="text" name="email" required="">
             <label>Email</label>
           </div>
+          <%if (typeof err !== 'undefined') {%>
+            <div class="error-msg" style="display: block;"> <%= err %> </div>
+            <br>
+        <%}%>
           <div class="user-box">
             <input type="password" name="password" required="">
             <label>Password</label>

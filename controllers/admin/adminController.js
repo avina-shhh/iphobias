@@ -3,39 +3,78 @@ const env = require("dotenv").config();
 const bcrypt = require("bcrypt")
 const mongoose = require("mongoose")
 
+
+const pageError = async(req,res)=>{
+    res.render("adminError")
+}
+
 const loadLogin = async(req,res)=>{
-    if(req.session.admin){
-        return res.redirect("/admin")
+    if(!req.session.admin){
+        return res.render('adminLogin')
+    }else{
+        res.redirect('/admin')
     }
-    res.render('adminLogin')
 }
 
 const login = async(req,res)=>{
     try {
         const {email,password} = req.body
-        const admin = await User.findOne({email,isAdmin:true})
+        
+        const findAdmin = await User.findOne({isAdmin:1,email:email});
 
-        if(admin){
-            const passMatch = bcrypt.compare(password,admin.password);
-            if(passMatch){
-                req.session.admin = true;
-                return res.redirect('/admin')
-            }else{
-                res.redirect('/admin/login')
-            }
-        }else{
-            res.redirect('/admin/login')
+        if(!findAdmin){
+            return res.render('adminLogin',{msg:"*Admin not found"})
         }
+
+        const passwordMatch = await bcrypt.compare(password,findAdmin.password)
+        if(!passwordMatch){
+            return res.render('adminLogin',{err:"*Incorrect password"})
+        }
+
+        req.session.admin = findAdmin._id
+
+        res.redirect('/admin')
+
 
     } catch (error) {
         console.log("Login Error",error)
-        return res.redirect('/pageError')
+        return res.redirect('/pagerror')
     }
+
 }
 
 
+const loadDashboard = async(req,res)=>{
+    try {
+        if(req.session.admin){
+            res.render('dashboard');
+        }else{
+            res.redirect('/admin/login')
+        }
+    } catch (error) {
+        res.redirect('/pagerror')
+    }
+}
+
+const logout = async(req,res)=>{
+    try {
+        req.session.destroy(err=>{
+            if(err){
+                console.log("Error destroying admin",err)
+                return res.redirect('/pagerror')
+            }
+            res.redirect("/admin")
+        })
+    } catch (error) {
+        console.log("Unexpected error during Logout",error);
+        res.redirect("/pagerror")
+    }
+}
 
 module.exports = {
     loadLogin,
-    login
+    login,
+    loadDashboard,
+    pageError,
+    logout
 }
