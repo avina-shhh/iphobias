@@ -15,7 +15,7 @@ const customerInfo = async (req,res)=>{
         }
 
         const limit = 3
-        const userData = await USer.find({
+        const userData = await User.find({
             isAdmin:false,
             $or:[
                 {name:{$regex:".*"+search+".*"}},
@@ -34,16 +34,38 @@ const customerInfo = async (req,res)=>{
             ],
         }).countDocuments();
 
-        res.render("customers")
+        res.render("customers",{data:userData,totalPages:Math.ceil(count/limit),currentPage:page})
 
 
     } catch (error) {
-        
+        res.redirect('/admin/pagerror')
+    }
+}
+
+const blockCustomer = async(req,res)=>{
+    try {
+        let id = req.query.id
+        await User.updateOne({_id:id},{$set:{isBlocked:true}});
+        res.redirect('/admin/users')
+    } catch (error) {
+        res.redirect('pagerror')
+    }
+}
+
+const unblockCustomer = async(req,res)=>{
+    try {
+        let id = req.query.id
+        await User.updateOne({_id:id},{$set:{isBlocked:false}});
+        res.redirect('/admin/users')
+    } catch (error) {
+        res.redirect('pagerror')
     }
 }
 
 module.exports = {
 
-    customerInfo
+    customerInfo,
+    blockCustomer,
+    unblockCustomer
 
 }

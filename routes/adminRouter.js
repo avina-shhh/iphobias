@@ -16,6 +16,8 @@ router.get('/logout',adminController.logout)
 
 // Customer Management
 router.get('/users',adminAuth,customerController.customerInfo)
+router.get('/blockCustomer',adminAuth,customerController.blockCustomer)
+router.get('/unblockCustomer',adminAuth,customerController.unblockCustomer)
 
 
 
