@@ -34,8 +34,12 @@ const customerInfo = async (req,res)=>{
             ],
         }).countDocuments();
 
-        res.render("customers",{data:userData,totalPages:Math.ceil(count/limit),currentPage:page})
-
+        res.render("customers", {
+            data: userData,
+            totalPages: Math.ceil(count / limit),
+            currentPage: page
+        });
+    
 
     } catch (error) {
         res.redirect('/admin/pagerror')

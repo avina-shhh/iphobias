@@ -19,7 +19,7 @@ const userAuth = (req,res,next)=>{
 }
 
 const adminAuth = (req,res,next)=>{
-    User.findOne({isAdmin : true})
+    User.findOne({_id:req.session.admin,isAdmin : true})
     .then(data=>{
         if(data){
             next();
