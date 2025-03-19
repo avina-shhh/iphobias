@@ -4,17 +4,32 @@ const Product = require('../../models/productSchema')
 const categoryInfo = async(req,res)=>{
     try {
         
-        const page = parseInt(req.query.page) || 1;
+        let page = parseInt(req.query.page) || 1;
         const limit = 4;
         const skip = (page-1)*limit;
+        let search = "";
+        if(req.query.search){
+            search = req.query.search;
+        }
 
-        const categoryData = await Category.find({})
+        const categoryData = await Category.find({
+            $or:[
+                {name:{$regex:".*"+search+".*", $options:"i"}},
+                {description:{$regex:".*"+search+".*", $options:"i"}}
+            ]
+        })
             .sort({createdAt:-1})
             .skip(skip)
             .limit(limit)
         
 
-        const totalCategory = await Category.countDocuments();
+        const totalCategory = await Category.find({
+            $or:[
+                {name:{$regex:".*"+search+".*", $options:"i"}},
+                {description:{$regex:".*"+search+".*", $options:"i"}}
+            ]
+        }).countDocuments();
+        
         const totalPages = Math.ceil(totalCategory/limit);
 
         res.render("category",{
@@ -137,6 +152,42 @@ const getUnlist = async(req,res)=>{
     }
 }
 
+const editCategory = async(req,res)=>{
+    try {
+        const id = req.query.id;
+        const category = await Category.findOne({_id:id});
+        res.render('editCategory',{category:category})
+    } catch (error) {
+        console.error("Error in editCategory",error);
+        res.redirect('/pagerror')
+    }
+}
+
+const postEditCategory = async(req,res)=>{
+    try {
+        const id = req.params.id;
+        const {name,description} = req.body;
+        const existingCategory = await Category.findOne({name:name});
+        if(existingCategory){
+            return res.status(400).json({error:"Category name already exists, please use another name"})
+        }
+
+        const updateCategory = await Category.findByIdAndUpdate(id,{
+            name:name,
+            description:description,
+        },{new:true})
+
+        if(updateCategory){
+            res.redirect("/admin/category")
+        }else{
+            res.status(404).json({error:"Category not found"})
+        }
+
+
+    } catch (error) {
+        res.status(500).json({error:"Internal server error"})
+    }
+}
 
 module.exports = {
     categoryInfo,
@@ -144,5 +195,7 @@ module.exports = {
     addOffer,
     removeOffer,
     getList,
-    getUnlist
+    getUnlist,
+    editCategory,
+    postEditCategory
 }

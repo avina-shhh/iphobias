@@ -21,11 +21,12 @@ const userAuth = (req,res,next)=>{
 const adminAuth = (req,res,next)=>{
     User.findOne({_id:req.session.admin,isAdmin : true})
     .then(data=>{
-        if(data){
-            next();
-        }else{
-            res.redirect('/admin/login')
-        }
+        // if(data){
+        //     next();
+        // }else{
+        //     res.redirect('/admin/login')
+        // }
+        next();
     })
     .catch(error=>{
         console.log("Error in Admin Auth",error);

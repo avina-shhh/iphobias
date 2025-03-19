@@ -92,7 +92,7 @@
             </a>
           </li>
           <li class="nav-item menu-items">
-            <a class="nav-link" href="admin-assets/pages/charts/chartjs.html">
+            <a class="nav-link" href="/admin/brands">
               <span class="menu-icon">
                 <i class="mdi mdi-chart-bar"></i>
               </span>
@@ -269,7 +269,7 @@
 
                     <div class="table-responsive">
                       <table class="table">
-                        <thead>
+                        <thead style= "text-align: center;">
                           <tr>
                             <th>Name</th>
                             <th>E-mail</th>
@@ -277,12 +277,12 @@
                             <th>Action</th>
                           </tr>
                         </thead>
-                        <tbody>
+                        <tbody style="color: #fff; text-align: center;">
                           <%for(let i=0;i<data.length;i++){%>
                             <tr>
                               <td><%=data[i].name%></td>
                               <td><%=data[i].email%></td>
-                              <td><%=data[i].phone%></td>
+                              <td><%=(data[i].phone) ? data[i].phone : "NIL"%></td>
                               <td>
                                 <%if(data[i].isBlocked===false){%>
                                   <a href="/admin/blockCustomer?id=<%=data[i]._id%>" class="btn btn-outline-danger" style="width: 85px;">Block</a>

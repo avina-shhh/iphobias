@@ -148,7 +148,7 @@
             </a>
           </li>
           <li class="nav-item menu-items">
-            <a class="nav-link" href="admin-assets/pages/charts/chartjs.html">
+            <a class="nav-link" href="/admin/brands">
               <span class="menu-icon">
                 <i class="mdi mdi-chart-bar"></i>
               </span>
@@ -338,7 +338,7 @@
                     <ul class="navbar-nav w-100">
                       <li class="nav-item w-100">
                         <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search" style="display: flex; width: 100%;" action="/admin/category" method="get">
-                          <input type="text" class="form-control" placeholder="Search Category" style="flex: 1; margin-right: 8px;">
+                          <input type="text" class="form-control" placeholder="Search Category" style="flex: 1; margin-right: 8px;" name="search">
                           <button type="submit" class="btn btn-primary">
                             <i class="mdi mdi-magnify"></i>
                           </button>
@@ -349,7 +349,7 @@
 
                     <div class="table-responsive">
                       <table class="table">
-                        <thead>
+                        <thead style= "text-align: center;">
                           <tr>
                             <th>Name</th>
                             <th>Description</th>
@@ -360,11 +360,11 @@
                             <th>Edit</th>
                           </tr>
                         </thead>
-                        <tbody style="color: #fff;">
-                          <%data.reverse().forEach((category,index)=>{%>
+                        <tbody style="color: #fff; text-align: center;">
+                          <%data.forEach((category,index)=>{%>
                             <tr>
-                              <td class="text-start"><%=category.name%></td>
-                              <td class="text-start"><%=category.description%></td>
+                              <td><%=category.name%></td>
+                              <td><%=category.description%></td>
                               <td>
                                 <%if(category.categoryOffer){%>
                                   <%=category.categoryOffer%>%  
@@ -372,29 +372,29 @@
                                   0%
                                 <%}%>
                               </td>
-                              <td class="text-start">
+                              <td>
                                 <%if(category.categoryOffer===0){%>
                                   <a href="#" class="btn btn-outline-info" onclick="addOffer('<%=category._id%>')">Add Offer</a>
                                 <%}else{%>
                                   <a href="#" class="btn btn-info" onclick="removeOffer('<%=category._id%>')">Remove</a>
                                 <%}%>
                                 </td>
-                              <td class="text-start">
+                              <td>
                                 <%if(category.isListed===true){%>
                                   <span class="badge rounded-pill alert-success" >Listed</span>
                                 <%}else{%>
                                   <span class="badge rounded-pill alert-danger">Unlisted</span>
                                 <%}%>
                               </td>
-                              <td class="text-start">
+                              <td>
                                 <%if(category.isListed===true){%>
                                   <a href="/admin/unlistCategory?id=<%=category._id%>" class="btn btn-outline-danger" style="width: 85px;">Unlist</a>
                                 <%}else{%>
                                   <a href="/admin/listCategory?id=<%=category._id%>" class="btn btn-outline-success" style="width: 85px;">List</a>
                                 <%}%>
                               </td>
-                              <td class="text-start">
-                                <a href="#" class="btn btn-outline-info">Edit</a>
+                              <td>
+                                <a href="/admin/editCategory?id=<%=category._id%>" class="btn btn-outline-info">Edit</a>
                               </td>
                             </tr>
                           <%})%>
