@@ -16,6 +16,61 @@
     <link rel="stylesheet" href="/admin-assets/assets/css/style.css">
     <!-- Mini Icon -->
     <link rel="shortcut icon" href="/admin-assets/assets/images/favicon.png" />
+
+    <style>
+      .swal2-container {
+          z-index: 9999 !important; /* Ensure it appears above Bootstrap modals */
+          position: fixed !important;
+          inset: 0px !important;
+          background-color: rgba(0, 0, 0, 0.4) !important; /* Dim background */
+      }
+
+      /* Fix popup width and prevent Bootstrap interference */
+      .swal2-popup {
+          font-family: Arial, sans-serif !important; /* Override Bootstrap font */
+          max-width: 400px !important;
+          border-radius: 10px !important;
+          padding: 20px !important;
+          box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2) !important;
+      }
+
+      /* Fix button styles */
+      .swal2-styled {
+          padding: 10px 16px !important;
+          font-size: 16px !important;
+          border-radius: 5px !important;
+      }
+
+      /* Ensure confirm button has the correct style */
+      .swal2-confirm {
+          background-color: #3085d6 !important;
+          border-color: #3085d6 !important;
+      }
+
+      /* Ensure cancel button is properly styled */
+      .swal2-cancel {
+          background-color: #d33 !important;
+          border-color: #d33 !important;
+      }
+
+      /* Prevent Bootstrap modal styles from affecting SweetAlert2 */
+      .modal.fade {
+          display: none !important;
+      }
+
+      /* Ensure SweetAlert2 error icon is displayed properly */
+      .swal2-icon-error {
+          border-color: red !important;
+      }
+      .swal2-title {
+          display: block !important;
+          font-size: 24px !important; /* Ensure the title is large enough */
+          font-weight: bold !important;
+          color: #333 !important; /* Change color to dark gray/black */
+          text-align: center !important;
+          margin-bottom: 10px !important;
+      }   
+    </style>
   </head>
   <body>
     <div class="container-scroller">
@@ -285,9 +340,9 @@
                               <td><%=(data[i].phone) ? data[i].phone : "NIL"%></td>
                               <td>
                                 <%if(data[i].isBlocked===false){%>
-                                  <a href="/admin/blockCustomer?id=<%=data[i]._id%>" class="btn btn-outline-danger" style="width: 85px;">Block</a>
+                                  <a href="#" onclick="confirmBlockCustomer('<%=data[i]._id%>')" class="btn btn-outline-danger" style="width: 85px;">Block</a>
                                 <%}else{%>
-                                  <a href="/admin/unblockCustomer?id=<%=data[i]._id%>" class="btn btn-outline-success" style="width: 85px;">Unblock</a>
+                                  <a href="#" onclick="confirmUnBlockCustomer('<%=data[i]._id%>')" class="btn btn-outline-success" style="width: 85px;">Unblock</a>
                                 <%}%>
                               </td>
                             </tr>
@@ -346,6 +401,112 @@
     <script src="/admin-assets/assets/js/hoverable-collapse.js"></script>
     <script src="/admin-assets/assets/js/settings.js"></script>
     <script src="/admin-assets/assets/js/todolist.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
+    <script>
+
+        async function confirmBlockCustomer(UserId) {
+          // Show SweetAlert confirmation
+          Swal.fire({
+            title: 'Are you sure?',
+            text: 'You are about to block this customer. This action cannot be undone.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'Cancel',
+          }).then(async (result) => {
+            if (result.isConfirmed) {
+              try {
+                // Send a request to block the brand
+                const response = await fetch(`/admin/blockCustomer?id=${UserId}`, {
+                  method: 'GET', // or 'GET', depending on your backend route
+                });
+              
+                const result = await response.json(); // Parse the JSON response
+              
+                if (result.status) {
+                  // Show success SweetAlert
+                  Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: result.message, // Display the message from the backend
+                  }).then(()=>{
+                    window.location.href = "/admin/users"
+                  });
+                } else {
+                  // Show error SweetAlert
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: result.message, // Display the error message from the backend
+                  });
+                }
+              } catch (error) {
+                console.error('Error blocking customer:', error);
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Error',
+                  text: 'An error occurred while blocking the customer.',
+                });
+              }
+            }
+          });
+        }
+
+        async function confirmUnBlockCustomer(UserId) {
+          // Show SweetAlert confirmation
+          Swal.fire({
+            title: 'Are you sure?',
+            text: 'You are about to Unblock this customer. This action cannot be undone.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'Cancel',
+          }).then(async (result) => {
+            if (result.isConfirmed) {
+              try {
+                // Send a request to block the brand
+                const response = await fetch(`/admin/unblockCustomer?id=${UserId}`, {
+                  method: 'GET', // or 'GET', depending on your backend route
+                });
+              
+                const result = await response.json(); // Parse the JSON response
+              
+                if (result.status) {
+                  // Show success SweetAlert
+                  Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: result.message, // Display the message from the backend
+                  }).then(()=>{
+                    window.location.href = "/admin/users"
+                  });
+                } else {
+                  // Show error SweetAlert
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: result.message, // Display the error message from the backend
+                  });
+                }
+              } catch (error) {
+                console.log('Error Unblocking customer:', error);
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Error',
+                  text: 'An error occurred while Unblocking the customer.',
+                });
+              }
+            }
+          });
+        }
+
+    </script>
+
   </body>
 </html>

@@ -145,7 +145,7 @@ const getUnlist = async(req,res)=>{
     try {
         const id = req.query.id
         await Category.updateOne({_id:id},{$set:{isListed:false}})
-        res.redirect('/admin/category')
+        res.status(200).json({status:true,message:"Category Unlisted successfully"})
     } catch (error) {
         res.redirect("/admin/pagerror");
         console.error("Error in getUnlist: ",error)
@@ -163,31 +163,34 @@ const editCategory = async(req,res)=>{
     }
 }
 
-const postEditCategory = async(req,res)=>{
+const postEditCategory = async (req, res) => {
     try {
-        const id = req.params.id;
-        const {name,description} = req.body;
-        const existingCategory = await Category.findOne({name:name});
-        if(existingCategory){
-            return res.status(400).json({error:"Category name already exists, please use another name"})
-        }
-
-        const updateCategory = await Category.findByIdAndUpdate(id,{
-            name:name,
-            description:description,
-        },{new:true})
-
-        if(updateCategory){
-            res.redirect("/admin/category")
-        }else{
-            res.status(404).json({error:"Category not found"})
-        }
-
-
+      const id = req.params.id;
+      const { name, description } = req.body;
+  
+      // Check if the category name already exists (excluding the current category)
+      const existingCategory = await Category.findOne({ name: name, _id: { $ne: id } });
+      if (existingCategory) {
+        return res.status(400).json({ status: false, message: "Category name already exists, please use another name" });
+      }
+  
+      // Update the category
+      const updateCategory = await Category.findByIdAndUpdate(
+        id,
+        { name, description },
+        { new: true } // Return the updated document
+      );
+  
+      if (updateCategory) {
+        res.status(200).json({ status: true, message: "Category edited successfully" });
+      } else {
+        res.status(404).json({ status: false, message: "Category not found" });
+      }
     } catch (error) {
-        res.status(500).json({error:"Internal server error"})
+      console.error("Error in postEditCategory:", error);
+      res.status(500).json({ status: false, message: "Internal server error" });
     }
-}
+  };
 
 module.exports = {
     categoryInfo,

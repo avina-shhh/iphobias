@@ -317,7 +317,7 @@
                   <div class="card-body">
                     <h4 class="card-title">Edit Category</h4>
                     <p class="card-description"> Update the Details </p>
-                    <form class="forms-sample" method="post" action="/admin/editCategory/<%=category._id%>">
+                    <form class="forms-sample" method="post" action="/admin/editCategory/<%=category._id%>" onsubmit="return handleSubmit(event)" id="categoryForm">
                       <div class="form-group">
                         <label for="exampleInputName1">Category Name</label>
                         <input type="text" class="form-control" id="exampleInputName1" placeholder="Category Name" name="name" value="<%=category.name%>">
@@ -373,48 +373,77 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-      function handleSubmit(e){
-        event.preventDefault();
-        if(!validateForm()){
-          return 
-        }
+     
+     async function handleSubmit(e) {
+    e.preventDefault();
+
+    // Get form fields
+    const name = document.getElementsByName("name")[0].value.trim();
+    const description = document.getElementById("description").value.trim();
+
+    // Get error message elements
+    const nameError = document.getElementById('name-error');
+    const descriptionError = document.getElementById('description-error');
+
+    // Reset error messages
+    nameError.textContent = '';
+    descriptionError.textContent = '';
+
+    // Validate Category Name
+    if (name === "") {
+      nameError.textContent = '*Please enter a name';
+      return;
+    } else if (!/^[a-zA-Z\s]+$/.test(name)) {
+      nameError.textContent = '*Category name should only contain alphabets';
+      return;
+    }
+
+    // Validate Description
+    if (description === "") {
+      descriptionError.textContent = '*Description cannot be empty';
+      return;
+    }
+
+    try {
+
+      // Send form data using fetch
+      const response = await fetch('/admin/editCategory/<%=category._id%>', {
+        method: 'POST',
+        headers:{
+            'content-type':'application/json'
+        },
+        body: JSON.stringify({name,description})
+      });
+
+      const result = await response.json();
+
+      if (result.status) {
+        // Show success SweetAlert
+        Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: result.message,
+        }).then(() => {
+          window.location.href = '/admin/category'; // Redirect after success
+        });
+      } else {
+        // Show error SweetAlert
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: result.message,
+        });
       }
-
-      function validateForm(){
-        clearErrorMessages();
-        const name = document.getElementsByName("name")[0].value.trim();
-        const description = document.getElementById("description").value.trim();
-        const isValid = true;
-
-        if(name === ""){
-          displayErrorMessage('name-error','*Please enter a name');
-          isValid = false
-        }else if(!/^[a-zA-Z\s]+$/.test(name)){
-          displayErrorMessage('name-error','*Category name should only contain alphabets');
-          isValid = false
-        }
-
-        if(description === ""){
-          displayErrorMessage('description-error','*Description cannot be empty');
-          isValid = false
-        }
-
-        return isValid;
-      }
-
-      function displayErrorMessage(elementId,message){
-        var element = document.getElementById(elementId);
-        element.innerText = message;
-        element.style.display = "block";
-      }
-
-      function clearErrorMessages(){
-        const errorElements = document.getElementsByClassName("error-message");
-        Array.from(errorElements).forEach((elem)=>{
-          elem.innerText = "";
-          elem.style.display = "none"
-        })
-      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'An error occurred while submitting the form.',
+      });
+    }
+  }
+      
 
     </script>
 

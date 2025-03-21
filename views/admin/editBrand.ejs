@@ -303,113 +303,39 @@
           <div class="content-wrapper">
             <div class="page-header">
               <h3 class="page-title"> Category </h3>
+              <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item"><a href="/admin/brands">Brands</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">Edit</li>
+                </ol>
+              </nav>
             </div>
             <div class="row">
               
               <div class="col-12 grid-margin stretch-card">
                 <div class="card">
                   <div class="card-body">
-                    <h4 class="card-title">Add New Brand</h4>
-                    <p class="card-description"> Enter the Details </p>
-                    <form id="brandForm" class="forms-sample" method="post" action="/admin/addBrand" enctype="multipart/form-data">
-                        <div class="form-group">
-                          <label for="exampleInputName1">Brand Name</label>
-                          <input type="text" class="form-control" id="brandName" placeholder="Brand Name" name="name">
-                          <div id="name-error" class="error-message" style="color: rgb(235, 54, 54); font-size: small;"></div>
+                    <h4 class="card-title">Edit Brand</h4>
+                    <p class="card-description"> Update the Details </p>
+                    <form id="brandForm" class="forms-sample" method="post" action="/admin/editBrand/<%=brand._id%>" enctype="multipart/form-data">
+                      <div class="form-group">
+                        <label for="exampleInputName1">Brand Name</label>
+                        <input type="text" class="form-control" id="brandName" placeholder="Brand Name" name="name" value="<%=brand.brandName%>">
+                        <div id="name-error" class="error-message" style="color: rgb(235, 54, 54); font-size: small;"></div>
+                      </div>
+                      
+                      <div class="form-group">
+                        <label>Brand Logo</label>
+                        <div class="input-group col-xs-12">
+                          <input class="form-control file-upload-info" placeholder="Upload Logo" type="text" disabled id="brandLogoShow" value="<%=brand.brandImage%>">
+                          <input class="form-control file-upload-info" type="file" name="image" id="realLogo" style="display: none;">                            <span class="input-group-append">
+                            <button class="file-upload-browse btn btn-primary" id="fileUpload" type="button">Upload</button>
+                          </span>
                         </div>
-                        
-                        <div class="form-group">
-                          <label>Brand Logo</label>
-                          <div class="input-group col-xs-12">
-                            <input class="form-control file-upload-info" placeholder="Upload Logo" type="text" disabled id="brandLogoShow" value="">
-                            <input class="form-control file-upload-info" type="file" name="image" id="realLogo" style="display: none;">                            
-                            <span class="input-group-append">
-                              <button class="file-upload-browse btn btn-primary" id="fileUpload" type="button">Upload</button>
-                            </span>
-                          </div>
-                          <div id="logo-error" class="error-message" style="color: rgb(235, 54, 54); font-size: small;"></div>
-                        </div>
-                        <button type="submit" class="btn btn-primary mr-2">Submit</button>
-                      </form>
-                  </div>
-                </div>
-              </div>
-              
-              <div class="col-lg-12 grid-margin stretch-card">
-                <div class="card">
-                  <div class="card-body">
-                    <h4 class="card-title">Brand Details</h4>
-
-                    <ul class="navbar-nav w-100">
-                      <li class="nav-item w-100">
-                        <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search" style="display: flex; width: 100%;" action="/admin/brands" method="get">
-                          <input type="text" class="form-control" placeholder="Search Brand" style="flex: 1; margin-right: 8px;" name="search">
-                          <button type="submit" class="btn btn-primary">
-                            <i class="mdi mdi-magnify"></i>
-                          </button>
-                        </form>
-                      </li>
-                    </ul>
-
-
-                    <div class="table-responsive">
-                      <table class="table">
-                        <thead style="text-align: center;">
-                          <tr>
-                            <th>Brand</th>
-                            <th>Logo</th>
-                            <th>Status</th>
-                            <th>Block/Unblock</th>
-                            <th>Edit</th>
-                            <th>Remove</th>
-                          </tr>
-                        </thead>
-                        <tbody style="color: #fff; text-align: center;">
-                            <%data.forEach((brand,index)=>{%>
-                                <tr>
-                                    <td><%=brand.brandName%></td>
-                                    <td>
-                                        <img class="rounded-circle" style="height: 40px; width: 40px;" src="/uploads/re-image/<%=brand.brandImage[0]%>" alt="<%=brand.brandName%>">
-                                    </td>
-                                    <td>
-                                        <%if(!brand.isBlocked){%>
-                                            <span class="badge rounded-pill alert-success" >Active</span>
-                                        <%}else{%>
-                                            <span class="badge rounded-pill alert-danger">Blocked</span>
-                                        <%}%>
-                                    </td>
-                                    <td>
-                                        <%if(!brand.isBlocked){%>
-                                            <a href="#" onclick="confirmBlockBrand('<%=brand._id%>')" class="btn btn-outline-danger" style="width: 85px;">Block</a>
-                                        <%}else{%>
-                                            <a href="/admin/unblockBrand?id=<%=brand._id%>"  class="btn btn-outline-success" style="width: 85px;">Unblock</a>
-                                        <%}%>    
-                                    </td>
-                                    <td>
-                                        <a href="/admin/editBrand?id=<%=brand._id%>" class="btn btn-outline-info">Edit</a>
-                                    </td>
-                                    <td>
-                                      <a href="#" onclick="confirmDeleteBrand('<%=brand._id%>')" class="btn btn-outline-danger">Delete</a>
-                                    </td>
-                                </tr>
-                            <%})%>
-                        </tbody>
-                      </table>
-                    </div>
-
-                    <div class="container mt-3">
-                      <nav aria-label="Page navigation">
-                        <ul class="pagination justify-content-center mb-20" style="margin-right:200px;">
-                          <%for(let i=1;i<=totalPages;i++){%>
-                            <li>
-                              <div class="btn-group" role="group">
-                                <a type="button" href="?page=<%=i%>" class="btn btn-outline-secondary  <%=(i==currentPage) ? 'active' : ''%>"><%=i%></a>
-                              </div>
-                            </li>
-                          <%}%>
-                        </ul>
-                      </nav>
-                    </div>
+                        <div id="logo-error" class="error-message" style="color: rgb(235, 54, 54); font-size: small;"></div>
+                      </div>
+                      <button type="submit" class="btn btn-primary mr-2">Submit</button>
+                    </form>
 
                   </div>
                 </div>
@@ -434,7 +360,7 @@
     <!-- Jquery & Bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-
+    
     <!-- Plugin js for this page -->
     <script src="/admin-assets/assets/vendors/chart.js/Chart.min.js"></script>
     <script src="/admin-assets/assets/vendors/progressbar.js/progressbar.min.js"></script>
@@ -448,11 +374,11 @@
     <script src="/admin-assets/assets/js/hoverable-collapse.js"></script>
     <script src="/admin-assets/assets/js/settings.js"></script>
     <script src="/admin-assets/assets/js/todolist.js"></script>
-
+    
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        document.getElementById('brandForm').addEventListener('submit',async function (event) {
+      document.getElementById('brandForm').addEventListener('submit',async function (event) {
 
           event.preventDefault();
           
@@ -475,16 +401,16 @@
           }
           
           // Validate Brand Logo
-          if (!brandLogo) {
+          if (!brandLogo && !document.getElementById('brandLogoShow').value) {
             logoError.textContent = '*Please insert a logo.';
-            return;
+            return; // Stop if validation fails
           }
 
           const formData = new FormData(this);
 
           try {
             
-            const response = await fetch('/admin/addBrand', {
+            const response = await fetch('/admin/editBrand/<%=brand._id%>', {
               method: 'POST',
               body: formData, // Send form data
             });
@@ -532,106 +458,7 @@
         });
 
 
-        async function confirmBlockBrand(brandId) {
-          // Show SweetAlert confirmation
-          Swal.fire({
-            title: 'Are you sure?',
-            text: 'You are about to block this brand.',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
-            confirmButtonText: 'Yes',
-            cancelButtonText: 'Cancel',
-          }).then(async (result) => {
-            if (result.isConfirmed) {
-              try {
-                // Send a request to block the brand
-                const response = await fetch(`/admin/blockBrand?id=${brandId}`, {
-                  method: 'GET', // or 'GET', depending on your backend route
-                });
-              
-                const result = await response.json(); // Parse the JSON response
-              
-                if (result.status) {
-                  // Show success SweetAlert
-                  Swal.fire({
-                    icon: 'success',
-                    title: 'Success',
-                    text: result.message, // Display the message from the backend
-                  }).then(()=>{
-                    window.location.href = "/admin/brands"
-                  });
-                } else {
-                  // Show error SweetAlert
-                  Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: result.message, // Display the error message from the backend
-                  });
-                }
-              } catch (error) {
-                console.error('Error blocking brand:', error);
-                Swal.fire({
-                  icon: 'error',
-                  title: 'Error',
-                  text: 'An error occurred while blocking the brand.',
-                });
-              }
-            }
-          });
-        }
-
-        async function confirmDeleteBrand(brandId) {
-          // Show SweetAlert confirmation
-          Swal.fire({
-            title: 'Are you sure?',
-            text: 'You are about to remove this brand. This action cannot be undone.',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
-            confirmButtonText: 'Yes',
-            cancelButtonText: 'Cancel',
-          }).then(async (result) => {
-            if (result.isConfirmed) {
-              try {
-                // Send a request to block the brand
-                const response = await fetch(`/admin/deleteBrand?id=${brandId}`, {
-                  method: 'GET', // or 'GET', depending on your backend route
-                });
-              
-                const result = await response.json(); // Parse the JSON response
-              
-                if (result.status) {
-                  // Show success SweetAlert
-                  Swal.fire({
-                    icon: 'success',
-                    title: 'Success',
-                    text: result.message, // Display the message from the backend
-                  }).then(()=>{
-                    window.location.href = "/admin/brands"
-                  });
-                } else {
-                  // Show error SweetAlert
-                  Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: result.message, // Display the error message from the backend
-                  });
-                }
-              } catch (error) {
-                console.error('Error deleting brand:', error);
-                Swal.fire({
-                  icon: 'error',
-                  title: 'Error',
-                  text: 'An error occurred while deleting the brand.',
-                });
-              }
-            }
-          });
-        }
-
+        
 
     </script>
 

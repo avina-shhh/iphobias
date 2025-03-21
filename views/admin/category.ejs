@@ -388,7 +388,7 @@
                               </td>
                               <td>
                                 <%if(category.isListed===true){%>
-                                  <a href="/admin/unlistCategory?id=<%=category._id%>" class="btn btn-outline-danger" style="width: 85px;">Unlist</a>
+                                  <a href="#" onclick="confirmUnlistCategory('<%=category._id%>')" class="btn btn-outline-danger" style="width: 85px;">Unlist</a>
                                 <%}else{%>
                                   <a href="/admin/listCategory?id=<%=category._id%>" class="btn btn-outline-success" style="width: 85px;">List</a>
                                 <%}%>
@@ -595,43 +595,107 @@
       }
 
       async function removeOffer(id){
-        try {
-          const response = await fetch("/admin/removeOffer",{
-              method:"POST",
-              headers:{
-                'content-type':'application/json'
-              },
-              body:JSON.stringify({
-                categoryId:id
-              }),
-            });
 
-            const data = await response.json();
-            if(response.ok && data.status === true){
-              Swal.fire(
-                "Offer Removed",
-                "The offer has been removed successfully",
-                "success"
-              ).then(()=>{
-                location.reload();
-              })
-            }else{
-              Swal.fire(
-                "Failed",
-                data.message || "Removing offer failed",
-                "error"
-              )
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'You are about to Remove this Offer. This action cannot be undone.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'Cancel',
+          }).then(async (result)=>{
+            if(result.isConfirmed){
+              try {
+                const response = await fetch("/admin/removeOffer",{
+                    method:"POST",
+                    headers:{
+                      'content-type':'application/json'
+                    },
+                    body:JSON.stringify({
+                      categoryId:id
+                    }),
+                  });
+                
+                  const data = await response.json();
+                  if(response.ok && data.status === true){
+                    Swal.fire(
+                      "Offer Removed",
+                      "The offer has been removed successfully",
+                      "success"
+                    ).then(()=>{
+                      location.reload();
+                    })
+                  }else{
+                    Swal.fire(
+                      "Failed",
+                      data.message || "Removing offer failed",
+                      "error"
+                    )
+                  }
+                
+              } catch (error) {
+                Swal.fire(
+                    "Error",
+                    "An error occured while removing offer",
+                    "error"
+                  );
+                  console.error("Error while removing offer",error)
+              }
             }
-
-        } catch (error) {
-          Swal.fire(
-              "Error",
-              "An error occured while removing offer",
-              "error"
-            );
-            console.error("Error while removing offer",error)
-        }
+          })
       }
+
+      async function confirmUnlistCategory(UserId) {
+          // Show SweetAlert confirmation
+          Swal.fire({
+            title: 'Are you sure?',
+            text: 'You are about to Unlist this Category.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'Cancel',
+          }).then(async (result) => {
+            if (result.isConfirmed) {
+              try {
+                // Send a request to block the brand
+                const response = await fetch(`/admin/unlistCategory?id=${UserId}`, {
+                  method: 'GET', // or 'GET', depending on your backend route
+                });
+              
+                const result = await response.json(); // Parse the JSON response
+              
+                if (result.status) {
+                  // Show success SweetAlert
+                  Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: result.message, // Display the message from the backend
+                  }).then(()=>{
+                    location.reload();
+                  });
+                } else {
+                  // Show error SweetAlert
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: result.message, // Display the error message from the backend
+                  });
+                }
+              } catch (error) {
+                console.log('Error Unlisting category:', error);
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Error',
+                  text: 'An error occurred while Unlisting the category.',
+                });
+              }
+            }
+          });
+        }
 
 
     </script>

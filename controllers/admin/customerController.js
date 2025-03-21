@@ -50,20 +50,30 @@ const customerInfo = async (req,res)=>{
 const blockCustomer = async(req,res)=>{
     try {
         let id = req.query.id
-        await User.updateOne({_id:id},{$set:{isBlocked:true}});
-        res.redirect('/admin/users')
+        const found = await User.updateOne({_id:id},{$set:{isBlocked:true}});
+        if(found){
+            res.status(200).json({status:true,message:"User successfully Blocked"});
+        }else{
+            res.status(404).json({status:false,message:"User not found"});
+        }
     } catch (error) {
-        res.redirect('pagerror')
+        console.error("Error in blockCustomer",error)
+        res.status(500).json({status:false,message:"Internal server error"});
     }
 }
 
 const unblockCustomer = async(req,res)=>{
     try {
         let id = req.query.id
-        await User.updateOne({_id:id},{$set:{isBlocked:false}});
-        res.redirect('/admin/users')
+        const found = await User.updateOne({_id:id},{$set:{isBlocked:false}});
+        if(found){
+            res.status(200).json({status:true,message:"User successfully UnBlocked"});
+        }else{
+            res.status(404).json({status:false,message:"User not found"});
+        }
     } catch (error) {
-        res.redirect('pagerror')
+        console.error("Error in blockCustomer",error)
+        res.status(500).json({status:false,message:"Internal server error"});
     }
 }
 
