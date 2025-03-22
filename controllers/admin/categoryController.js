@@ -36,7 +36,8 @@ const categoryInfo = async(req,res)=>{
             data : categoryData,
             totalPages : totalPages,
             currentPage : page,
-            totalCategories : totalCategory
+            totalCategories : totalCategory,
+            search:search
         })
 
     } catch (error) {
@@ -192,6 +193,22 @@ const postEditCategory = async (req, res) => {
     }
   };
 
+  const deleteCategory = async(req,res)=>{
+    try {
+        let id = req.params.id
+        const found = await Category.deleteOne({_id:id});
+        if(found){
+            res.status(200).json({status:true,message:"Category successfully Removed"});
+        }else{
+            res.status(400).json({status:false,message:"Category not found"});
+        }
+    } catch (error) {
+        console.error("Error in deleteCategory",error)
+        res.status(500).json({status:false,message:"Internal server error"})
+    }
+}
+
+
 module.exports = {
     categoryInfo,
     addCategory,
@@ -200,5 +217,6 @@ module.exports = {
     getList,
     getUnlist,
     editCategory,
-    postEditCategory
+    postEditCategory,
+    deleteCategory
 }

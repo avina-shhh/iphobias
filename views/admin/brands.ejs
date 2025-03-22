@@ -156,7 +156,7 @@
             </a>
           </li>
           <li class="nav-item menu-items">
-            <a class="nav-link" href="admin-assets/pages/icons/mdi.html">
+            <a class="nav-link" href="/admin/addProducts">
               <span class="menu-icon">
                 <i class="mdi mdi-contacts"></i>
               </span>
@@ -343,7 +343,7 @@
                     <ul class="navbar-nav w-100">
                       <li class="nav-item w-100">
                         <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search" style="display: flex; width: 100%;" action="/admin/brands" method="get">
-                          <input type="text" class="form-control" placeholder="Search Brand" style="flex: 1; margin-right: 8px;" name="search">
+                          <input type="text" class="form-control" placeholder="Search Brand" style="flex: 1; margin-right: 8px;" name="search" value="<%=(search) ? search : ''%>">
                           <button type="submit" class="btn btn-primary">
                             <i class="mdi mdi-magnify"></i>
                           </button>
@@ -389,7 +389,7 @@
                                         <a href="/admin/editBrand?id=<%=brand._id%>" class="btn btn-outline-info">Edit</a>
                                     </td>
                                     <td>
-                                      <a href="#" onclick="confirmDeleteBrand('<%=brand._id%>')" class="btn btn-outline-danger">Delete</a>
+                                      <a href="#" onclick="confirmDeleteBrand('<%=brand._id%>')" class="btn btn-outline-danger">Remove</a>
                                     </td>
                                 </tr>
                             <%})%>

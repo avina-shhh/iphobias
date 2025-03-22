@@ -46,13 +46,9 @@ const login = async(req,res)=>{
 
 const loadDashboard = async(req,res)=>{
     try {
-        if(req.session.admin){
-            res.render('dashboard');
-        }else{
-            res.redirect('/admin/login')
-        }
+        res.render('dashboard');
     } catch (error) {
-        res.redirect('/pagerror')
+        res.redirect('/pagerror');
     }
 }
 

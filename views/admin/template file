@@ -84,7 +84,7 @@
             </a>
           </li>
           <li class="nav-item menu-items">
-            <a class="nav-link" href="admin-assets/pages/tables/basic-table.html">
+            <a class="nav-link" href="/admin/category">
               <span class="menu-icon">
                 <i class="mdi mdi-table-large"></i>
               </span>
@@ -92,7 +92,7 @@
             </a>
           </li>
           <li class="nav-item menu-items">
-            <a class="nav-link" href="admin-assets/pages/charts/chartjs.html">
+            <a class="nav-link" href="/admin/brands">
               <span class="menu-icon">
                 <i class="mdi mdi-chart-bar"></i>
               </span>
@@ -100,7 +100,7 @@
             </a>
           </li>
           <li class="nav-item menu-items">
-            <a class="nav-link" href="admin-assets/pages/icons/mdi.html">
+            <a class="nav-link" href="/admin/addProducts">
               <span class="menu-icon">
                 <i class="mdi mdi-contacts"></i>
               </span>

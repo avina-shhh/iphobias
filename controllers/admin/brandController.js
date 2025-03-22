@@ -26,7 +26,8 @@ const loadBrand = async(req,res)=>{
             data:brandData,
             currentPage:page,
             totalPages:totalPages,
-            totalBrands:totalBrands
+            totalBrands:totalBrands,
+            search:search
         })
 
     }catch(error){
@@ -136,7 +137,7 @@ const deleteBrand = async(req,res)=>{
         if(found){
             res.status(200).json({status:true,message:"Brand successfully Removed"});
         }else{
-            res.status(400).json({status:true,message:"Brand not found"});
+            res.status(400).json({status:false,message:"Brand not found"});
         }
     } catch (error) {
         console.error("Error in deleteBrand",error)

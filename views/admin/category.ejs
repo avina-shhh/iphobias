@@ -71,6 +71,13 @@
           text-align: center !important;
           margin-bottom: 10px !important;
       }   
+      td.description-cell {
+        max-width: 100px; /* Adjust this value as needed */
+        white-space: normal; /* Allow text to wrap */
+        word-wrap: break-word; /* Break long words if necessary */
+        padding: 8px; /* Add padding for better spacing */
+        text-align: center; /* Align text to the left */
+      }
     </style>
   </head>
   <body>
@@ -156,7 +163,7 @@
             </a>
           </li>
           <li class="nav-item menu-items">
-            <a class="nav-link" href="admin-assets/pages/icons/mdi.html">
+            <a class="nav-link" href="/admin/addProducts">
               <span class="menu-icon">
                 <i class="mdi mdi-contacts"></i>
               </span>
@@ -338,7 +345,7 @@
                     <ul class="navbar-nav w-100">
                       <li class="nav-item w-100">
                         <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search" style="display: flex; width: 100%;" action="/admin/category" method="get">
-                          <input type="text" class="form-control" placeholder="Search Category" style="flex: 1; margin-right: 8px;" name="search">
+                          <input type="text" class="form-control" placeholder="Search Category" style="flex: 1; margin-right: 8px;" name="search" value="<%=(search) ? search : ''%>">
                           <button type="submit" class="btn btn-primary">
                             <i class="mdi mdi-magnify"></i>
                           </button>
@@ -358,13 +365,14 @@
                             <th>Status</th>
                             <th>List/Unlist</th>
                             <th>Edit</th>
+                            <th>Remove</th>
                           </tr>
                         </thead>
                         <tbody style="color: #fff; text-align: center;">
                           <%data.forEach((category,index)=>{%>
                             <tr>
                               <td><%=category.name%></td>
-                              <td><%=category.description%></td>
+                              <td class="description-cell"><%=category.description%></td>
                               <td>
                                 <%if(category.categoryOffer){%>
                                   <%=category.categoryOffer%>%  
@@ -395,6 +403,9 @@
                               </td>
                               <td>
                                 <a href="/admin/editCategory?id=<%=category._id%>" class="btn btn-outline-info">Edit</a>
+                              </td>
+                              <td>
+                                <a href="#" onclick="confirmDeleteCategory('<%=category._id%>')" class="btn btn-outline-danger">Remove</a>
                               </td>
                             </tr>
                           <%})%>
@@ -696,6 +707,57 @@
             }
           });
         }
+
+        async function confirmDeleteCategory(brandId) {
+          // Show SweetAlert confirmation
+          Swal.fire({
+            title: 'Are you sure?',
+            text: 'You are about to remove this Category. This action cannot be undone.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'Cancel',
+          }).then(async (result) => {
+            if (result.isConfirmed) {
+              try {
+                // Send a request to block the brand
+                const response = await fetch(`/admin/deleteCategory/${brandId}`, {
+                  method: 'GET', // or 'GET', depending on your backend route
+                });
+              
+                const result = await response.json(); // Parse the JSON response
+              
+                if (result.status) {
+                  // Show success SweetAlert
+                  Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: result.message, // Display the message from the backend
+                  }).then(()=>{
+                    window.location.href = "/admin/category"
+                  });
+                } else {
+                  // Show error SweetAlert
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: result.message, // Display the error message from the backend
+                  });
+                }
+              } catch (error) {
+                console.error('Error deleting category:', error);
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Error',
+                  text: 'An error occurred while deleting the category.',
+                });
+              }
+            }
+          });
+        }
+
 
 
     </script>
