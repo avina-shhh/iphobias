@@ -22,5 +22,6 @@ const loadAddProduct = async(req,res)=>{
 
 
 module.exports = {
-    loadAddProduct
+    loadAddProduct,
+    
 }

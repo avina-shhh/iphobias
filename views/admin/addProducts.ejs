@@ -16,6 +16,26 @@
     <link rel="stylesheet" href="/admin-assets/assets/css/style.css">
     <!-- Mini Icon -->
     <link rel="shortcut icon" href="/admin-assets/assets/images/favicon.png" />
+
+    <!-- Cropper.js CSS -->
+    <link  href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet">
+
+    <style>
+      .image-preview img {
+        max-width: 100%; /* Ensure the image fits within the container */
+        height: auto; /* Maintain aspect ratio */
+        display: block; /* Remove extra space below the image */
+      }
+      .img-container {
+  max-width: 100%;
+  margin-bottom: 10px;
+  text-align: center;
+}
+#imageToCrop {
+  max-width: 100%;
+}
+    </style>
+
   </head>
   <body>
     <div class="container-scroller">
@@ -243,64 +263,169 @@
 
          <!-- Content Started -->
         <div class="main-panel">
-            <div class="content-wrapper">
-                <div class="page-header">
-                  <h3 class="page-title"> Add Product</h3>
-                </div>
-                <div class="row">
-                  
-                  
-                  <div class="col-12 grid-margin stretch-card">
-                    <div class="card">
-                      <div class="card-body">
-                        <h4 class="card-title">Add Product</h4>
-                        <p class="card-description"> Enter the details</p>
-                        <form class="forms-sample">
-                          <div class="form-group">
-                            <label for="exampleInputName1">Name</label>
-                            <input type="text" class="form-control" id="exampleInputName1" placeholder="Name">
+          <div class="content-wrapper">
+            <div class="page-header">
+              <h3 class="page-title"> Add Product</h3>
+            </div>
+            <div class="row">
+              <div class="col-12 grid-margin stretch-card">
+                <div class="card">
+                  <div class="card-body">
+                    <h4 class="card-title">Add New Product</h4>
+                    <p class="card-description"> Enter the details</p>
+                    <form class="forms-sample" method="post" action="/admin/addProducts" enctype="multipart/form-data" onsubmit="validateForm()">
+                      <div class="form-group">
+                        <label for="exampleInputName1">Name</label>
+                        <input type="text" class="form-control" id="exampleInputName1" placeholder="Name" name="productName">
+                      </div>
+                      
+                      <div class="form-group">
+                        <label for="exampleSelectGender">Brand</label>
+                        <select class="form-control" id="exampleSelectGender" name="brand">
+                          <%for(let i=0;i<brand.length;i++){%>
+                            <option value="<%=brand[i].brandName%>">
+                              <%=brand[i].brandName%>
+                            </option>
+                          <%}%>
+                        </select>
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleTextarea1">Description</label>
+                        <textarea class="form-control" id="exampleTextarea1" rows="5" placeholder="Type here" id="descriptionid"></textarea>
+                      </div>
+                      
+                      <!-- Current Price -->
+                      <div class="form-group row">
+                        <!-- Current Price -->
+                        <div class="col-md-3 mb-3">
+                          <label for="regularPrice">Regular Price</label>
+                          <div class="input-group">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text">$</span> <!-- Dollar sign -->
+                            </div>
+                            <input type="number" class="form-control" id="regularPrice" placeholder="Regular Price" oninput="validateNumber(this)" name="regularPrice">
                           </div>
-                          <div class="form-group">
-                            <label for="exampleInputEmail3">Email address</label>
-                            <input type="email" class="form-control" id="exampleInputEmail3" placeholder="Email">
+                        </div>
+                      
+                        <!-- Sale Price -->
+                        <div class="col-md-3 mb-3">
+                          <label for="salePrice">Sale Price</label>
+                          <div class="input-group">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text">$</span> <!-- Dollar sign -->
+                            </div>
+                            <input type="number" class="form-control" id="salePrice" placeholder="Sale Price" oninput="validateNumber(this)" name="salePrice">
                           </div>
-                          <div class="form-group">
-                            <label for="exampleInputPassword4">Password</label>
-                            <input type="password" class="form-control" id="exampleInputPassword4" placeholder="Password">
-                          </div>
-                          <div class="form-group">
-                            <label for="exampleSelectGender">Gender</label>
-                            <select class="form-control" id="exampleSelectGender">
-                              <option>Male</option>
-                              <option>Female</option>
-                            </select>
-                          </div>
-                          <div class="form-group">
-                            <label>File upload</label>
-                            <input type="file" name="img[]" class="file-upload-default">
-                            <div class="input-group col-xs-12">
-                              <input type="text" class="form-control file-upload-info" disabled="" placeholder="Upload Image">
+                        </div>
+                      
+                        <!-- Quantity -->
+                        <div class="col-md-3 mb-3">
+                          <label for="quantity">Quantity</label>
+                          <input type="number" class="form-control" id="quantity" placeholder="Quantity" name="quantity ">
+                        </div>
+                      
+                        <!-- Color -->
+                        <div class="col-md-3 mb-3">
+                          <label for="color">Color</label>
+                          <input type="text" class="form-control" id="color" placeholder="Color" name="color">
+                        </div>
+                      </div>
+                      
+                      
+                      <div class="form-group">
+                        <label for="exampleSelectGender">Category</label>
+                        <select class="form-control" id="exampleSelectGender" name="category">
+                          <%for(let i=0;i<category.length;i++){%>
+                            <option value="<%=category[i].name%>">
+                              <%=category[i].name%>
+                            </option>
+                          <%}%>
+                        </select>
+                      </div>
+                      <div class="form-group">
+                        <label>Choose Images</label>
+                        <div class="row" id="imageUploadContainer">
+                          <!-- Initial 4 upload fields -->
+                          <div class="col-md-6 mb-3">
+                            <div class="input-group">
+                              <input class="form-control file-upload-info" placeholder="Upload Image" type="text" disabled>
+                              <input class="form-control file-upload-info" type="file" name="image" style="display: none;">
                               <span class="input-group-append">
                                 <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
                               </span>
                             </div>
+                            <div class="image-preview mt-2" style="width: 100%;"></div> <!-- Image preview container -->
                           </div>
-                          <div class="form-group">
-                            <label for="exampleInputCity1">City</label>
-                            <input type="text" class="form-control" id="exampleInputCity1" placeholder="Location">
+                          <div class="col-md-6 mb-3">
+                            <div class="input-group">
+                              <input class="form-control file-upload-info" placeholder="Upload Image" type="text" disabled>
+                              <input class="form-control file-upload-info" type="file" name="image" style="display: none;">
+                              <span class="input-group-append">
+                                <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                              </span>
+                            </div>
+                            <div class="image-preview mt-2" style="width: 100%;"></div> <!-- Image preview container -->
                           </div>
-                          <div class="form-group">
-                            <label for="exampleTextarea1">Textarea</label>
-                            <textarea class="form-control" id="exampleTextarea1" rows="4"></textarea>
+                          <div class="col-md-6 mb-3">
+                            <div class="input-group">
+                              <input class="form-control file-upload-info" placeholder="Upload Image" type="text" disabled>
+                              <input class="form-control file-upload-info" type="file" name="image" style="display: none;">
+                              <span class="input-group-append">
+                                <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                              </span>
+                            </div>
+                            <div class="image-preview mt-2" style="width: 100%;"></div> <!-- Image preview container -->
                           </div>
-                          <button type="submit" class="btn btn-primary mr-2">Submit</button>
-                          <button class="btn btn-dark">Cancel</button>
-                        </form>
+                          <div class="col-md-6 mb-3">
+                            <div class="input-group">
+                              <input class="form-control file-upload-info" placeholder="Upload Image" type="text" disabled>
+                              <input class="form-control file-upload-info" type="file" name="image" style="display: none;">
+                              <span class="input-group-append">
+                                <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                              </span>
+                            </div>
+                            <div class="image-preview mt-2" style="width: 100%;"></div> <!-- Image preview container -->
+                          </div>
+                        </div>
+                      
+                        <!-- Add More Images Button -->
+                        <div class="text-center mt-3">
+                          <button type="button" class="btn btn-secondary" id="addMoreImagesBtn">Add More Images</button>
+                        </div>
+                      
+                        <div id="logo-error" class="error-message" style="color: rgb(235, 54, 54); font-size: small;"></div>
+
+                        <!-- Cropper Modal -->
+                        <div class="modal fade" id="cropperModal" tabindex="-1" role="dialog" aria-labelledby="cropperModalLabel" aria-hidden="true">
+                          <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="cropperModalLabel">Crop Image</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                              <div class="modal-body">
+                                <div class="img-container">
+                                  <img id="imageToCrop" src="" alt="Image to Crop">
+                                </div>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-primary" id="cropImageBtn">Crop</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                       </div>
-                    </div>
+                      <button type="submit" class="btn btn-primary mr-2" onclick="validateAndSubmit()">Submit</button>
+                      <a class="btn btn-dark" onclick="location.reload()">Cancel</a>
+                    </form>
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
 
           <footer class="footer">
             <div class="d-sm-flex justify-content-center justify-content-sm-between">
@@ -313,7 +438,7 @@
       </div>
       <!-- Container Body Ends -->
     </div>
-
+  
     <!-- Jquery & Bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
@@ -332,6 +457,210 @@
     <script src="/admin-assets/assets/js/hoverable-collapse.js"></script>
     <script src="/admin-assets/assets/js/settings.js"></script>
     <script src="/admin-assets/assets/js/todolist.js"></script>
+
+    <!-- Cropper.js JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+
+    <script>
+      function validateNumber(input) {
+        // Remove any non-numeric characters (e.g., letters, symbols)
+        let value = input.value.replace(/[^0-9]/g, '');
+
+        // Remove leading zeros (e.g., "00123" becomes "123")
+        value = value.replace(/^0+/, '');
+
+        // If the value is empty after removing leading zeros, set it to "0"
+        if (value === '') {
+          value = '0';
+        }
+      
+        // Prevent more than one leading zero (e.g., "00" becomes "0")
+        if (value.startsWith('00')) {
+          value = '0';
+        }
+      
+        // Update the input value
+        input.value = value;
+      }
+    
+      let cropper;
+      let currentInput;
+
+      function handleFileInputChange(input) {
+        const file = input.files[0];
+        currentInput = input;
+      
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            const imageToCrop = document.getElementById('imageToCrop');
+            imageToCrop.src = e.target.result;
+            $('#cropperModal').modal('show');
+          };
+          reader.readAsDataURL(file);
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', function () {
+        const container = document.getElementById('imageUploadContainer');
+        const addMoreImagesBtn = document.getElementById('addMoreImagesBtn');
+      
+        container.addEventListener('click', function (event) {
+          if (event.target.classList.contains('file-upload-browse')) {
+            triggerFileInput(event.target);
+          }
+        });
+      
+        container.addEventListener('change', function (event) {
+          if (event.target.type === 'file') {
+            handleFileInputChange(event.target);
+          }
+        });
+      
+        addMoreImagesBtn.addEventListener('click', addMoreImages);
+      
+        $('#cropperModal').on('shown.bs.modal', function () {
+          const imageToCrop = document.getElementById('imageToCrop');
+          cropper = new Cropper(imageToCrop, {
+            aspectRatio: 1,
+            viewMode: 1,
+          });
+        }).on('hidden.bs.modal', function () {
+          cropper.destroy();
+          cropper = null;
+        });
+      
+        document.getElementById('cropImageBtn').addEventListener('click', function () {
+          const canvas = cropper.getCroppedCanvas();
+          const previewContainer = currentInput.closest('.col-md-6').querySelector('.image-preview');
+          canvas.toBlob(function (blob) {
+            const url = URL.createObjectURL(blob);
+            previewContainer.innerHTML = `<img src="${url}" class="img-fluid">`;
+            const displayInput = currentInput.closest('.input-group').querySelector('input[type="text"][disabled]');
+            displayInput.value = currentInput.files[0].name;
+            currentInput.files = new FileListItems([new File([blob], currentInput.files[0].name)]);
+            $('#cropperModal').modal('hide');
+          });
+        });
+      });
+
+      function triggerFileInput(button) {
+        const fileInput = button.closest('.input-group').querySelector('input[type="file"]');
+        fileInput.click();
+      }
+
+      function addMoreImages() {
+        const container = document.getElementById('imageUploadContainer');
+        const newField = `
+          <div class="col-md-6 mb-3">
+            <div class="input-group">
+              <input class="form-control file-upload-info" placeholder="Upload Image" type="text" disabled>
+              <input class="form-control file-upload-info" type="file" name="image" style="display: none;">
+              <span class="input-group-append">
+                <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+              </span>
+            </div>
+            <div class="image-preview mt-2" style="width: 100%;"></div> <!-- Image preview container -->
+          </div>
+        `;
+        container.insertAdjacentHTML('beforeend', newField);
+      }
+
+      // Helper function to create a FileList from an array of files
+      function FileListItems(files) {
+        const b = new ClipboardEvent("").clipboardData || new DataTransfer();
+        for (let i = 0, len = files.length; i < len; i++) b.items.add(files[i]);
+        return b.files;
+      }
+
+      function validateAndSubmit(){
+        if(validateForm){
+          document.forms[0].submit()
+        }
+      }
+
+      function validateForm() {
+        clearErrorMessages();
+        const name = document.getElementsByName('productName')[0].value;
+        const description = document.getElementById('descriptionid').value;
+        const brand = document.getElementsByName('brand')[0].value;
+        const price = document.getElementsByName('regularPrice')[0].value;
+        const saleprice = document.getElementsByName('salePrice')[0].value;
+        const color = document.getElementsByName('color')[0].value;
+        const category = document.getElementsByName('category')[0].value;
+        const images = document.getElementById('input1')
+        const quantity=document.getElementsByName('quantity')
+        let isValid = true
+        if (name.trim() === "") {
+          displayErrorMessage('productName-error', 'Please enter a product name.');
+          isValid = false;
+        } else if (!/^[a-zA-Z\s]+$/.test(name.trim())) {
+          displayErrorMessage('productName-error', 'Product name should contain only alphabetic characters.');
+          isValid = false;
+        }
+            
+        if (description.trim() === "") {
+          displayErrorMessage('description-error', 'Please enter a product description.');
+          isValid = false;
+        } else if (!/^[a-zA-Z\s]+$/.test(description.trim())) {
+          displayErrorMessage('description-error', 'Product description should contain only alphabetic characters.');
+          isValid = false;
+        }
+
+        if ( parseInt(quantity) < 0) {
+            displayErrorMessage('quantity-error', 'Please enter a valid non-negative quantity.');
+            isValid = false;
+        }
+        
+        if (!/^\d+(\.\d{1,2})?$/.test(price) || parseFloat(price) < 0) {
+            displayErrorMessage('regularPrice-error', 'Please enter a valid non-negative price.');
+            isValid = false;
+        }
+  
+        if (!/^\d+(\.\d{1,2})?$/.test(saleprice) || parseFloat(saleprice) < 0) {
+            displayErrorMessage('salePrice-error', 'Please enter a valid non-negative price.');
+            isValid = false;
+        }
+        
+        if (parseFloat(price) <= parseFloat(saleprice)) {
+          displayErrorMessage('regularPrice-error', 'Regular price must be greater than sale price.');
+          isValid = false;
+        }
+  
+  
+        if (color.trim() === "") {
+            displayErrorMessage('color-error', 'Please enter a color.');
+            isValid = false;
+        }
+  
+  
+        if (images.files.length === 0) {
+            displayErrorMessage("images-error",'Please select an image.');
+            isValid = false;
+        }
+        
+        return isValid;
+      }
+
+
+      function displayErrorMessage(elementId, message) {
+        var errorElement = document.getElementById(elementId);
+        errorElement.innerText = message;
+        errorElement.style.display = "block";
+      }
+  
+  
+      function clearErrorMessages() {
+        const errorElements = document.getElementsByClassName('error-message');
+        Array.from(errorElements).forEach(element => {
+            element.innerText = '';
+        });
+        const errorMessage = document.getElementById('errorMessage');
+      }
+
+
+
+    </script>
     
   </body>
 </html>
