@@ -10,4 +10,16 @@ const storage = multer.diskStorage({
     }
 })
 
-module.exports = storage;
+const product = multer.diskStorage({
+    destination:(req,file,cb)=>{
+        cb(null,path.join(__dirname,"../public/uploads/productImg"))
+    },
+    filename:(req,file,cb)=>{
+        cb(null,Date.now()+"-"+file.originalname);
+    }
+})
+
+module.exports = {
+    storage,
+    product
+};

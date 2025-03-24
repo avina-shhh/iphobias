@@ -19,9 +19,34 @@ const loadAddProduct = async(req,res)=>{
     }
 }
 
+const postAddProduct = async(req,res)=>{
+    try {
+        const { productName, description, brand, category, regularPrice, salePrice, quantity, color } = req.body;
+        const productImages = req.files.map(file => file.filename);
+
+        const newProduct = new Product({
+            productName,
+            description,
+            brand,
+            category,
+            regularPrice,
+            salePrice,
+            quantity,
+            color,
+            productImage: productImages
+        });
+
+        await newProduct.save();
+        res.status(200).json({status:true,message:"Product Added Successfully"})
+         // Redirect to the products page after successful addition
+    } catch (error) {
+        res.redirect('/admin/pageerror');
+    }
+
+}
 
 
 module.exports = {
     loadAddProduct,
-    
+    postAddProduct
 }

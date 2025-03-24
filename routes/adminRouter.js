@@ -9,7 +9,8 @@ const productController = require('../controllers/admin/productController')
 const {userAuth,adminAuth} = require('../middlewares/auth');
 const multer = require("multer");
 const storage = require("../helpers/multer");
-const uploads = multer({storage:storage})
+const brandUploads = multer({storage:storage.storage})
+const productUploads = multer({storage:storage.product})
 
 
 router.get('/pagerror',adminController.pageError)
@@ -45,10 +46,11 @@ router.get("/editBrand",adminAuth,brandController.getEdit);
 router.get('/blockBrand',adminAuth,brandController.blockBrand);
 router.get('/unblockBrand',adminAuth,brandController.unblockBrand);
 router.get('/deleteBrand',adminAuth,brandController.deleteBrand)
-router.post("/addBrand",adminAuth,uploads.single("image"),brandController.addBrand);
-router.post('/editBrand/:id',adminAuth,uploads.single("image"),brandController.postEditBrand)
+router.post("/addBrand",adminAuth,brandUploads.single("image"),brandController.addBrand);
+router.post('/editBrand/:id',adminAuth,brandUploads.single("image"),brandController.postEditBrand)
 
 // Products Management
 router.get('/addProducts',adminAuth,productController.loadAddProduct)
+router.post('/addProducts',adminAuth,productUploads.array('images',10),productController.postAddProduct)
 
 module.exports = router;
