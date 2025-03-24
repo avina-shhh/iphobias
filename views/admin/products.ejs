@@ -130,7 +130,7 @@
               <span class="menu-title">Dashboard</span>
             </a>
           </li>
-          <li class="nav-item menu-items active">
+          <li class="nav-item menu-items">
             <a class="nav-link" href="/admin/users">
               <span class="menu-icon">
                 <i class="mdi mdi-account-multiple"></i>
@@ -162,7 +162,7 @@
               <span class="menu-title">Add Product</span>
             </a>
           </li>
-          <li class="nav-item menu-items">
+          <li class="nav-item menu-items active">
             <a class="nav-link" href="/admin/products">
               <span class="menu-icon">
                 <i class="mdi mdi-file-document-box"></i>
@@ -301,19 +301,19 @@
           <!-- Content wrapper Started -->
           <div class="content-wrapper">
             <div class="page-header">
-              <h3 class="page-title"> Customers </h3>
+              <h3 class="page-title"> Products </h3>
               
             </div>
             <div class="row">
               <div class="col-lg-12 grid-margin stretch-card">
                 <div class="card">
                   <div class="card-body">
-                    <h4 class="card-title">Customer Details</h4>
+                    <h4 class="card-title">Products Details</h4>
 
                     <ul class="navbar-nav w-100">
                       <li class="nav-item w-100">
-                        <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search" style="display: flex; width: 100%;" action="/admin/users" method="get">
-                          <input type="text" class="form-control" placeholder="Search users" style="flex: 1; margin-right: 8px;" name="search" value="<%=(search) ? search : ''%>">
+                        <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search" style="display: flex; width: 100%;" action="/admin/products" method="get">
+                          <input type="text" class="form-control" placeholder="Search products" style="flex: 1; margin-right: 8px;" name="search" >
                           <button type="submit" class="btn btn-primary">
                             <i class="mdi mdi-magnify"></i>
                           </button>
@@ -327,25 +327,43 @@
                         <thead style= "text-align: center;">
                           <tr>
                             <th>Name</th>
-                            <th>E-mail</th>
-                            <th>Phone no.</th>
+                            <th>Brand</th>
+                            <th>Category</th>
+                            <th>Sale Price</th>
+                            <th>Offer Price</th>
+                            <th>Offer</th>
+                            <th>Quantity</th>
                             <th>Action</th>
+                            <th>Edit</th>
                           </tr>
                         </thead>
                         <tbody style="color: #fff; text-align: center;">
                           <%for(let i=0;i<data.length;i++){%>
-                            <tr>
-                              <td><%=data[i].name%></td>
-                              <td><%=data[i].email%></td>
-                              <td><%=(data[i].phone) ? data[i].phone : "NIL"%></td>
-                              <td>
-                                <%if(data[i].isBlocked===false){%>
-                                  <a href="#" onclick="confirmBlockCustomer('<%=data[i]._id%>')" class="btn btn-outline-danger" style="width: 85px;">Block</a>
-                                <%}else{%>
-                                  <a href="#" onclick="confirmUnBlockCustomer('<%=data[i]._id%>')" class="btn btn-outline-success" style="width: 85px;">Unblock</a>
-                                <%}%>
-                              </td>
-                            </tr>
+                          <tr>
+                            <td><%=data[i].productName%></td>
+                            <td><%=data[i].brand%></td>
+                            <td><%=data[i].category.name%></td>
+                            <td><%=data[i].salePrice%></td>
+                            <td><%=data[i].offerPrice%></td>
+                            <td>
+                              <%if(data[i].offerPrice===0){%>
+                                <a href="/admin/unblockBrand?id=<%=brand._id%>"  class="btn btn-outline-success" style="width: 85px;">Add</a>
+                              <%}else{%>
+                                <a href="#" onclick="confirmBlockBrand('<%=brand._id%>')" class="btn btn-outline-danger" style="width: 85px;">Remove </a>
+                              <%}%>    
+                            </td>
+                            <td><%=data[i].quantity%></td>
+                            <td>
+                              <%if(!data[i].isBlocked){%>
+                                <a href="#" onclick="confirmBlockBrand('<%=brand._id%>')" class="btn btn-outline-danger" style="width: 85px;">Block</a>
+                              <%}else{%>
+                                <a href="/admin/unblockBrand?id=<%=brand._id%>"  class="btn btn-outline-success" style="width: 85px;">Unblock</a>
+                              <%}%>
+                            </td>
+                            <td>
+                              <a href="/admin/editBrand?id=<%=brand._id%>" class="btn btn-outline-info">Edit</a>
+                            </td>
+                          </tr>
                           <%}%>
                         </tbody>
                       </table>

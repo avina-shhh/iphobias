@@ -50,7 +50,9 @@ router.post("/addBrand",adminAuth,brandUploads.single("image"),brandController.a
 router.post('/editBrand/:id',adminAuth,brandUploads.single("image"),brandController.postEditBrand)
 
 // Products Management
-router.get('/addProducts',adminAuth,productController.loadAddProduct)
-router.post('/addProducts',adminAuth,productUploads.array('images',10),productController.postAddProduct)
+router.get('/addProducts',adminAuth,productController.loadAddProduct);
+router.post('/addProducts',adminAuth,productUploads.array('images',10),productController.postAddProduct);
+router.get('/products',adminAuth,productController.getProducts);
+
 
 module.exports = router;

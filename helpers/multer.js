@@ -12,7 +12,7 @@ const storage = multer.diskStorage({
 
 const product = multer.diskStorage({
     destination:(req,file,cb)=>{
-        cb(null,path.join(__dirname,"../public/uploads/productImg"))
+        cb(null,path.join(__dirname,"../public/uploads/temp"))
     },
     filename:(req,file,cb)=>{
         cb(null,Date.now()+"-"+file.originalname);
