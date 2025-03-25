@@ -96,7 +96,8 @@ const getProducts = async(req,res)=>{
                 currentPage:page,
                 totalPages:Math.ceil(count/limit),
                 category:category,
-                brand:brand
+                brand:brand,
+                search:search
             })
         }else{
             res.redirect('/admin/pagerror')
@@ -107,8 +108,82 @@ const getProducts = async(req,res)=>{
 }
 
 
+const addOffer = async(req,res)=>{
+    try {
+        const percentage = parseInt(req.body.percentage);
+        const productId = req.body.productId;
+        const productFind = await Product.findById(productId);
+        const categoryFind = await Category.findById(productFind.category);
+        const offerPrice = Math.floor(productFind.regularPrice*(percentage/100));
+        
+        if(categoryFind.categoryOffer>percentage){
+            return res.json({status:false,message:"This Product's Category already have an Offer"})
+        }
+
+        productFind.salePrice -= offerPrice
+        productFind.offerPrice = offerPrice;
+        await productFind.save();
+        categoryFind.categoryOffer = 0;
+        await categoryFind.save();
+
+        res.json({status:true});
+    } catch (error) {
+        console.error("Error in addOffer in Product:",error)
+        res.status(500).json({status:false,message:"Internal Server Error"});
+    }
+}
+
+const removeOffer = async(req,res)=>{
+    try {
+        const productId = req.body.productId;
+        const productFind = await Product.findById(productId);
+        productFind.salePrice += productFind.offerPrice;
+        productFind.offerPrice = 0;
+        await productFind.save();
+
+        res.json({status:true});
+    } catch (error) {
+        console.error("Error in removeOffer in Product:",error)
+        res.status(500).json({status:false,message:"Internal Server Error"});
+    }
+}
+
+const blockProduct = async(req,res)=>{
+    try {
+        let id = req.query.id
+        const found = await Product.updateOne({_id:id},{$set:{isBlocked:true}});
+        if(found){
+            res.status(200).json({status:true,message:"Product successfully Blocked"});
+        }else{
+            res.status(400).json({status:false,message:"Product not found"});
+        }
+    } catch (error) {
+        console.error("Error in blockProduct",error)
+        res.status(500).json({status:false,message:"Internal server error"})
+    }
+}
+
+const unblockProduct = async(req,res)=>{
+    try {
+        let id = req.query.id
+        const found = await Product.updateOne({_id:id},{$set:{isBlocked:false}});
+        if(found){
+            res.redirect('/admin/products')
+        }else{
+            res.redirect('/admin/pagerror')
+        }
+    } catch (error) {
+        console.error("Error in unblockProduct",error)
+        res.status(500).json({status:false,message:"Internal server error"})
+    }
+}
+
 module.exports = {
     loadAddProduct,
     postAddProduct,
-    getProducts
+    getProducts,
+    addOffer,
+    removeOffer,
+    blockProduct,
+    unblockProduct
 }

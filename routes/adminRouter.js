@@ -53,6 +53,11 @@ router.post('/editBrand/:id',adminAuth,brandUploads.single("image"),brandControl
 router.get('/addProducts',adminAuth,productController.loadAddProduct);
 router.post('/addProducts',adminAuth,productUploads.array('images',10),productController.postAddProduct);
 router.get('/products',adminAuth,productController.getProducts);
+router.post('/addProductOffer',adminAuth,productController.addOffer)
+router.post('/removeProductOffer',adminAuth,productController.removeOffer);
+router.get('/blockProduct',adminAuth,productController.blockProduct);
+router.get('/unblockProduct',adminAuth,productController.unblockProduct);
+
 
 
 module.exports = router;

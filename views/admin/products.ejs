@@ -313,7 +313,7 @@
                     <ul class="navbar-nav w-100">
                       <li class="nav-item w-100">
                         <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search" style="display: flex; width: 100%;" action="/admin/products" method="get">
-                          <input type="text" class="form-control" placeholder="Search products" style="flex: 1; margin-right: 8px;" name="search" >
+                          <input type="text" class="form-control" placeholder="Search products" style="flex: 1; margin-right: 8px;" name="search" value="<%=search ? search : ''%>" >
                           <button type="submit" class="btn btn-primary">
                             <i class="mdi mdi-magnify"></i>
                           </button>
@@ -347,17 +347,17 @@
                             <td><%=data[i].offerPrice%></td>
                             <td>
                               <%if(data[i].offerPrice===0){%>
-                                <a href="/admin/unblockBrand?id=<%=brand._id%>"  class="btn btn-outline-success" style="width: 85px;">Add</a>
+                                <a href="#"  class="btn btn-outline-info" style="width: 85px;" onclick="addOffer('<%=data[i]._id%>')">Add</a>
                               <%}else{%>
-                                <a href="#" onclick="confirmBlockBrand('<%=brand._id%>')" class="btn btn-outline-danger" style="width: 85px;">Remove </a>
+                                <a href="#" class="btn btn-info" style="width: 85px;" onclick="removeOffer('<%=data[i]._id%>')">Remove </a>
                               <%}%>    
                             </td>
                             <td><%=data[i].quantity%></td>
                             <td>
                               <%if(!data[i].isBlocked){%>
-                                <a href="#" onclick="confirmBlockBrand('<%=brand._id%>')" class="btn btn-outline-danger" style="width: 85px;">Block</a>
+                                <a href="#" onclick="confirmBlockProduct('<%=data[i]._id%>')" class="btn btn-outline-danger" style="width: 85px;">Block</a>
                               <%}else{%>
-                                <a href="/admin/unblockBrand?id=<%=brand._id%>"  class="btn btn-outline-success" style="width: 85px;">Unblock</a>
+                                <a href="/admin/unblockProduct?id=<%=data[i]._id%>"  class="btn btn-outline-success" style="width: 85px;">Unblock</a>
                               <%}%>
                             </td>
                             <td>
@@ -474,11 +474,118 @@
           });
         }
 
-        async function confirmUnBlockCustomer(UserId) {
+
+        async function addOffer(id){
+          const {value:amount} = await Swal.fire({
+            title:"Offer in Percentage",
+            input:"number",
+            inputLabel:"Percentage",
+            inputPlaceholder:"%",
+          })
+
+
+          if(amount){
+            try {
+              const response = await fetch("/admin/addProductOffer",{
+                method:"POST",
+                headers:{
+                  'content-type':'application/json'
+                },
+                body:JSON.stringify({
+                  percentage:amount,
+                  productId:id
+                }),
+              });
+
+              const data = await response.json();
+
+              if(response.ok && data.status === true){
+                Swal.fire(
+                  "Offer Added",
+                  "The offer has been added successfully",
+                  "success"
+                ).then(()=>{
+                  location.reload();
+                })
+              }else{
+                Swal.fire(
+                  "Failed",
+                  data.message || "Adding offer failed",
+                  "error"
+                )
+              }
+
+            } catch (error) {
+              Swal.fire(
+                "Error",
+                "An error occured while adding offer",
+                "error"
+              );
+              console.error("Error while adding offer",error)
+            }
+          }
+        }
+
+        async function removeOffer(id){
+
+          Swal.fire({
+            title: 'Are you sure?',
+            text: 'You are about to Remove this Offer. This action cannot be undone.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'Cancel',
+            timer:5000,
+            timerProgressBar:true
+          }).then(async (result)=>{
+            if(result.isConfirmed){
+              try {
+                const response = await fetch("/admin/removeProductOffer",{
+                    method:"POST",
+                    headers:{
+                      'content-type':'application/json'
+                    },
+                    body:JSON.stringify({
+                      productId:id
+                    }),
+                  });
+                
+                  const data = await response.json();
+                  if(response.ok && data.status === true){
+                    Swal.fire(
+                      "Offer Removed",
+                      "The offer has been removed successfully",
+                      "success"
+                    ).then(()=>{
+                      location.reload();
+                    })
+                  }else{
+                    Swal.fire(
+                      "Failed",
+                      data.message || "Removing offer failed",
+                      "error"
+                    )
+                  }
+                
+              } catch (error) {
+                Swal.fire(
+                    "Error",
+                    "An error occured while removing offer",
+                    "error"
+                  );
+                  console.error("Error while removing offer",error)
+              }
+            }
+          })
+        }
+
+        async function confirmBlockProduct(id) {
           // Show SweetAlert confirmation
           Swal.fire({
             title: 'Are you sure?',
-            text: 'You are about to Unblock this customer. This action cannot be undone.',
+            text: 'You are about to block this Product.',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#d33',
@@ -489,7 +596,7 @@
             if (result.isConfirmed) {
               try {
                 // Send a request to block the brand
-                const response = await fetch(`/admin/unblockCustomer?id=${UserId}`, {
+                const response = await fetch(`/admin/blockProduct?id=${id}`, {
                   method: 'GET', // or 'GET', depending on your backend route
                 });
               
@@ -502,7 +609,7 @@
                     title: 'Success',
                     text: result.message, // Display the message from the backend
                   }).then(()=>{
-                    window.location.href = "/admin/users"
+                    window.location.href = "/admin/products"
                   });
                 } else {
                   // Show error SweetAlert
@@ -513,16 +620,17 @@
                   });
                 }
               } catch (error) {
-                console.log('Error Unblocking customer:', error);
+                console.error('Error blocking brand:', error);
                 Swal.fire({
                   icon: 'error',
                   title: 'Error',
-                  text: 'An error occurred while Unblocking the customer.',
+                  text: 'An error occurred while blocking the brand.',
                 });
               }
             }
           });
         }
+
 
     </script>
 
