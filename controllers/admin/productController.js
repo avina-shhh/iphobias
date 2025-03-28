@@ -178,6 +178,74 @@ const unblockProduct = async(req,res)=>{
     }
 }
 
+const editProduct = async (req,res)=>{
+    try {
+        const id = req.query.id;
+        const product = await Product.findOne({_id:id});
+        const category = await Category.find();
+        const brand = await Brand.find();
+        res.render('editProduct',{
+            product,
+            category,
+            brand
+        })
+    } catch (error) {
+        console.error("Error in editProduct",error);
+        res.redirect('/admin/pagerror');
+    }
+}
+
+const postEditProduct = async(req,res)=>{
+    try {
+        const id = req.params.id;
+        const data = req.body;
+        const existingProduct = await Product.findOne({
+            productName:data.productName,
+            _id:{$ne:id}
+        }) 
+
+        if(existingProduct){
+            return res.status(400).json({status:false,message:"Product with this name already exists, Please try again with other name"})
+        }
+
+        const existingImages = req.files.existingImages ? req.files.existingImages.map(file => file.filename) : [];
+        const newImages = req.files.images ? req.files.images.map(file => file.filename) : [];
+        const productImages = [...existingImages, ...newImages];
+
+        // Update product details
+        const updateProduct = await Product.findByIdAndUpdate(id, {
+            productName: data.productName,
+            brand: data.brand,
+            description: data.description,
+            regularPrice: data.regularPrice,
+            salePrice: data.salePrice,
+            quantity: data.quantity,
+            color: data.color,
+            category: data.category,
+            productImage: productImages
+        }, { new: true });
+
+        // Move new images from temp to final directory
+        const tempDir = path.join(__dirname, '../../public/uploads/temp');
+        const finalDir = path.join(__dirname, '../../public/uploads/productImg');
+        if (!fs.existsSync(finalDir)) {
+            fs.mkdirSync(finalDir, { recursive: true });
+        }
+
+        newImages.forEach(image => {
+            const tempPath = path.join(tempDir, image);
+            const finalPath = path.join(finalDir, image);
+            fs.renameSync(tempPath, finalPath);
+        });
+
+        res.status(200).json({ status: true, message: "Updated successfully" });
+
+    } catch (error) {
+        console.error("Error in postEditProduct ",error);
+        res.redirect('/admin/pagerror')
+    }
+}
+
 module.exports = {
     loadAddProduct,
     postAddProduct,
@@ -185,5 +253,7 @@ module.exports = {
     addOffer,
     removeOffer,
     blockProduct,
-    unblockProduct
+    unblockProduct,
+    editProduct,
+    postEditProduct
 }

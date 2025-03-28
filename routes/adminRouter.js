@@ -11,6 +11,10 @@ const multer = require("multer");
 const storage = require("../helpers/multer");
 const brandUploads = multer({storage:storage.storage})
 const productUploads = multer({storage:storage.product})
+const productEditUploads = multer({ storage: storage.product }).fields([
+    { name: 'images', maxCount: 10 },
+    { name: 'existingImages', maxCount: 10 }
+]);
 
 
 router.get('/pagerror',adminController.pageError)
@@ -57,6 +61,8 @@ router.post('/addProductOffer',adminAuth,productController.addOffer)
 router.post('/removeProductOffer',adminAuth,productController.removeOffer);
 router.get('/blockProduct',adminAuth,productController.blockProduct);
 router.get('/unblockProduct',adminAuth,productController.unblockProduct);
+router.get('/editProduct',adminAuth,productController.editProduct);
+router.post('/editProduct/:id', adminAuth, productEditUploads, productController.postEditProduct);
 
 
 
