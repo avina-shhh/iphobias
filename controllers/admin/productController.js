@@ -195,24 +195,51 @@ const editProduct = async (req,res)=>{
     }
 }
 
-const postEditProduct = async(req,res)=>{
+const postEditProduct = async (req, res) => {
     try {
         const id = req.params.id;
         const data = req.body;
-        const existingProduct = await Product.findOne({
-            productName:data.productName,
-            _id:{$ne:id}
-        }) 
 
-        if(existingProduct){
-            return res.status(400).json({status:false,message:"Product with this name already exists, Please try again with other name"})
+        const existingProduct = await Product.findOne({
+            productName: data.productName,
+            _id: { $ne: id }
+        });
+
+        if (existingProduct) {
+            return res.status(400).json({ status: false, message: "Product with this name already exists. Please try again with another name." });
         }
 
-        const existingImages = req.files.existingImages ? req.files.existingImages.map(file => file.filename) : [];
-        const newImages = req.files.images ? req.files.images.map(file => file.filename) : [];
-        const productImages = [...existingImages, ...newImages];
+        // Get the existing images from the request
+        const existingImages = JSON.parse(data.existingImages) || [];
+        const newImages = req.files && req.files.images ? req.files.images.map(file => file.filename) : [];
+        const replaceIndexes = JSON.parse(data.replaceIndexes) || [];
 
-        // Update product details
+        // Create a copy of existing images
+        let productImages = [...existingImages];
+
+        // Replace only the specified images
+        replaceIndexes.forEach((replaceIndex, index) => {
+            const newImage = newImages[index]; // Ensure it's valid
+
+            if (replaceIndex >= 0 && newImage) {
+                const oldImagePath = path.join(__dirname, '../../public/uploads/productImg', productImages[replaceIndex]);
+
+                // Ensure old image exists before trying to delete
+                if (productImages[replaceIndex] && fs.existsSync(oldImagePath)) {
+                    fs.unlinkSync(oldImagePath);
+                }
+
+                productImages[replaceIndex] = newImage; // Replace only if there's a valid new image
+            }
+        });
+
+        // Handle additional new images (not replacements)
+        const remainingNewImages = newImages.slice(replaceIndexes.length).filter(Boolean); // Remove undefined/null values
+
+        // Append additional images at the end safely
+        productImages.push(...remainingNewImages);
+
+        // Update product with the corrected images array
         const updateProduct = await Product.findByIdAndUpdate(id, {
             productName: data.productName,
             brand: data.brand,
@@ -225,26 +252,82 @@ const postEditProduct = async(req,res)=>{
             productImage: productImages
         }, { new: true });
 
-        // Move new images from temp to final directory
+        // Move new images from temp to final directory safely
         const tempDir = path.join(__dirname, '../../public/uploads/temp');
         const finalDir = path.join(__dirname, '../../public/uploads/productImg');
         if (!fs.existsSync(finalDir)) {
             fs.mkdirSync(finalDir, { recursive: true });
         }
 
-        newImages.forEach(image => {
+        // Ensure we only move valid images
+        newImages.filter(Boolean).forEach(image => {
             const tempPath = path.join(tempDir, image);
             const finalPath = path.join(finalDir, image);
-            fs.renameSync(tempPath, finalPath);
+
+            if (fs.existsSync(tempPath)) { // Ensure file exists before renaming
+                fs.renameSync(tempPath, finalPath);
+            }
         });
 
         res.status(200).json({ status: true, message: "Updated successfully" });
 
     } catch (error) {
-        console.error("Error in postEditProduct ",error);
-        res.redirect('/admin/pagerror')
+        console.error("Error in postEditProduct ", error);
+        res.status(500).json({ status: false, message: "Failed to update product" });
+    }
+};
+
+const deleteSinglePic = async(req,res)=>{
+    try {
+        const { imageName } = req.body;
+        const imagePath = path.join(__dirname, '../../public/uploads/productImg', imageName);
+
+        // Remove the image file from the filesystem
+        if (fs.existsSync(imagePath)) {
+            fs.unlinkSync(imagePath);
+        }
+
+        // Remove the image reference from the database
+        await Product.updateMany(
+            { productImage: imageName },
+            { $pull: { productImage: imageName } }
+        );
+
+        res.status(200).json({ status: true, message: 'Image deleted successfully' }); 
+    } catch (error) {
+        console.error("Error in deleteSinglePic: ", error);
+        res.status(500).json({ status: false, message: 'Failed to delete image' });
     }
 }
+
+const removeProduct = async (req, res) => {
+    try {
+        const id = req.params.id;
+
+        // Find the product
+        const product = await Product.findById(id);
+
+        if (!product) {
+            return res.status(404).json({ status: false, message: "Product not found" });
+        }
+
+        // Delete images from the filesystem
+        product.productImage.forEach(image => {
+            const imagePath = path.join(__dirname, '../../public/uploads/productImg', image);
+            if (fs.existsSync(imagePath)) {
+                fs.unlinkSync(imagePath);
+            }
+        });
+
+        // Delete the product from the database
+        await Product.findByIdAndDelete(id);
+
+        res.status(200).json({ status: true, message: "Product removed successfully" });
+    } catch (error) {
+        console.error("Error in removeProduct: ", error);
+        res.status(500).json({ status: false, message: "Failed to remove product" });
+    }
+};
 
 module.exports = {
     loadAddProduct,
@@ -255,5 +338,7 @@ module.exports = {
     blockProduct,
     unblockProduct,
     editProduct,
-    postEditProduct
+    postEditProduct,
+    deleteSinglePic,
+    removeProduct
 }

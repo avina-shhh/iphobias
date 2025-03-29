@@ -311,7 +311,9 @@
                 <div class="col-12 grid-margin stretch-card">
                   <div class="card">
                     <div class="card-body">
-                      <h4 style="display: flex; justify-content: space-between;" class="card-title">Edit Product <a href="" class="btn btn-outline-danger">Remove</a></h4>
+                      <h4 style="display: flex; justify-content: space-between;" class="card-title">Edit Product 
+                        <a href="#" class="btn btn-outline-danger" id="removeProductBtn" data-id="<%= product._id %>">Remove</a>
+                      </h4>
                       <p class="card-description">Update the details</p>
                       <form class="forms-sample" method="post" action="/admin/editProduct/<%= product._id %>" enctype="multipart/form-data" onsubmit="return validateAndSubmitForm(event)">
                         <div class="form-group">
@@ -386,73 +388,77 @@
                         </div>
       
                         <div class="form-group">
-                            <label>Choose Images</label>
-                            <div class="row" id="imageUploadContainer">
-                              <!-- Check if there are no images in product.productImage -->
-                              <% if (product.productImage.length === 0) { %>
-                                <!-- Render 4 empty upload sections -->
-                                <% for (let i = 0; i < 4; i++) { %>
-                                  <div class="col-md-6 mb-3">
-                                    <div class="input-group">
-                                      <input class="form-control file-upload-info" placeholder="Upload Image" type="text" disabled>
-                                      <input class="form-control file-upload-info" type="file" name="images" style="display: none;" accept="image/*">
-                                      <span class="input-group-append">
-                                        <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
-                                      </span>
-                                    </div>
-                                    <div class="image-preview mt-2" style="width: 100%;"></div> <!-- Image preview container -->
+                          <label>Choose Images</label>
+                          <div class="row" id="imageUploadContainer">
+                            <!-- Check if there are no images in product.productImage -->
+                            <% if (product.productImage.length === 0) { %>
+                              <!-- Render 4 empty upload sections -->
+                              <% for (let i = 0; i < 4; i++) { %>
+                                <div class="col-md-6 mb-3">
+                                  <div class="input-group">
+                                    <input class="form-control file-upload-info" placeholder="Upload Image" type="text" disabled>
+                                    <input class="form-control file-upload-info" type="file" name="images" style="display: none;" accept="image/*">
+                                    <span class="input-group-append">
+                                      <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                                    </span>
                                   </div>
-                                <% } %>
-                              <% } else { %>
-                                <!-- Render existing images -->
-                                <% product.productImage.forEach((image, index) => { %>
-                                  <div class="col-md-6 mb-3">
-                                    <div class="input-group">
-                                      <input class="form-control file-upload-info" placeholder="Upload Image" type="text" disabled value="<%= image %>">
-                                      <input class="form-control file-upload-info" type="file" name="images" style="display: none;" accept="image/*">
-                                      <span class="input-group-append">
-                                        <button class="file-upload-browse btn btn-primary" type="button">Change</button>
-                                      </span>
-                                    </div>
-                                    <div class="image-preview mt-2" style="width: 100%;">
-                                      <img src="/uploads/productImg/<%= image %>" alt="Product Image <%= index + 1 %>">
-                                    </div> <!-- Image preview container -->
-                                  </div>
-                                <% }) %>
+                                  <div class="image-preview mt-2" style="width: 100%;"></div> <!-- Image preview container -->
+                                </div>
                               <% } %>
-                            </div>
-                          
-                            <!-- Add More Images Button -->
-                            <div class="text-center mt-3">
-                              <button type="button" class="btn btn-secondary" id="addMoreImagesBtn">Add More Images</button>
-                            </div>
-                          
-                            <div id="logo-error" class="error-message" style="color: rgb(235, 54, 54); font-size: small;"></div>
-                          
-                            <!-- Cropper Modal -->
-                            <div class="modal fade" id="cropperModal" tabindex="-1" role="dialog" aria-labelledby="cropperModalLabel" aria-hidden="true">
-                              <div class="modal-dialog modal-dialog-centered" role="document">
-                                <div class="modal-content">
-                                  <div class="modal-header">
-                                    <h5 class="modal-title" id="cropperModalLabel">Crop Image</h5>
-                                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                      <span aria-hidden="true">&times;</span>
-                                    </button>
+                            <% } else { %>
+                              <!-- Render existing images -->
+                              <% product.productImage.forEach((image, index) => { %>
+                                <div class="col-md-6 mb-3">
+                                  <div class="input-group">
+                                    <input class="form-control file-upload-info" placeholder="Upload Image" type="text" disabled value="<%= image %>">
+                                    <input class="form-control file-upload-info" type="file" name="images" style="display: none;" accept="image/*">
+                                    <input type="hidden" value="<%=image%>" class="existIMG">
+                                    <span class="input-group-append">
+                                      <button class="file-upload-browse btn btn-primary" type="button">Change</button>
+                                    </span>
+                                    <span class="input-group-append">
+                                      <button class="file-delete btn btn-danger" type="button" data-image="<%= image %>">Remove</button>
+                                    </span>
                                   </div>
-                                  <div class="modal-body">
-                                    <div class="img-container">
-                                      <img id="imageToCrop" src="" alt="Image to Crop">
-                                    </div>
+                                  <div class="image-preview mt-2" style="width: 100%;">
+                                    <img src="/uploads/productImg/<%= image %>" alt="Product Image <%= index + 1 %>">
+                                  </div> <!-- Image preview container -->
+                                </div>
+                              <% }) %>
+                            <% } %>
+                          </div>
+                        
+                          <!-- Add More Images Button -->
+                          <div class="text-center mt-3">
+                            <button type="button" class="btn btn-secondary" id="addMoreImagesBtn">Add More Images</button>
+                          </div>
+                        
+                          <div id="logo-error" class="error-message" style="color: rgb(235, 54, 54); font-size: small;"></div>
+                        
+                          <!-- Cropper Modal -->
+                          <div class="modal fade" id="cropperModal" tabindex="-1" role="dialog" aria-labelledby="cropperModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="cropperModalLabel">Crop Image</h5>
+                                  <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>
+                                <div class="modal-body">
+                                  <div class="img-container">
+                                    <img id="imageToCrop" src="" alt="Image to Crop">
                                   </div>
-                                  <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                    <button type="button" class="btn btn-primary" id="cropImageBtn">Crop</button>
-                                  </div>
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                  <button type="button" class="btn btn-primary" id="cropImageBtn">Crop</button>
                                 </div>
                               </div>
                             </div>
-                            <div id="images-error" class="error-message" style="color: rgb(235, 54, 54); font-size: small;"></div>
                           </div>
+                          <div id="images-error" class="error-message" style="color: rgb(235, 54, 54); font-size: small;"></div>
+                        </div>
       
                         <button type="submit" class="btn btn-primary mr-2">Submit</button>
                         <a class="btn btn-dark" href="/admin/products">Cancel</a>
@@ -499,280 +505,403 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
+      
+      let cropper;
+      let currentInput;
+      let croppedImages = [];
+      let replacedImages = new Map(); // Track replaced images and their original filenames
+      let existingImagesArray = []; // Store existing images from the database
+      let replaceIndexes = []; // Track indexes of replaced images
+      let deletedImages = []; // Track deleted images
 
-        let cropper;
-        let currentInput;
-        let croppedImages = [];
-        let replacedImages = new Set(); // Track replaced images
-            
-        // Function to validate numerical input
-        function validateNumber(input) {
-            let value = input.value.replace(/[^0-9]/g, '');
-            value = value.replace(/^0+/, '');
-            if (value === '') {
-                value = '0';
-            }
-            if (value.startsWith('00')) {
-                value = '0';
-            }
-            input.value = value;
-        }
+      // Function to validate numerical input
+      function validateNumber(input) {
+          let value = input.value.replace(/[^0-9]/g, '');
+          value = value.replace(/^0+/, '');
+          if (value === '') {
+              value = '0';
+          }
+          if (value.startsWith('00')) {
+              value = '0';
+          }
+          input.value = value;
+      }
+
+      // Function to handle file input change and initialize Cropper.js
+      function handleFileInputChange(input) {
+          const file = input.files[0];
+          currentInput = input;
+      
+          if (file) {
+              const reader = new FileReader();
+              reader.onload = function (e) {
+                  const imageToCrop = document.getElementById('imageToCrop');
+                  imageToCrop.src = e.target.result;
+                  $('#cropperModal').modal('show');
+              };
+              reader.readAsDataURL(file);
+          }
+      }
+
+      // Function to fetch image and convert to Blob
+      async function urlToBlob(url) {
+          const response = await fetch(url);
+          const blob = await response.blob();
+          return blob;
+      }
+
+      // Event listener for remove Product
+      document.addEventListener('DOMContentLoaded', function () {
+        const removeProductBtn = document.getElementById('removeProductBtn');
+
+        removeProductBtn.addEventListener('click', function () {
+            const productId = removeProductBtn.getAttribute('data-id');
         
-        // Function to handle file input change and initialize Cropper.js
-        function handleFileInputChange(input) {
-            const file = input.files[0];
-            currentInput = input;
-        
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    const imageToCrop = document.getElementById('imageToCrop');
-                    imageToCrop.src = e.target.result;
-                    $('#cropperModal').modal('show');
-                };
-                reader.readAsDataURL(file);
-            }
-        }
-        
-        // Function to fetch image and convert to Blob
-        async function urlToBlob(url) {
-            const response = await fetch(url);
-            const blob = await response.blob();
-            return blob;
-        }
-        
-        // Event listener for page load
-        document.addEventListener('DOMContentLoaded', function () {
-            const container = document.getElementById('imageUploadContainer');
-            const addMoreImagesBtn = document.getElementById('addMoreImagesBtn');
-        
-            container.addEventListener('click', function (event) {
-                if (event.target.classList.contains('file-upload-browse')) {
-                    triggerFileInput(event.target);
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Send AJAX request to remove the product
+                    fetch(`/admin/removeProduct/${productId}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    }).then(response => response.json())
+                      .then(result => {
+                          if (result.status) {
+                              Swal.fire(
+                                  'Removed!',
+                                  result.message,
+                                  'success'
+                              ).then(() => {
+                                  window.location.href = '/admin/products'; // Redirect after success
+                              });
+                          } else {
+                              Swal.fire(
+                                  'Error!',
+                                  result.message,
+                                  'error'
+                              );
+                          }
+                      }).catch(error => {
+                          Swal.fire(
+                              'Error!',
+                              'There was an error removing the product.',
+                              'error'
+                          );
+                      });
                 }
-            });
-        
-            container.addEventListener('change', function (event) {
-                if (event.target.type === 'file') {
-                    handleFileInputChange(event.target);
-                    // Mark the corresponding existing image as replaced
-                    const inputGroup = event.target.closest('.input-group');
-                    const imageName = inputGroup.querySelector('input[disabled]').value;
-                    if (imageName) {
-                        replacedImages.add(imageName); // Track the replaced image
-                    }
-                }
-            });
-        
-            addMoreImagesBtn.addEventListener('click', addMoreImages);
-        
-            $('#cropperModal').on('shown.bs.modal', function () {
-                const imageToCrop = document.getElementById('imageToCrop');
-                cropper = new Cropper(imageToCrop, {
-                    aspectRatio: 1,
-                    viewMode: 1,
-                });
-            }).on('hidden.bs.modal', function () {
-                cropper.destroy();
-                cropper = null;
-            });
-        
-            document.getElementById('cropImageBtn').addEventListener('click', function () {
-                const canvas = cropper.getCroppedCanvas();
-                const previewContainer = currentInput.closest('.col-md-6').querySelector('.image-preview');
-                canvas.toBlob(function (blob) {
-                    const url = URL.createObjectURL(blob);
-                    previewContainer.innerHTML = `<img src="${url}" class="img-fluid">`;
-                    const displayInput = currentInput.closest('.input-group').querySelector('input[type="text"][disabled]');
-                    displayInput.value = currentInput.files[0].name;
-                    croppedImages.push({ blob, fileName: currentInput.files[0].name });
-                    currentInput.value = ''; // Clear the original file input to prevent uploading the original file
-                    $('#cropperModal').modal('hide');
-                });
             });
         });
+    });
+
+      // Event listener for page load
+      document.addEventListener('DOMContentLoaded', function () {
+          const container = document.getElementById('imageUploadContainer');
+          const addMoreImagesBtn = document.getElementById('addMoreImagesBtn');
+      
+          // Initialize existing images array
+          const existingImagesElements = document.querySelectorAll('.existIMG');
+          existingImagesElements.forEach((img, index) => {
+              existingImagesArray.push({ filename: img.value, index: index, replaced: false });
+          });
         
-        // Function to trigger file input click
-        function triggerFileInput(button) {
-            const fileInput = button.closest('.input-group').querySelector('input[type="file"]');
-            fileInput.click();
-        }
+          container.addEventListener('click', function (event) {
+              if (event.target.classList.contains('file-upload-browse')) {
+                  triggerFileInput(event.target);
+              } else if (event.target.classList.contains('file-delete')) {
+                  handleFileDelete(event.target);
+              }
+          });
         
-        // Function to add more image upload fields
-        function addMoreImages() {
-            const container = document.getElementById('imageUploadContainer');
-            const newField = `
-                <div class="col-md-6 mb-3">
-                    <div class="input-group">
-                        <input class="form-control file-upload-info" placeholder="Upload Image" type="text" disabled>
-                        <input class="form-control file-upload-info" type="file" name="images" style="display: none;" accept="image/*">
-                        <span class="input-group-append">
-                            <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
-                        </span>
-                    </div>
-                    <div class="image-preview mt-2" style="width: 100%;"></div> <!-- Image preview container -->
-                </div>
-            `;
-            container.insertAdjacentHTML('beforeend', newField);
-        }
-        
-        // Function to validate the form before submission
-        function validateForm() {
-            clearErrorMessages();
-            const name = document.getElementsByName('productName')[0].value;
-            const description = document.getElementById('exampleTextarea1').value;
-            const brand = document.getElementsByName('brand')[0].value;
-            const price = document.getElementsByName('regularPrice')[0].value;
-            const saleprice = document.getElementsByName('salePrice')[0].value;
-            const color = document.getElementsByName('color')[0].value;
-            const category = document.getElementsByName('category')[0].value;
-            const quantity = document.getElementsByName('quantity')[0].value;
-            let existingImages = document.querySelectorAll('.image-preview img').length;
-            let isValid = true;
-        
-            if (name.trim() === "") {
-                displayErrorMessage('productName-error', 'Please enter a product name.');
-                isValid = false;
-            } else if (!/^[a-zA-Z\s]+$/.test(name.trim())) {
-                displayErrorMessage('productName-error', 'Product name should contain only alphabetic characters.');
-                isValid = false;
-            }
-                
-            if (description.trim() === "") {
-                displayErrorMessage('description-error', 'Please enter a product description.');
-                isValid = false;
-            } else if (!/^[a-zA-Z\s]+$/.test(description.trim())) {
-                displayErrorMessage('description-error', 'Product description should contain only alphabetic characters.');
-                isValid = false;
-            }
-        
-            if (quantity.trim() === "" || parseInt(quantity) < 0) {
-                displayErrorMessage('quantity-error', 'Please enter a valid non-negative quantity.');
-                isValid = false;
-            }
-            
-            if (!/^\d+(\.\d{1,2})?$/.test(price) || parseFloat(price) < 0) {
-                displayErrorMessage('regularPrice-error', 'Please enter a valid non-negative price.');
-                isValid = false;
-            }
-        
-            if (!/^\d+(\.\d{1,2})?$/.test(saleprice) || parseFloat(saleprice) < 0) {
-                displayErrorMessage('salePrice-error', 'Please enter a valid non-negative price.');
-                isValid = false;
-            }
-            
-            if (parseFloat(price) <= parseFloat(saleprice)) {
-                displayErrorMessage('regularPrice-error', 'Regular price must be greater than sale price.');
-                isValid = false;
-            }
-        
-            if (color.trim() === "") {
-                displayErrorMessage('color-error', 'Please enter a color.');
-                isValid = false;
-            }
-        
-            if (existingImages + croppedImages.length < 4) {
-                displayErrorMessage('images-error', 'Please select at least 4 images.');
-                isValid = false;
-            }
-        
-            return isValid;
-        }
-        
-        // Function to validate the form and submit it
-        async function validateAndSubmitForm(event) {
-            event.preventDefault();
-            if (validateForm()) {
-                const formData = new FormData(event.target);
-            
-                // Append existing images, excluding replaced ones
-                const existingImages = document.querySelectorAll('.image-preview img');
-                for (let i = 0; i < existingImages.length; i++) {
-                    const img = existingImages[i];
-                    const imageUrl = img.src;
-                    const fileName = img.src.split('/').pop();
-                    if (!replacedImages.has(fileName)) { // Only append if not replaced
-                        const blob = await urlToBlob(imageUrl);
-                        formData.append('existingImages', blob, fileName);
-                    }
-                }
-            
-                // Append new cropped images
-                croppedImages.forEach((image, index) => {
-                    formData.append('images', image.blob, `image${index + 1}.jpg`);
-                });
-            
-                try {
-                    const response = await fetch(event.target.action, {
-                        method: 'POST',
-                        body: formData,
-                    });
-                
-                    const result = await response.json();
-                    
-                    if (result.status) {
-                        // Show success SweetAlert
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Success',
-                            text: result.message,
-                            customClass: {
-                                container: 'swal2-container',
-                                popup: 'swal2-popup',
-                                title: 'swal2-title',
-                                confirmButton: 'swal2-confirm',
-                                cancelButton: 'swal2-cancel',
+          container.addEventListener('change', function (event) {
+              if (event.target.type === 'file') {
+                  handleFileInputChange(event.target);
+                  const inputGroup = event.target.closest('.input-group');
+                  const imageName = inputGroup.querySelector('input[type="text"][disabled]').value;
+                  if (imageName) {
+                      const index = existingImagesArray.findIndex(img => img.filename === imageName);
+                      if (index > -1) {
+                          replacedImages.set(imageName, { file: event.target.files[0], index: index }); // Track the replaced image
+                          replaceIndexes.push(index); // Track the index of the replaced image
+                          existingImagesArray[index].replaced = true; // Mark the image as replaced
+                      }
+                  }
+              }
+          });
+
+          addMoreImagesBtn.addEventListener('click', addMoreImages);
+
+          $('#cropperModal').on('shown.bs.modal', function () {
+              const imageToCrop = document.getElementById('imageToCrop');
+              cropper = new Cropper(imageToCrop, {
+                  aspectRatio: 1,
+                  viewMode: 1,
+              });
+          }).on('hidden.bs.modal', function () {
+              cropper.destroy();
+              cropper = null;
+          });
+
+          document.getElementById('cropImageBtn').addEventListener('click', function () {
+              const canvas = cropper.getCroppedCanvas();
+              const previewContainer = currentInput.closest('.col-md-6').querySelector('.image-preview');
+              canvas.toBlob(function (blob) {
+                  const url = URL.createObjectURL(blob);
+                  previewContainer.innerHTML = `<img src="${url}" class="img-fluid">`;
+                  const displayInput = currentInput.closest('.input-group').querySelector('input[type="text"][disabled]');
+                  displayInput.value = currentInput.files[0].name;
+                  const originalFile = replacedImages.get(currentInput.files[0].name);
+                  if (originalFile) {
+                      croppedImages.push({ blob, fileName: originalFile.file.name, index: originalFile.index });
+                  } else {
+                      croppedImages.push({ blob, fileName: currentInput.files[0].name });
+                  }
+                  currentInput.value = ''; // Clear the original file input to prevent uploading the original file
+                  $('#cropperModal').modal('hide');
+              });
+          });
+      });
+
+      // Function to trigger file input click
+      function triggerFileInput(button) {
+          const fileInput = button.closest('.input-group').querySelector('input[type="file"]');
+          fileInput.click();
+      }
+
+      // Function to handle file delete
+      function handleFileDelete(button) {
+          const imageName = button.getAttribute('data-image');
+          const imageElement = button.closest('.col-md-6');
+
+          Swal.fire({
+              title: 'Are you sure?',
+              text: "You won't be able to revert this!",
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Yes'
+          }).then((result) => {
+              if (result.isConfirmed) {
+                  // Send AJAX request to delete the image
+                  fetch('/admin/deleteSinglePic', {
+                      method: 'POST',
+                      headers: {
+                          'Content-Type': 'application/json'
+                      },
+                      body: JSON.stringify({ imageName })
+                  }).then(response => response.json())
+                    .then(result => {
+                        if (result.status) {
+                            Swal.fire(
+                                'Deleted!',
+                                result.message,
+                                'success'
+                            );
+                            // Remove the image element from the DOM
+                            imageElement.remove();
+                            // Remove the image from existingImagesArray
+                            const index = existingImagesArray.findIndex(img => img.filename === imageName);
+                            if (index > -1) {
+                                existingImagesArray.splice(index, 1);
                             }
-                        }).then(() => {
-                            window.location.href = '/admin/addProducts'; // Redirect after success
-                        });
-                    } else {
-                        // Show error SweetAlert
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error',
-                            text: 'Failed to upload images.',
-                            customClass: {
-                                container: 'swal2-container',
-                                popup: 'swal2-popup',
-                                title: 'swal2-title',
-                                confirmButton: 'swal2-confirm',
-                                cancelButton: 'swal2-cancel',
-                            }
-                        });
-                    }
-                } catch (error) {
-                    // Handle network errors
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: 'Failed to upload images.',
-                        customClass: {
-                            container: 'swal2-container',
-                            popup: 'swal2-popup',
-                            title: 'swal2-title',
-                            confirmButton: 'swal2-confirm',
-                            cancelButton: 'swal2-cancel',
+                        } else {
+                            Swal.fire(
+                                'Error!',
+                                result.message,
+                                'error'
+                            );
                         }
+                    }).catch(error => {
+                        Swal.fire(
+                            'Error!',
+                            'There was an error deleting your file.',
+                            'error'
+                        );
                     });
-                }
-            }
-        }
-        
-        // Function to display error messages
-        function displayErrorMessage(elementId, message) {
-            const errorElement = document.getElementById(elementId);
-            errorElement.innerText = message;
-            errorElement.style.display = "block";
-        }
-        
-        // Function to clear error messages
-        function clearErrorMessages() {
-            const errorElements = document.getElementsByClassName('error-message');
-            Array.from(errorElements).forEach(element => {
-                element.innerText = '';
-            });
-        }
+              }
+          });
+      }
+
+      // Function to add more image upload fields
+      function addMoreImages() {
+          const container = document.getElementById('imageUploadContainer');
+          const newField = `
+              <div class="col-md-6 mb-3">
+                  <div class="input-group">
+                      <input class="form-control file-upload-info" placeholder="Upload Image" type="text" disabled>
+                      <input class="form-control file-upload-info" type="file" name="images" style="display: none;" accept="image/*">
+                      <span class="input-group-append">
+                          <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                      </span>
+                  </div>
+                  <div class="image-preview mt-2" style="width: 100%;"></div> <!-- Image preview container -->
+              </div>
+          `;
+          container.insertAdjacentHTML('beforeend', newField);
+      }
+
+      // Function to validate the form before submission
+      function validateForm() {
+          clearErrorMessages();
+          const name = document.getElementsByName('productName')[0].value;
+          const description = document.getElementById('exampleTextarea1').value;
+          const brand = document.getElementsByName('brand')[0].value;
+          const price = document.getElementsByName('regularPrice')[0].value;
+          const saleprice = document.getElementsByName('salePrice')[0].value;
+          const color = document.getElementsByName('color')[0].value;
+          const category = document.getElementsByName('category')[0].value;
+          const quantity = document.getElementsByName('quantity')[0].value;
+          let isValid = true;
+
+          if (name.trim() === "") {
+              displayErrorMessage('productName-error', 'Please enter a product name.');
+              isValid = false;
+          } else if (!/^[a-zA-Z\s]+$/.test(name.trim())) {
+              displayErrorMessage('productName-error', 'Product name should contain only alphabetic characters.');
+              isValid = false;
+          }
+
+          if (description.trim() === "") {
+              displayErrorMessage('description-error', 'Please enter a product description.');
+              isValid = false;
+          } else if (!/^[a-zA-Z\s]+$/.test(description.trim())) {
+              displayErrorMessage('description-error', 'Product description should contain only alphabetic characters.');
+              isValid = false;
+          }
+
+          if (quantity.trim() === "" || parseInt(quantity) < 0) {
+              displayErrorMessage('quantity-error', 'Please enter a valid non-negative quantity.');
+              isValid = false;
+          }
+
+          if (!/^\d+(\.\d{1,2})?$/.test(price) || parseFloat(price) < 0) {
+              displayErrorMessage('regularPrice-error', 'Please enter a valid non-negative price.');
+              isValid = false;
+          }
+
+          if (!/^\d+(\.\d{1,2})?$/.test(saleprice) || parseFloat(saleprice) < 0) {
+              displayErrorMessage('salePrice-error', 'Please enter a valid non-negative price.');
+              isValid = false;
+          }
+
+          if (parseFloat(price) <= parseFloat(saleprice)) {
+              displayErrorMessage('regularPrice-error', 'Regular price must be greater than sale price.');
+              isValid = false;
+          }
+
+          if (color.trim() === "") {
+              displayErrorMessage('color-error', 'Please enter a color.');
+              isValid = false;
+          }
+
+          if (existingImagesArray.length + croppedImages.length < 1) {
+              displayErrorMessage('images-error', 'Please select at least 1 image.');
+              isValid = false;
+          }
+
+          return isValid;
+      }
+
+      // Function to validate the form and submit it
+      async function validateAndSubmitForm(event) {
+          event.preventDefault();
+          if (validateForm()) {
+              const formData = new FormData(event.target);
+
+              // Append existing images, including replaced ones
+              const updatedExistingImages = [];
+              existingImagesArray.forEach(image => {
+                  updatedExistingImages.push(image.filename);
+              });
+
+              formData.append('existingImages', JSON.stringify(updatedExistingImages));
+              formData.append('replaceIndexes', JSON.stringify(replaceIndexes));
+
+              // Append new cropped images
+              croppedImages.forEach(image => {
+                  formData.append('images', image.blob, image.fileName);
+              });
+
+              try {
+                  const response = await fetch(event.target.action, {
+                      method: 'POST',
+                      body: formData,
+                  });
+
+                  const result = await response.json();
+
+                  if (result.status) {
+                      // Show success SweetAlert
+                      Swal.fire({
+                          icon: 'success',
+                          title: 'Success',
+                          text: result.message,
+                          customClass: {
+                              container: 'swal2-container',
+                              popup: 'swal2-popup',
+                              title: 'swal2-title',
+                              confirmButton: 'swal2-confirm',
+                              cancelButton: 'swal2-cancel',
+                          }
+                      }).then(() => {
+                          window.location.href = '/admin/products'; // Redirect after success
+                      });
+                  } else {
+                      // Show error SweetAlert
+                      Swal.fire({
+                          icon: 'error',
+                          title: 'Error',
+                          text: 'Failed to upload images.',
+                          customClass: {
+                              container: 'swal2-container',
+                              popup: 'swal2-popup',
+                              title: 'swal2-title',
+                              confirmButton: 'swal2-confirm',
+                              cancelButton: 'swal2-cancel',
+                          }
+                      });
+                  }
+              } catch (error) {
+                  // Handle network errors
+                  Swal.fire({
+                      icon: 'error',
+                      title: 'Error',
+                      text: 'Failed to upload images.',
+                      customClass: {
+                          container: 'swal2-container',
+                          popup: 'swal2-popup',
+                          title: 'swal2-title',
+                          confirmButton: 'swal2-confirm',
+                          cancelButton: 'swal2-cancel',
+                      }
+                  });
+              }
+          }
+      }
+
+      // Function to display error messages
+      function displayErrorMessage(elementId, message) {
+          const errorElement = document.getElementById(elementId);
+          errorElement.innerText = message;
+          errorElement.style.display = "block";
+      }
+
+      // Function to clear error messages
+      function clearErrorMessages() {
+          const errorElements = document.getElementsByClassName('error-message');
+          Array.from(errorElements).forEach(element => {
+              element.innerText = '';
+          });
+      }
 
 
 

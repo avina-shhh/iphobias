@@ -63,7 +63,8 @@ router.get('/blockProduct',adminAuth,productController.blockProduct);
 router.get('/unblockProduct',adminAuth,productController.unblockProduct);
 router.get('/editProduct',adminAuth,productController.editProduct);
 router.post('/editProduct/:id', adminAuth, productEditUploads, productController.postEditProduct);
-
+router.post('/deleteSinglePic', adminAuth,productController.deleteSinglePic);
+router.delete('/removeProduct/:id', adminAuth, productController.removeProduct);
 
 
 module.exports = router;
