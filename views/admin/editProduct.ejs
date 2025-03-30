@@ -678,6 +678,16 @@
 
       // Function to handle file delete
       function handleFileDelete(button) {
+
+        if (existingImagesArray.length <= 1) {
+          Swal.fire(
+            'Error!',
+            'You must have at least one image left. You can try changing the image',
+            'error'
+          );
+          return;
+        }
+
           const imageName = button.getAttribute('data-image');
           const imageElement = button.closest('.col-md-6');
 
