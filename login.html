@@ -1010,48 +1010,38 @@ html {
                     </svg>
                 </div>
               </div>
-              <h1 class="itwVFE">Log in to iPhobias</h1>
+              <h1 class="itwVFE">Create Your iPhobias Account</h1>
               <ul class="ecQehz">
                 <li>
                   <a href="/auth/google">
-                    <button class="Button-sc-y0gtbx-0 gpklKx encore-text-body-medium-bold sc-liquwA fOTTpQ" >
+                    <button class="Button-sc-y0gtbx-0 gpklKx encore-text-body-medium-bold sc-liquwA fOTTpQ">
                       <span name="new-google-icon" class="sc-eTdEpr blvHhQ"></span>
-                      <span class="encore-text encore-text-body-medium-bold sc-iKTcqh sc-tOkKi sc-eJgwjL doOTMr ifVOsT gLIwsz" data-encore-id="text">Continue with Google</span>
+                      <span class="encore-text encore-text-body-medium-bold sc-iKTcqh sc-tOkKi sc-eJgwjL doOTMr ifVOsT gLIwsz" data-encore-id="text">Sign up with Google</span>
                     </button>
                   </a>
                 </li>
               </ul>
               <div class="separator gWxmho" style="border: 0;">or</div>
-              <div id="myLogin">
-                <form action="/login" method="POST" id="signinform">
+              <div id="mySignup">
+                <form action="/signup" method="POST" id="signinform">
                   <div class="gcMohz">
-                    <%if (typeof message !== 'undefined') { %>
-                        <div class="error-msg" style="display: block;"> <%= message %> </div>
-                    <%}%>
                     <div class="dONESo">
-                        <div class="bSfdyE">
-                            <div class="ebSvva encore-text-body-small-bold">
-                                <label for="login-email">
-                                    <span style="color: black;">E-mail</span>
-                                </label>
-                            </div>
-                            <input class="gVyyKq encore-text-body-medium" type="email" placeholder="Email address" name="email" id="email">
-                            <div class="error-msg" id="error1"></div>
+                      <div class="bSfdyE">
+                        <div class="ebSvva encore-text-body-small-bold">
+                          <label for="signup-emaail" >
+                            <span style="color: black;">E-mail</span>
+                          </label>
                         </div>
-                        <div class="bSfdyE">
-                            <div class="ebSvva encore-text-body-small-bold">
-                                <label for="login-password">
-                                    <span style="color: black;">Password</span>
-                                </label>
-                            </div>
-                            <input class="gVyyKq encore-text-body-medium" type="password" placeholder="Password" name="password" id="password">
-                            <div class="error-msg" id="error2"></div>
-                        </div>
+                        <input class="gVyyKq encore-text-body-medium" type="email" placeholder="Email address" name="email" id="email">
+                        <%if (typeof message !== 'undefined') { %>
+                          <div class="error-msg" style="margin-top: 0; display: block;"> <%= message %> </div>
+                        <%}%>
+                      </div>
                     </div>
                     <div class="leTZEG">
                       <button id="login-button" class="hFRjpO" style="width: 100%;" type="submit">
                         <span class="ButtonInner-sc-14ud5tc-0 hvvTXU">
-                          <span style="color: #fff;" class="encore-text-body-medium-bold" data-encore-id="text">Login</span>
+                          <span style="color: #fff;" class="encore-text-body-medium-bold" data-encore-id="text">Next</span>
                         </span>
                         <span class="gJnrqA"></span>
                       </button>
@@ -1059,18 +1049,11 @@ html {
                   </div>
                 </form>
               </div>
-              <div id="sign-up-section">
+              <div id="sign-up-section" class="sc-dorvvM ewqcub">
                 <h2 variant="bodyMedium" class="sc-cBYhjr kyvYle">
-                  <a href="#" id="sign-up-link" data-testid="signup-btn-link" class="Link-sc-k8gsk-0 cgOuFc sc-kTYLvb klSGTe" data-encore-id="textLink">
-                    <span class="encore-text encore-text-body-medium sc-dJDBYC ghuOx" data-encore-id="text">Forgot password?</span>
-                  </a>
-                </h2>
-              </div>
-              <div id="sign-up-section" data-testid="signup-section" class="sc-dorvvM ewqcub">
-                <h2 variant="bodyMedium" class="sc-cBYhjr kyvYle">
-                  <span class="encore-text encore-text-body-medium encore-internal-color-text-subdued" data-encore-id="text">Don't have an account?</span>
-                  <a href="/signup" id="sign-up-link" data-testid="signup-btn-link" class="Link-sc-k8gsk-0 cgOuFc sc-kTYLvb klSGTe" data-encore-id="textLink">
-                    <span class="encore-text encore-text-body-medium sc-dJDBYC ghuOx" data-encore-id="text">Sign up for iPhobias</span>
+                  <span class="encore-text encore-text-body-medium encore-internal-color-text-subdued" data-encore-id="text">Already have an account?</span>
+                  <a href="/login" id="sign-up-link" data-testid="signup-btn-link" class="Link-sc-k8gsk-0 cgOuFc sc-kTYLvb klSGTe" data-encore-id="textLink">
+                    <span class="encore-text encore-text-body-medium sc-dJDBYC ghuOx" data-encore-id="text">Log in here</span>
                   </a>
                 </h2>
               </div>

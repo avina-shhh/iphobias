@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="/public/css/otp.css" />
+    <!-- Boxicons CSS -->
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
     <style>
         body {
   background: #eee;
@@ -177,52 +180,6 @@ body {
   position: relative;
   transition-duration: 33ms;
   -webkit-tap-highlight-color: transparent;
-}
-
-.hvvTXU {
-  align-items: center;
-  background-color: var(--background-base, #1ed760);
-  color: var(--text-base, #000000);
-  display: flex;
-  font-size: inherit;
-  justify-content: center;
-  min-block-size: var(--encore-control-size-base, 48px);
-  padding-block-end: var(--encore-spacing-tighter-2, 8px);
-  padding-block-start: var(--encore-spacing-tighter-2, 8px);
-  padding-inline-end: var(--encore-spacing-looser-2, 32px);
-  padding-inline-start: var(--encore-spacing-looser-2, 32px);
-  transition: background-color, transform;
-}
-
-.hFRjpO {
-  align-self: center;
-  background-color: transparent;
-  border-style: initial;
-  border-width: 0;
-  cursor: pointer;
-  display: inline-block;
-  min-inline-size: 0;
-  padding: 0;
-  text-align: center;
-  text-decoration: none;
-  text-transform: none;
-  touch-action: manipulation;
-  transform: translate3d(0, 0, 0);
-  transition: background-color, border-color, color, box-shadow, filter, transform;
-  user-select: none;
-  vertical-align: middle;
-}
-
-.hFRjpO:focus {
-  outline: 0;
-}
-
-.hFRjpO:hover .ButtonFocus-sc-2hq6ey-0, .hFRjpO:hover .ButtonInner-sc-14ud5tc-0 {
-  transform: scale(1.04);
-}
-
-.hFRjpO:hover .ButtonInner-sc-14ud5tc-0 {
-  background-color: var(--background-highlight, #3be477);
 }
 
 .hFRjpO:active .ButtonInner-sc-14ud5tc-0 {
@@ -955,6 +912,28 @@ html {
   display: none;
  }
 
+ #otp-form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+ }
+ .input-field{
+    display: flex;
+    flex-direction: row;
+    column-gap: 10px;
+    align-items: center;
+    justify-content: center;
+ }
+ .input-field input{
+    height: 45px;
+    width: 42px;
+    border-radius: 6px;
+    outline: none;
+    font-size: 1.125rem;
+    text-align: center;
+    border: 1px solid #ddd;
+ }
 
     </style>
 </head>
@@ -1010,67 +989,43 @@ html {
                     </svg>
                 </div>
               </div>
-              <h1 class="itwVFE">Log in to iPhobias</h1>
-              <ul class="ecQehz">
-                <li>
-                  <a href="/auth/google">
-                    <button class="Button-sc-y0gtbx-0 gpklKx encore-text-body-medium-bold sc-liquwA fOTTpQ" >
-                      <span name="new-google-icon" class="sc-eTdEpr blvHhQ"></span>
-                      <span class="encore-text encore-text-body-medium-bold sc-iKTcqh sc-tOkKi sc-eJgwjL doOTMr ifVOsT gLIwsz" data-encore-id="text">Continue with Google</span>
-                    </button>
-                  </a>
-                </li>
-              </ul>
-              <div class="separator gWxmho" style="border: 0;">or</div>
-              <div id="myLogin">
-                <form action="/login" method="POST" id="signinform">
-                  <div class="gcMohz">
-                    <%if (typeof message !== 'undefined') { %>
-                        <div class="error-msg" style="display: block;"> <%= message %> </div>
-                    <%}%>
-                    <div class="dONESo">
-                        <div class="bSfdyE">
-                            <div class="ebSvva encore-text-body-small-bold">
-                                <label for="login-email">
-                                    <span style="color: black;">E-mail</span>
-                                </label>
-                            </div>
-                            <input class="gVyyKq encore-text-body-medium" type="email" placeholder="Email address" name="email" id="email">
-                            <div class="error-msg" id="error1"></div>
-                        </div>
-                        <div class="bSfdyE">
-                            <div class="ebSvva encore-text-body-small-bold">
-                                <label for="login-password">
-                                    <span style="color: black;">Password</span>
-                                </label>
-                            </div>
-                            <input class="gVyyKq encore-text-body-medium" type="password" placeholder="Password" name="password" id="password">
-                            <div class="error-msg" id="error2"></div>
-                        </div>
-                    </div>
-                    <div class="leTZEG">
-                      <button id="login-button" class="hFRjpO" style="width: 100%;" type="submit">
-                        <span class="ButtonInner-sc-14ud5tc-0 hvvTXU">
-                          <span style="color: #fff;" class="encore-text-body-medium-bold" data-encore-id="text">Login</span>
+              <h1 class="itwVFE">Create Your iPhobias Account</h1>
+              <form method="post" id="otp-form" onsubmit="return validateOTP()">
+                <div class="input-field">
+                  <input type="number" />
+                  <input type="number" disabled />
+                  <input type="number" disabled />
+                  <input type="number" disabled />
+                  <input type="number" disabled />
+                  <input type="number" disabled />
+        
+                  <input type="hidden" name="otp" id="otp" />
+                </div>
+                <p class="timer">Time remaining: <span id="countdown">01:00</span></p>
+                <div class="gcMohz">
+                    <div class="leTZEG" style="padding-bottom: 0;">
+                      <button id="verify-otp" class="hFRjpO verify" style="width: 100%;" type="submit">
+                        <span class="ButtonInner-sc-14ud5tc-0 hvvTXU verify">
+                          <span style="color: #fff;" class="encore-text-body-medium-bold" data-encore-id="text">Verify OTP</span>
                         </span>
                         <span class="gJnrqA"></span>
                       </button>
                     </div>
-                  </div>
-                </form>
-              </div>
-              <div id="sign-up-section">
+                    <div class="leTZEG">
+                        <button id="resend-otp" class="hFRjpO resend" style="width: 100%;" type="submit" disabled>
+                          <span class="ButtonInner-sc-14ud5tc-0 hvvTXU resend">
+                            <span style="color: #fff;" class="encore-text-body-medium-bold" data-encore-id="text">Resend OTP</span>
+                          </span>
+                          <span class="gJnrqA"></span>
+                        </button>
+                      </div>
+                  </div> 
+            </form> 
+              <div id="sign-up-section" class="sc-dorvvM ewqcub">
                 <h2 variant="bodyMedium" class="sc-cBYhjr kyvYle">
-                  <a href="#" id="sign-up-link" data-testid="signup-btn-link" class="Link-sc-k8gsk-0 cgOuFc sc-kTYLvb klSGTe" data-encore-id="textLink">
-                    <span class="encore-text encore-text-body-medium sc-dJDBYC ghuOx" data-encore-id="text">Forgot password?</span>
-                  </a>
-                </h2>
-              </div>
-              <div id="sign-up-section" data-testid="signup-section" class="sc-dorvvM ewqcub">
-                <h2 variant="bodyMedium" class="sc-cBYhjr kyvYle">
-                  <span class="encore-text encore-text-body-medium encore-internal-color-text-subdued" data-encore-id="text">Don't have an account?</span>
-                  <a href="/signup" id="sign-up-link" data-testid="signup-btn-link" class="Link-sc-k8gsk-0 cgOuFc sc-kTYLvb klSGTe" data-encore-id="textLink">
-                    <span class="encore-text encore-text-body-medium sc-dJDBYC ghuOx" data-encore-id="text">Sign up for iPhobias</span>
+                  <span class="encore-text encore-text-body-medium encore-internal-color-text-subdued" data-encore-id="text">Already have an account?</span>
+                  <a href="/login" id="sign-up-link" data-testid="signup-btn-link" class="Link-sc-k8gsk-0 cgOuFc sc-kTYLvb klSGTe" data-encore-id="textLink">
+                    <span class="encore-text encore-text-body-medium sc-dJDBYC ghuOx" data-encore-id="text">Log in here</span>
                   </a>
                 </h2>
               </div>
@@ -1101,67 +1056,175 @@ html {
     </div>
   
   
-  
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         
-        const signinform = document.getElementById("signinform")
-        const emailid = document.getElementById("email");
-        const passid = document.getElementById("password");
-        const error1 = document.getElementById("error1")
-        const error2 = document.getElementById("error2")
+        const inputs = document.querySelectorAll("input"),
+        verifyButton = document.querySelector("button"),
+        resendButton = document.getElementById("resend-otp"),
+        countdownElement = document.getElementById("countdown");
 
-        function emailValidate(e){
-            const emailval = emailid.value;
+        let timer;
+        let timeLeft = 60; // 1 minute in seconds
 
-            if(emailval.trim() === ""){
-                error1.style.display="block"
-                error1.innerHTML="*Please enter your email"
-                return false
-            }else{
-                error1.style.display="none"
-                error1.innerHTML=""
-                return true
+        // Function to start the countdown timer
+        function startTimer() {
+        timer = setInterval(() => {
+            timeLeft--;
+            countdownElement.textContent = `00:${timeLeft.toString().padStart(2, "0")}`;
+
+            if (timeLeft <= 0) {
+            clearInterval(timer);
+            countdownElement.textContent = "00:00";
+            resendButton.disabled = false;
+            resendButton.classList.add("active");
             }
+        }, 1000);
         }
 
-        function passValidate(e){
-            const passval = passid.value;
-
-            if(passval === ""){
-                error2.style.display="block"
-                error2.innerHTML="*Please enter your password"
-                return false
-            }else{
-                error2.style.display="none"
-                error2.innerHTML=""
-                return true
-            }
-            
+        // Function to reset the timer and OTP fields
+        function resetOTP() {
+        clearInterval(timer);
+        timeLeft = 60;
+        countdownElement.textContent = "01:00";
+        resendButton.disabled = true;
+        resendButton.classList.remove("active");
+        inputs.forEach((input) => {
+            input.value = "";
+            input.setAttribute("disabled", true);
+        });
+        inputs[0].removeAttribute("disabled");
+        inputs[0].focus();
+        startTimer();
         }
 
-        signinform.addEventListener("submit", (e) => {
-            // Run all validations
-            const isEmailValid = emailValidate();
-            const isPassValid = passValidate();
+        // Iterate over all inputs
+        inputs.forEach((input, index1) => {
+        input.addEventListener("keyup", (e) => {
+            const currentInput = input,
+            nextInput = input.nextElementSibling,
+            prevInput = input.previousElementSibling;
 
-            // If any validation fails, prevent form submission
-            if (!isEmailValid || !isPassValid) {
-                e.preventDefault(); // Stop form submission
+            // If the value has more than one character, clear it
+            if (currentInput.value.length > 1) {
+            currentInput.value = "";
+            return;
             }
+
+            // If the next input is disabled and the current value is not empty, enable the next input and focus on it
+            if (nextInput && nextInput.hasAttribute("disabled") && currentInput.value !== "") {
+            nextInput.removeAttribute("disabled");
+            nextInput.focus();
+            }
+
+            // If the backspace key is pressed
+            if (e.key === "Backspace") {
+            inputs.forEach((input, index2) => {
+                if (index1 <= index2 && prevInput) {
+                input.setAttribute("disabled", true);
+                input.value = "";
+                prevInput.focus();
+                }
+            });
+            }
+
+            // If the sixth input (index 5) is not empty and has no disabled attribute, enable the verify button
+            if (!inputs[5].disabled && inputs[5].value !== "") {
+            verifyButton.classList.add("active");
+            return;
+            }
+            verifyButton.classList.remove("active");
+        });
         });
 
-        
-        document.getElementById("myLogin").addEventListener("keydown", function(event) {
-            if (event.key === "Enter") {
-                let inputs = Array.from(document.querySelectorAll("input"));
-                let index = inputs.indexOf(document.activeElement);
+        // Focus the first input on window load
+        window.addEventListener("load", () => inputs[0].focus());
 
-                // If it's the last input, submit the form
-                if (index !== inputs.length - 1) {
-                    event.preventDefault(); // Stop default form submission
-                    inputs[index + 1].focus();
-                }
+        // Start the timer when the page loads
+        startTimer();
+
+        // Resend OTP button functionality
+        
+        
+        
+        
+        
+        function validateOTP(){
+          const otpInput = Array.from(inputs).map(input => input.value).join('');
+
+          document.getElementById("otp").value = otpInput;
+
+          $.ajax({
+            type:"POST",
+            url:"/verify-otp",
+            data:{otp:otpInput},
+            success:function(response){
+              if(response.success){
+                Swal.fire({
+                  icon:"success",
+                  title:"OTP Verified Successfully",
+                  showConfirmButton:false,
+                  timer:1500
+                }).then(()=>{
+                  window.location.href = response.redirectUrl;
+                })
+              }else{
+                Swal.fire({
+                  icon:"error",
+                  title:'Error',
+                  text:response.message,
+                })
+              }
+            },
+            error:function(){
+              Swal.fire({
+                icon:"error",
+                title:"Invalid OTP",
+                text:"Please try again"
+              })
             }
+          })
+          return false
+        }
+        
+        
+        function resendOTP(){
+          clearInterval(timer);
+          timeLeft = 60;
+          countdownElement.textContent = "01:00";
+          resendButton.disabled = true;
+          resendButton.classList.remove("active");
+          startTimer();
+
+          $.ajax({
+                type: "POST",
+                url: "/resend-otp",
+                success: function(response) {
+                    if (response.success) {
+                        Swal.fire({
+                            icon: "success",
+                            title: "OTP Resent Successfully",
+                            showConfirmButton: false,
+                            timer: 1500,
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Error",
+                            text: "An error occurred while resending OTP. Please try again",
+                        });
+                    }
+                }
+            });
+
+        }
+    
+        
+
+
+        resendButton.addEventListener("click", () => {
+        resendOTP();
         });
 
     </script>
