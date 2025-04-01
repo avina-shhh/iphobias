@@ -57,7 +57,7 @@ function generateOtp(){
 
 
 
-async function sendOtp(mail,otp,name){
+async function sendOtp(mail,otp){
     try {
         
         const transporter = nodemailer.createTransport({
@@ -75,7 +75,7 @@ async function sendOtp(mail,otp,name){
             from: process.env.NODEMAILER_EMAIL, // Sender email address
             to : mail, 
             subject: "Verify your account for iPhobias", // Email subject
-            text: `Dear ${name},
+            text: `Dear User,
         
             Thank you for signing up for iPhobias! To complete your account verification, please use the following One-Time Password (OTP):
             
@@ -92,7 +92,7 @@ async function sendOtp(mail,otp,name){
         98754XXXXX`,
             html: `
                 <div style="font-family: Arial, sans-serif; color: #333;">
-                    <h2>Dear ${name},</h2>
+                    <h2>Dear User,</h2>
                     <p>Thank you for signing up for <strong>iPhobias</strong>! To complete your account verification, please use the following One-Time Password (OTP):</p>
                     <h3 style="background: #f4f4f4; padding: 10px; display: inline-block; border-radius: 5px;">OTP: ${otp}</h3>
                     <p>This OTP is valid for <strong>5 minutes</strong>. Please do not share it with anyone.</p>
@@ -112,34 +112,64 @@ async function sendOtp(mail,otp,name){
 }
 
 
+// const postSignup = async(req,res)=>{
+//     try {
+//         const {name,email,phone,password} = req.body;
+
+//         const findUser = await User.findOne({$or : [{email : email},{phone :phone}]});
+//         if(findUser){
+//             return res.render('signup',{ msg : "*User with this email or phone already exists" })
+//         }
+
+//         const otp = generateOtp();
+
+//         const emailSend = await sendOtp(email,otp,name);
+//         if(!emailSend){
+//             return res.json("email-error")
+//         }
+
+//         req.session.userOTP = otp;
+//         req.session.userData = {email,password,name,phone};
+
+//         res.render("otp");
+//         console.log("OTP sent :",otp)
+
+
+//     } catch (error) {
+//         console.error("Signup error",error);
+//         res.redirect("/pageNotFound")
+//     }
+// }
+
 const postSignup = async(req,res)=>{
     try {
-        const {name,email,phone,password} = req.body;
+        const {email} = req.body;
 
-        const findUser = await User.findOne({$or : [{email : email},{phone :phone}]});
+        const findUser = await User.findOne({email:email});
         if(findUser){
-            return res.render('signup',{ msg : "*User with this email or phone already exists" })
+            return res.render('signup',{ msg : "*User with this email already exists" })
         }
 
         const otp = generateOtp();
 
-        const emailSend = await sendOtp(email,otp,name);
+        const emailSend = await sendOtp(email,otp);
         if(!emailSend){
             return res.json("email-error")
         }
 
         req.session.userOTP = otp;
-        req.session.userData = {email,password,name,phone};
+        req.session.userData = email;
 
         res.render("otp");
         console.log("OTP sent :",otp)
 
 
     } catch (error) {
-        console.error("Signup error",error);
+        console.error("postSignup error",error);
         res.redirect("/pageNotFound")
     }
 }
+
 
 const securePass = async(password) => {
     try {
@@ -152,28 +182,46 @@ const securePass = async(password) => {
     }
 }
 
+// const verifyOTP = async(req,res)=>{
+//     try {
+//         const {otp} = req.body;
+//         console.log("OTP Entered :",otp);
+
+//         if(otp === req.session.userOTP){
+//             const user = req.session.userData
+//             const passHash = await securePass(user.password);
+
+//             const saveUserData = new User({
+//                 name : user.name,
+//                 email : user.email,
+//                 phone : user.phone,
+//                 password : passHash
+//             })
+
+//             await saveUserData.save();
+//             console.log(saveUserData)
+
+//             req.session.user = saveUserData._id;
+
+//             res.json({success:true,redirectUrl:'/'});
+//         }else{
+//             res.status(400).json({success:false,message:"Invalid OTP, Please try again"})
+
+//         }
+//     } catch (error) {
+//         console.error("Error Verifying OTP", error);
+//         res.status(500).json({success:false,message:"An Error Occured"})
+//     }
+// }
+
+
 const verifyOTP = async(req,res)=>{
     try {
         const {otp} = req.body;
         console.log("OTP Entered :",otp);
 
         if(otp === req.session.userOTP){
-            const user = req.session.userData
-            const passHash = await securePass(user.password);
-
-            const saveUserData = new User({
-                name : user.name,
-                email : user.email,
-                phone : user.phone,
-                password : passHash
-            })
-
-            await saveUserData.save();
-            console.log(saveUserData)
-
-            req.session.user = saveUserData._id;
-
-            res.json({success:true,redirectUrl:'/'});
+            res.json({success:true,redirectUrl:'/sign-up'});
         }else{
             res.status(400).json({success:false,message:"Invalid OTP, Please try again"})
 
@@ -184,24 +232,25 @@ const verifyOTP = async(req,res)=>{
     }
 }
 
+
 const resendOTP = async(req,res)=>{
     try {
         
-        const {email,name}  = req.session.userData;
+        const email  = req.session.userData;
         if(!email){
-            return res.status(400).json({success:false,message:"Email not found in session"})
+            return res.status(400).json({success:false,message:"Email not found"})
         }
 
         const otp = generateOtp()
         req.session.userOTP = otp;
         req.session.save();
 
-        const emailSend = await sendOtp(email,otp,name);
+        const emailSend = await sendOtp(email,otp);
         if(emailSend){
             res.status(200).json({success:true,message:"OTP Resend Successfully"})
             return console.log("Resend OTP : ",otp)
         }else{
-            res.status(500).json({success:false,message:"Failed to resend OTP. Please try again"})
+            res.status(500).json({success:false,message:"Failed to resend OTP. Please try again later"})
         }
 
 
@@ -210,6 +259,56 @@ const resendOTP = async(req,res)=>{
         res.status(500).json({success:false,message:"Internal Server Error. Please try again"})
     }
 }
+
+
+const finishSignup = async(req,res)=>{
+    try {
+        const userData = req.session.userData;
+        const user = req.session.user
+        if(!userData){
+            return res.redirect('/signup')
+        }else if(user){
+            return res.redirect('/')
+        }
+        res.render('finishSignup')
+    } catch (error) {
+        console.error("Error finishSignup",error)
+        res.redirect('/pageNotFound')
+    }
+}
+
+
+const postFinishSignup = async(req,res)=>{
+    try {
+
+        const existingUser = await User.findOne({phone:req.body.phone})
+        if(existingUser){
+            return res.json({success:false,message:'User with this Phone already exist'});
+        }
+
+        const email = req.session.userData
+        const passHash = await securePass(req.body.password);
+
+        const saveUserData = new User({
+            name : req.body.name,
+            email : email,
+            phone : req.body.phone,
+            password : passHash
+        })
+
+        await saveUserData.save();
+        console.log(saveUserData)
+
+        req.session.user = saveUserData._id;
+
+        res.json({success:true,redirectUrl:'/'});
+    } catch (error) {
+        console.error("Error postFinishSignup",error)
+        res.redirect('/pageNotFound')
+    }
+}
+
+
 
 const loadLogin = async(req,res)=>{
     try {
@@ -277,6 +376,8 @@ module.exports = {
     postSignup,
     verifyOTP,
     resendOTP,
+    finishSignup,
+    postFinishSignup,
     loadLogin,
     postLogin,
     logout

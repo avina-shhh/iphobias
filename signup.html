@@ -1023,7 +1023,7 @@ html {
               </ul>
               <div class="separator gWxmho" style="border: 0;">or</div>
               <div id="mySignup">
-                <form action="/signup" method="POST" id="signinform">
+                <form action="/signup" method="POST" id="signup-form">
                   <div class="gcMohz">
                     <div class="dONESo">
                       <div class="bSfdyE">
@@ -1033,8 +1033,9 @@ html {
                           </label>
                         </div>
                         <input class="gVyyKq encore-text-body-medium" type="email" placeholder="Email address" name="email" id="email">
-                        <%if (typeof message !== 'undefined') { %>
-                          <div class="error-msg" style="margin-top: 0; display: block;"> <%= message %> </div>
+                        <div class="error-msg" id="error1"></div>
+                        <%if (typeof msg !== 'undefined') { %>
+                          <div class="error-msg" style="margin-top: 0; display: block;"> <%= msg %> </div>
                         <%}%>
                       </div>
                     </div>

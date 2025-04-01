@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - iPhobias</title>
+    <title>Document</title>
     <style>
         body {
   background: #eee;
@@ -1010,69 +1010,65 @@ html {
                     </svg>
                 </div>
               </div>
-              <h1 class="itwVFE">Log in to iPhobias</h1>
-              <ul class="ecQehz">
-                <li>
-                  <a href="/auth/google">
-                    <button class="Button-sc-y0gtbx-0 gpklKx encore-text-body-medium-bold sc-liquwA fOTTpQ" >
-                      <span name="new-google-icon" class="sc-eTdEpr blvHhQ"></span>
-                      <span class="encore-text encore-text-body-medium-bold sc-iKTcqh sc-tOkKi sc-eJgwjL doOTMr ifVOsT gLIwsz" data-encore-id="text">Continue with Google</span>
-                    </button>
-                  </a>
-                </li>
-              </ul>
-              <div class="separator gWxmho" style="border: 0;">or</div>
-              <div id="myLogin">
-                <form action="/login" method="POST" id="signinform">
+              <h1 class="itwVFE">Complete Your Profile</h1>
+              <div id="mySignup">
+                <form method="POST" id="signup-form" onsubmit="return createAccount()">
                   <div class="gcMohz">
-                    <%if (typeof message !== 'undefined') { %>
-                        <div class="error-msg" style="display: block;"> <%= message %> </div>
-                    <%}%>
                     <div class="dONESo">
-                        <div class="bSfdyE">
-                            <div class="ebSvva encore-text-body-small-bold">
-                                <label for="login-email">
-                                    <span style="color: black;">E-mail</span>
-                                </label>
-                            </div>
-                            <input class="gVyyKq encore-text-body-medium" type="email" placeholder="Email address" name="email" id="email">
-                            <div class="error-msg" id="error1"></div>
+                      <div class="bSfdyE">
+                          <%if (typeof message !== 'undefined') { %>
+                            <div class="error-msg" style="margin-top: 0; display: block;"> <%= message %> </div>
+                          <%}%>
+                        <div class="ebSvva encore-text-body-small-bold">
+                          <label>
+                            <span style="color: black;">Name</span>
+                          </label>
                         </div>
-                        <div class="bSfdyE">
-                            <div class="ebSvva encore-text-body-small-bold">
-                                <label for="login-password">
-                                    <span style="color: black;">Password</span>
-                                </label>
-                            </div>
-                            <input class="gVyyKq encore-text-body-medium" type="password" placeholder="Password" name="password" id="password">
-                            <div class="error-msg" id="error2"></div>
+                        <input class="gVyyKq encore-text-body-medium" type="text" placeholder="Enter your name" name="name" id="name">
+                        <div class="error-msg" id="error1"></div>
+                      </div>
+
+                      <div class="bSfdyE">
+                        <div class="ebSvva encore-text-body-small-bold">
+                          <label>
+                            <span style="color: black;">Phone</span>
+                          </label>
                         </div>
+                        <input class="gVyyKq encore-text-body-medium" type="text" placeholder="Enter your phone" name="phone" id="phone">
+                        <div class="error-msg" id="error2"></div>
+                      </div>
+
+                      <div class="bSfdyE">
+                        <div class="ebSvva encore-text-body-small-bold">
+                          <label>
+                            <span style="color: black;">Password</span>
+                          </label>
+                        </div>
+                        <input class="gVyyKq encore-text-body-medium" type="password" placeholder="Enter your password" name="password" id="password">
+                        <div class="error-msg" id="error3"></div>
+                      </div>
+
+                      <div class="bSfdyE">
+                        <div class="ebSvva encore-text-body-small-bold">
+                          <label>
+                            <span style="color: black;">Confirm Password</span>
+                          </label>
+                        </div>
+                        <input class="gVyyKq encore-text-body-medium" type="password" placeholder="Confirm your password" name="cPassword" id="confirm-password">
+                        <div class="error-msg" id="error4"></div>
+                      </div>
                     </div>
+
                     <div class="leTZEG">
                       <button id="login-button" class="hFRjpO" style="width: 100%;" type="submit">
                         <span class="ButtonInner-sc-14ud5tc-0 hvvTXU">
-                          <span style="color: #fff;" class="encore-text-body-medium-bold" data-encore-id="text">Login</span>
+                          <span style="color: #fff;" class="encore-text-body-medium-bold" data-encore-id="text">Create Account</span>
                         </span>
                         <span class="gJnrqA"></span>
                       </button>
                     </div>
                   </div>
                 </form>
-              </div>
-              <div id="sign-up-section">
-                <h2 variant="bodyMedium" class="sc-cBYhjr kyvYle">
-                  <a href="#" id="sign-up-link" data-testid="signup-btn-link" class="Link-sc-k8gsk-0 cgOuFc sc-kTYLvb klSGTe" data-encore-id="textLink">
-                    <span class="encore-text encore-text-body-medium sc-dJDBYC ghuOx" data-encore-id="text">Forgot password?</span>
-                  </a>
-                </h2>
-              </div>
-              <div id="sign-up-section" data-testid="signup-section" class="sc-dorvvM ewqcub">
-                <h2 variant="bodyMedium" class="sc-cBYhjr kyvYle">
-                  <span class="encore-text encore-text-body-medium encore-internal-color-text-subdued" data-encore-id="text">Don't have an account?</span>
-                  <a href="/signup" id="sign-up-link" data-testid="signup-btn-link" class="Link-sc-k8gsk-0 cgOuFc sc-kTYLvb klSGTe" data-encore-id="textLink">
-                    <span class="encore-text encore-text-body-medium sc-dJDBYC ghuOx" data-encore-id="text">Sign up for iPhobias</span>
-                  </a>
-                </h2>
               </div>
             </div>
           </div>
@@ -1102,20 +1098,35 @@ html {
   
   
   
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
         
-        const signinform = document.getElementById("signinform")
-        const emailid = document.getElementById("email");
+        const nameid = document.getElementById("name");
+        const phoneid = document.getElementById("phone");
         const passid = document.getElementById("password");
+        const cpassid = document.getElementById("confirm-password")
+
         const error1 = document.getElementById("error1")
         const error2 = document.getElementById("error2")
+        const error3 = document.getElementById("error3")
+        const error4 = document.getElementById("error4")
+        
+        const signupform = document.getElementById("signup-form")
 
-        function emailValidate(e){
-            const emailval = emailid.value;
 
-            if(emailval.trim() === ""){
+        function nameValidate(e){
+            const nameval = nameid.value;
+            const namepattern = /^[A-Za-z\s]+$/
+
+            if(nameval.trim() === "" ){
                 error1.style.display="block"
-                error1.innerHTML="*Please enter your email"
+                error1.innerHTML="*Please enter your name"
+                return false
+            }else if(!namepattern.test(nameval)){
+                error1.style.display="block"
+                error1.innerHTML="*Name can only contain alphabets and spaces"
                 return false
             }else{
                 error1.style.display="none"
@@ -1124,45 +1135,124 @@ html {
             }
         }
 
-        function passValidate(e){
-            const passval = passid.value;
 
-            if(passval === ""){
-                error2.style.display="block"
-                error2.innerHTML="*Please enter your password"
-                return false
-            }else{
-                error2.style.display="none"
-                error2.innerHTML=""
-                return true
-            }
-            
+    function phoneValidate(e){
+        const phoneval = phoneid.value;
+        const phonepattern = /^\d{10}$/
+
+        if(phoneval.trim() === ""){
+            error2.style.display="block"
+            error2.innerHTML="*Please enter your mobile number"
+            return false
+        }else if(!phonepattern.test(phoneval)){
+            error2.style.display="block"
+            error2.innerHTML="*Mobile number should be 10 digit"
+            return false
+        }else{
+            error2.style.display="none"
+            error2.innerHTML=""
+            return true
+        }
+    }
+
+    function passValidate(e){
+        const passval = passid.value;
+        const passpattern = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+        const cpassval = cpassid.value
+
+        if(passval === ""){
+            error3.style.display="block"
+            error3.innerHTML="*Please enter your password"
+            return false
+        }else if(!passpattern.test(passval)){
+            error3.style.display="block"
+            error3.innerHTML="*Password must include: 1 uppercase, 1 lowercase, 1 digit, 1 special character (@$!%*?&), and be at least 8 characters long."
+            return false
+        }else{
+            error3.style.display="none"
+            error3.innerHTML=""
+            return true
         }
 
-        signinform.addEventListener("submit", (e) => {
-            // Run all validations
-            const isEmailValid = emailValidate();
-            const isPassValid = passValidate();
+    }
 
-            // If any validation fails, prevent form submission
-            if (!isEmailValid || !isPassValid) {
-                e.preventDefault(); // Stop form submission
+    function confirmPassValidate(){
+
+        const passval = passid.value;
+        const cpassval = cpassid.value
+
+        if(passval !== cpassval){
+            error4.style.display="block"
+            error4.innerHTML="*Passwords do not match."
+            return false
+        }else{
+            error4.style.display="none"
+            error4.innerHTML=""
+            return true
+        }
+
+    }
+
+    document.getElementById("signup-form").addEventListener("keydown", function(event) {
+    if (event.key === "Enter") {
+        let inputs = Array.from(document.querySelectorAll("input"));
+        let index = inputs.indexOf(document.activeElement);
+
+        // If it's the last input, submit the form
+        if (index !== inputs.length - 1) {
+            event.preventDefault(); // Stop default form submission
+            inputs[index + 1].focus();
+        }
+    }
+    });
+
+    function createAccount(){
+
+      // Run all validations
+        const isNameValid = nameValidate();
+        const isPhoneValid = phoneValidate();
+        const isPassValid = passValidate();
+        const isConfirmPassValid = confirmPassValidate();
+
+        // If any validation fails, prevent form submission
+        if (!isNameValid || !isPhoneValid || !isPassValid || !isConfirmPassValid) {
+            return false; // Stop form submission
+        }
+
+          $.ajax({
+            type:"POST",
+            url:"/sign-up",
+            data:{name:nameid.value,phone:phoneid.value,password:passid.value},
+            success:function(response){
+              if(response.success){
+                Swal.fire({
+                  icon:"success",
+                  title:"Account Created Successfully",
+                  showConfirmButton:false,
+                  timer:1500
+                }).then(()=>{
+                  window.location.href = response.redirectUrl;
+                })
+              }else{
+                Swal.fire({
+                  icon:"error",
+                  title:'Oops',
+                  text:response.message,
+                  showConfirmButton:true,
+                })
+              }
+            },
+            error:function(){
+              Swal.fire({
+                icon:"error",
+                title:"Invalid OTP",
+                text:"Please try again"
+              })
             }
-        });
+          })
+          return false
+        }
 
-        
-        document.getElementById("myLogin").addEventListener("keydown", function(event) {
-            if (event.key === "Enter") {
-                let inputs = Array.from(document.querySelectorAll("input"));
-                let index = inputs.indexOf(document.activeElement);
-
-                // If it's the last input, submit the form
-                if (index !== inputs.length - 1) {
-                    event.preventDefault(); // Stop default form submission
-                    inputs[index + 1].focus();
-                }
-            }
-        });
 
     </script>
 </body>
