@@ -111,36 +111,6 @@ async function sendOtp(mail,otp){
     }
 }
 
-
-// const postSignup = async(req,res)=>{
-//     try {
-//         const {name,email,phone,password} = req.body;
-
-//         const findUser = await User.findOne({$or : [{email : email},{phone :phone}]});
-//         if(findUser){
-//             return res.render('signup',{ msg : "*User with this email or phone already exists" })
-//         }
-
-//         const otp = generateOtp();
-
-//         const emailSend = await sendOtp(email,otp,name);
-//         if(!emailSend){
-//             return res.json("email-error")
-//         }
-
-//         req.session.userOTP = otp;
-//         req.session.userData = {email,password,name,phone};
-
-//         res.render("otp");
-//         console.log("OTP sent :",otp)
-
-
-//     } catch (error) {
-//         console.error("Signup error",error);
-//         res.redirect("/pageNotFound")
-//     }
-// }
-
 const postSignup = async(req,res)=>{
     try {
         const {email} = req.body;
@@ -182,49 +152,22 @@ const securePass = async(password) => {
     }
 }
 
-// const verifyOTP = async(req,res)=>{
-//     try {
-//         const {otp} = req.body;
-//         console.log("OTP Entered :",otp);
-
-//         if(otp === req.session.userOTP){
-//             const user = req.session.userData
-//             const passHash = await securePass(user.password);
-
-//             const saveUserData = new User({
-//                 name : user.name,
-//                 email : user.email,
-//                 phone : user.phone,
-//                 password : passHash
-//             })
-
-//             await saveUserData.save();
-//             console.log(saveUserData)
-
-//             req.session.user = saveUserData._id;
-
-//             res.json({success:true,redirectUrl:'/'});
-//         }else{
-//             res.status(400).json({success:false,message:"Invalid OTP, Please try again"})
-
-//         }
-//     } catch (error) {
-//         console.error("Error Verifying OTP", error);
-//         res.status(500).json({success:false,message:"An Error Occured"})
-//     }
-// }
-
-
 const verifyOTP = async(req,res)=>{
     try {
         const {otp} = req.body;
         console.log("OTP Entered :",otp);
 
         if(otp === req.session.userOTP){
-            res.json({success:true,redirectUrl:'/sign-up'});
+            if(req.session.forgotPass){
+                req.session.forgotPass = false;
+                req.session.save();
+                req.session.validForNewPass = true;
+                res.json({success:true,redirectUrl:'/new-password'})
+            }else{
+                res.json({success:true,redirectUrl:'/sign-up'});
+            }
         }else{
             res.status(400).json({success:false,message:"Invalid OTP, Please try again"})
-
         }
     } catch (error) {
         console.error("Error Verifying OTP", error);
@@ -245,7 +188,11 @@ const resendOTP = async(req,res)=>{
         req.session.userOTP = otp;
         req.session.save();
 
-        const emailSend = await sendOtp(email,otp);
+        if(req.session.forgotPass){
+            const emailSend = await sendForgotOtp(email,otp);
+        }else{
+            const emailSend = await sendOtp(email,otp);
+        }
         if(emailSend){
             res.status(200).json({success:true,message:"OTP Resend Successfully"})
             return console.log("Resend OTP : ",otp)
@@ -354,6 +301,133 @@ const postLogin = async(req,res)=>{
     }
 }
 
+
+async function sendForgotOtp(mail,otp){
+    try {
+        
+        const transporter = nodemailer.createTransport({
+            service:"gmail",
+            port:587,
+            secure:false,
+            requireTLS:true,
+            auth:{
+                user:process.env.NODEMAILER_EMAIL,
+                pass:process.env.NODEMAILER_PASS
+            }
+        })
+
+        const info = await transporter.sendMail({
+            from: process.env.NODEMAILER_EMAIL, // Sender email address
+            to: mail, 
+            subject: "Reset Your Password - iPhobias", // Email subject
+            text: `Dear User,
+        
+        We received a request to reset your password for your iPhobias account. Please use the following One-Time Password (OTP) to set a new password:
+        
+        OTP: ${otp}
+        
+        This OTP is valid for 5 minutes. If you did not request a password reset, please ignore this email.
+        
+        For security reasons, do not share this OTP with anyone.
+        
+        Best Regards,
+        iPhobias Ltd.
+        98754XXXXX`,
+            html: `
+                <div style="font-family: Arial, sans-serif; color: #333;">
+                    <h2>Dear User,</h2>
+                    <p>We received a request to reset your password for your <strong>iPhobias</strong> account.</p>
+                    <p>Please use the following One-Time Password (OTP) to set a new password:</p>
+                    <h3 style="background: #f4f4f4; padding: 10px; display: inline-block; border-radius: 5px;">OTP: <strong>${otp}</strong></h3>
+                    <p>This OTP is valid for <strong>5 minutes</strong>. If you did not request a password reset, please ignore this email.</p>
+                    <p>For security reasons, do not share this OTP with anyone.</p>
+                    <p>Best Regards,<br><strong>iPhobias Ltd.</strong><br>98754XXXXX</p>
+                </div>
+            `
+        });
+
+        return info.accepted.length > 0
+
+    } catch (error) {
+        console.error("Error sending email",error);
+        return false
+    }
+}
+
+
+const getForgotPass = async(req,res)=>{
+    try {
+        if(req.session.user){
+            return res.redirect('/')
+        }
+        res.render('forgotpass')
+    } catch (error) {
+        console.error("getForgotPass Error",error)
+        res.redirect('/pageNotFound')
+    }
+}
+
+const postForgotPass = async(req,res)=>{
+    try {
+        const ephone = req.body.ephone.trim();
+        const findUser = await User.findOne({$or:[
+            {phone:ephone},
+            {email:ephone}
+        ]})
+        if(!findUser){
+           return res.render('forgotpass',{msg:"*User not found"})
+        }
+        
+        const otp = generateOtp();
+
+        const emailSend = await sendForgotOtp(findUser.email,otp);
+        if(!emailSend){
+            console.log('OTP not send from forgot-password')
+            return res.redirect('/pageNotFound')
+        }
+
+        req.session.userOTP = otp;
+        req.session.forgotPass = true;
+        req.session.userData = findUser.email;
+
+        res.render("otp");
+        console.log("OTP sent :",otp)
+
+    } catch (error) {
+        console.error("postForgotPass Error",error)
+        res.redirect('/pageNotFound')
+    }
+}
+
+const getNewPass = async(req,res)=>{
+    try {
+        if(req.session.validForNewPass){
+            res.render('newPass');
+        }else{
+            res.redirect('/login')
+        }
+    } catch (error) {
+        console.error("getNewPass Error",error)
+        res.redirect('/pageNotFound')
+    }
+}
+
+const postNewPass = async(req,res)=>{
+    try {
+        const passHash = await securePass(req.body.password);
+        const findUser = await User.findOneAndUpdate({$or:[
+            {phone:req.session.userData},
+            {email:req.session.userData}
+        ]},{$set:{password:passHash}})
+
+        req.session.user = findUser._id;
+        res.json({success:true,redirectUrl:'/'});
+    } catch (error) {
+        console.error("postNewPass Error",error)
+        res.redirect('/pageNotFound')
+    }
+}
+
 const logout = async(req,res)=>{
     try {
         req.session.destroy((err)=>{
@@ -380,5 +454,9 @@ module.exports = {
     postFinishSignup,
     loadLogin,
     postLogin,
+    getForgotPass,
+    postForgotPass,
+    getNewPass,
+    postNewPass,
     logout
 } 

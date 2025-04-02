@@ -1010,40 +1010,41 @@ html {
                     </svg>
                 </div>
               </div>
-              <h1 class="itwVFE">Set Your New Password</h1>
+              <h1 class="itwVFE">Find Your Account</h1>
               <div id="mySignup">
-                <form method="POST" id="signup-form" onsubmit="return createAccount()">
+                <form action="/forgot-password" method="POST" id="forgot-form">
                   <div class="gcMohz">
                     <div class="dONESo">
-
                       <div class="bSfdyE">
                         <div class="ebSvva encore-text-body-small-bold">
-                          <label>
-                            <span style="color: black;">Password</span>
+                          <label for="signup-emaail" >
+                            <span style="color: black;">Registered Email or Phone</span>
                           </label>
                         </div>
-                        <input class="gVyyKq encore-text-body-medium" type="password" placeholder="Enter your new password" name="password" id="password">
-                        <div class="error-msg" id="error3"></div>
-                      </div>
-
-                      <div class="bSfdyE">
-                        <div class="ebSvva encore-text-body-small-bold">
-                          <label>
-                            <span style="color: black;">Confirm Password</span>
-                          </label>
-                        </div>
-                        <input class="gVyyKq encore-text-body-medium" type="password" placeholder="Confirm your new password" name="cPassword" id="confirm-password">
-                        <div class="error-msg" id="error4"></div>
+                        <input class="gVyyKq encore-text-body-medium" type="text" placeholder="Email or Phone" name="ephone" id="ephone">
+                        <div class="error-msg" id="error1"></div>
+                        <%if (typeof msg !== 'undefined') { %>
+                          <div class="error-msg" style="margin-top: 0; display: block;"> <%= msg %> </div>
+                        <%}%>
                       </div>
                     </div>
-
-                    <div class="leTZEG">
+                    <div class="leTZEG" style="padding-block-end: 20px;">
                       <button id="login-button" class="hFRjpO" style="width: 100%;" type="submit">
                         <span class="ButtonInner-sc-14ud5tc-0 hvvTXU">
-                          <span style="color: #fff;" class="encore-text-body-medium-bold" data-encore-id="text">Change Password</span>
+                          <span style="color: #fff;" class="encore-text-body-medium-bold" data-encore-id="text">Search</span>
                         </span>
                         <span class="gJnrqA"></span>
                       </button>
+                    </div>
+                    <div class="leTZEG">
+                      <a href="/login">
+                        <button id="resend-otp" class="hFRjpO resend" style="width: 100%;" type="button">
+                            <span class=" hvvTXU resend ButtonInner-sc-14ud5tc-0" style="background-color: #e4e6eb;">
+                              <span style="color: #4b4f56;" class="encore-text-body-medium-bold" data-encore-id="text">Cancel</span>
+                            </span>
+                            <span class="gJnrqA"></span>
+                          </button>
+                      </a>
                     </div>
                   </div>
                 </form>
@@ -1076,115 +1077,47 @@ html {
   
   
   
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
     <script>
-        const passid = document.getElementById("password");
-        const cpassid = document.getElementById("confirm-password")
-
-        const error3 = document.getElementById("error3")
-        const error4 = document.getElementById("error4")
         
-        const signupform = document.getElementById("signup-form")
+        const forgotform = document.getElementById("forgot-form")
+        const ephoneid = document.getElementById("ephone");
+        const error1 = document.getElementById("error1")
 
 
-    function passValidate(e){
-        const passval = passid.value;
-        const passpattern = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
-        const cpassval = cpassid.value
+        function ephoneValidate() {
+            const ephone = ephoneid.value.trim(); // Get input value and remove spaces
+            const phonePattern = /^\d{10}$/; // Regex for 10-digit phone number
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Regex for a basic email format
 
-        if(passval === ""){
-            error3.style.display="block"
-            error3.innerHTML="*Please enter your password"
-            return false
-        }else if(!passpattern.test(passval)){
-            error3.style.display="block"
-            error3.innerHTML="*Password must include: 1 uppercase, 1 lowercase, 1 digit, 1 special character (@$!%*?&), and be at least 8 characters long."
-            return false
-        }else{
-            error3.style.display="none"
-            error3.innerHTML=""
-            return true
-        }
-
-    }
-
-    function confirmPassValidate(){
-
-        const passval = passid.value;
-        const cpassval = cpassid.value
-
-        if(passval !== cpassval){
-            error4.style.display="block"
-            error4.innerHTML="*Passwords do not match."
-            return false
-        }else{
-            error4.style.display="none"
-            error4.innerHTML=""
-            return true
-        }
-
-    }
-
-    document.getElementById("signup-form").addEventListener("keydown", function(event) {
-    if (event.key === "Enter") {
-        let inputs = Array.from(document.querySelectorAll("input"));
-        let index = inputs.indexOf(document.activeElement);
-
-        // If it's the last input, submit the form
-        if (index !== inputs.length - 1) {
-            event.preventDefault(); // Stop default form submission
-            inputs[index + 1].focus();
-        }
-    }
-    });
-
-    function createAccount(){
-
-      // Run all validations
-        const isPassValid = passValidate();
-        const isConfirmPassValid = confirmPassValidate();
-
-        // If any validation fails, prevent form submission
-        if (!isPassValid || !isConfirmPassValid) {
-            return false; // Stop form submission
-        }
-
-          $.ajax({
-            type:"POST",
-            url:"/new-password",
-            data:{password:passid.value},
-            success:function(response){
-              if(response.success){
-                Swal.fire({
-                  icon:"success",
-                  title:"Password Changed Successfully",
-                  showConfirmButton:false,
-                  timer:1500
-                }).then(()=>{
-                  window.location.href = response.redirectUrl;
-                })
-              }else{
-                Swal.fire({
-                  icon:"error",
-                  title:'Oops',
-                  text:response.message,
-                  showConfirmButton:true,
-                })
-              }
-            },
-            error:function(){
-              Swal.fire({
-                icon:"error",
-                title:"Invalid OTP",
-                text:"Please try again"
-              })
+            if (ephone === "") {
+                error1.style.display = "block";
+                error1.innerHTML = "*Please enter your registered email or phone";
+                return false;
+            } else if (phonePattern.test(ephone)) {
+                // It's a valid phone number
+                error1.style.display = "none";
+                return true;
+            } else if (emailPattern.test(ephone)) {
+                // It's a valid email
+                error1.style.display = "none";
+                return true;
+            } else {
+                // If it doesn't match either pattern
+                error1.style.display = "block";
+                error1.innerHTML = "*Please enter a valid email or phone number";
+                return false;
             }
-          })
-          return false
         }
 
+        forgotform.addEventListener("submit", (e) => {
+            // Run all validations
+            const isValid = ephoneValidate();
+
+            // If validation fails, prevent form submission
+            if (!isValid) {
+                e.preventDefault(); // Stop form submission
+            }
+        });
 
     </script>
 </body>

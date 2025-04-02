@@ -18,6 +18,10 @@ router.get('/auth/google',passport.authenticate('google',{scope:['profile','emai
 router.get('/auth/google/callback',passport.authenticate('google',{failureRedirect:'/signup'}),(req,res)=>{
     res.redirect('/')
 })
+router.get('/forgot-password',userController.getForgotPass)
+router.post('/forgot-password',userController.postForgotPass)
+router.get('/new-password',userController.getNewPass)
+router.post('/new-password',userController.postNewPass)
 router.get('/logout',userController.logout)
 
 module.exports = router;
