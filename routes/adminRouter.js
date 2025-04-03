@@ -5,7 +5,8 @@ const adminController = require("../controllers/admin/adminController");
 const customerController = require("../controllers/admin/customerController");
 const categoryController = require("../controllers/admin/categoryController");
 const brandController = require("../controllers/admin/brandController")
-const productController = require('../controllers/admin/productController')
+const productController = require('../controllers/admin/productController');
+const bannerController = require('../controllers/admin/bannerController')
 const {userAuth,adminAuth} = require('../middlewares/auth');
 const multer = require("multer");
 const storage = require("../helpers/multer");
@@ -15,6 +16,7 @@ const productEditUploads = multer({ storage: storage.product }).fields([
     { name: 'images', maxCount: 10 },
     { name: 'existingImages', maxCount: 10 }
 ]);
+const bannerUploads = multer({storage:storage.bannerStorage})
 
 
 router.get('/pagerror',adminController.pageError)
@@ -66,5 +68,10 @@ router.post('/editProduct/:id', adminAuth, productEditUploads, productController
 router.post('/deleteSinglePic', adminAuth,productController.deleteSinglePic);
 router.delete('/removeProduct/:id', adminAuth, productController.removeProduct);
 
+// Banner Management
+router.get('/banner',adminAuth,bannerController.getBanner);
+router.get('/addBanner',adminAuth,bannerController.getAddBanner);
+router.post('/addBanner',adminAuth,bannerUploads.single('image'),bannerController.postAddBanner)
+router.delete('/deleteBanner', adminAuth, bannerController.removeBanner);
 
 module.exports = router;
