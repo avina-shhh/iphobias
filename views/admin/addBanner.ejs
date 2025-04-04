@@ -454,11 +454,11 @@ let cropper;
         });
 
         $('#cropperModal').on('shown.bs.modal', function () {
-            const imageToCrop = document.getElementById('imageToCrop');
-            cropper = new Cropper(imageToCrop, {
-                aspectRatio: 1,
-                viewMode: 1,
-            });
+          const imageToCrop = document.getElementById('imageToCrop');
+          cropper = new Cropper(imageToCrop, {
+            aspectRatio: 1920 / 930,
+            viewMode: 1,
+          });
         }).on('hidden.bs.modal', function () {
             cropper.destroy();
             cropper = null;
