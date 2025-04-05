@@ -333,6 +333,7 @@
                             <th>Title</th>
                             <th>Description</th>
                             <th>Status</th>
+                            <th>Edit</th>
                             <th>Remove</th>
                           </tr>
                         </thead>
@@ -351,6 +352,9 @@
                                     <% } else { %>
                                       <span class="badge rounded-pill alert-danger">Blocked</span>
                                     <% } %>
+                                  </td>
+                                  <td>
+                                    <a href="/admin/editBanner?id=<%= data[i]._id %>" class="btn btn-outline-info">Edit</a>
                                   </td>
                                   <td>
                                     <a href="#" onclick="return confirmDeleteBanner('<%=data[i]._id%>')" class="btn btn-outline-danger">Remove</a>

@@ -57,10 +57,49 @@ const removeBanner = async(req,res)=>{
     }
 }
 
+const getEditBanner = async (req, res) => {
+    try {
+        const banner = await Banner.findById(req.query.id);
+        res.render('editBanner', { banner });
+    } catch (error) {
+        console.error("Error in getEditBanner", error);
+        res.redirect('/admin/pageerror');
+    }
+};
+
+const postEditBanner = async (req, res) => {
+    try {
+        const data = req.body;
+        const image = req.file;
+
+        const updateData = {
+            title: data.title,
+            description: data.description,
+            startDate: new Date(data.startDate + "T00:00:00"),
+            endDate: new Date(data.endDate + "T00:00:00"),
+            link: data.link
+        };
+
+        if (image) {
+            updateData.image = image.filename;
+        }
+
+        const success = await Banner.findByIdAndUpdate(data.id, updateData);
+        if(!success){
+            return res.status(500).json({status:false,message:"Banner not Found"})
+        }
+        res.status(200).json({status:true,message:"Banner Updated Successfully"});
+    } catch (error) {
+        console.error("Error in postEditBanner", error);
+        res.redirect('/admin/pageerror');
+    }
+};
 
 module.exports = {
     getBanner,
     getAddBanner,
     postAddBanner,
-    removeBanner
+    removeBanner,
+    getEditBanner,
+    postEditBanner
 }

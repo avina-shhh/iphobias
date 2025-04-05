@@ -309,41 +309,42 @@
                     <h4 class="card-title">Add New Banner</h4>
                     <p class="card-description"> Enter the Details </p>
                     <!-- Banner Form -->
-                    <form id="bannerForm" class="forms-sample" method="post" action="/admin/addBanner" enctype="multipart/form-data" onsubmit="return validateAndSubmitBannerForm(event)">
+                    <form id="bannerForm" class="forms-sample" method="post" action="/admin/editBanner" enctype="multipart/form-data" onsubmit="return validateAndSubmitBannerForm(event)">
+                        <input type="hidden" name="id" value="<%= banner._id %>">
                         <div class="form-group">
                             <label>Banner Title</label>
-                            <input type="text" class="form-control" id="bannerTitle" placeholder="Banner Title" name="title">
+                            <input type="text" class="form-control" id="bannerTitle" placeholder="Banner Title" name="title" value="<%= banner.title %>">
                             <div id="name-error" class="error-message" style="color: rgb(235, 54, 54); font-size: small;"></div>
                         </div>
                         
                         <div class="form-group">
                             <label for="exampleTextarea1">Description</label>
-                            <textarea class="form-control" id="description" rows="5" placeholder="Type here" name="description"></textarea>
+                            <textarea class="form-control" id="description" rows="5" placeholder="Type here" name="description"><%= banner.description %></textarea>
                             <div id="description-error" class="error-message" style="color: rgb(235, 54, 54); font-size: small;"></div>
                         </div>
                     
                         <div class="form-group">
                             <label for="exampleInputName1">Start Date</label>
-                            <input type="date" class="form-control" id="startDate" name="startDate">
+                            <input type="date" class="form-control" id="startDate" name="startDate" value="<%= banner.startDate.toISOString().split('T')[0] %>">
                             <div id="startdate-error" class="error-message" style="color: rgb(235, 54, 54); font-size: small;"></div>
                         </div>
                     
                         <div class="form-group">
                             <label for="exampleInputName1">End Date</label>
-                            <input type="date" class="form-control" id="endDate" name="endDate">
+                            <input type="date" class="form-control" id="endDate" name="endDate" value="<%= banner.endDate.toISOString().split('T')[0] %>">
                             <div id="enddate-error" class="error-message" style="color: rgb(235, 54, 54); font-size: small;"></div>
                         </div>
                     
                         <div class="form-group">
                             <label for="exampleInputName1">Link</label>
-                            <input type="text" class="form-control" id="link" placeholder="Link" name="link">
+                            <input type="text" class="form-control" id="link" placeholder="Link" name="link" value="<%= banner.link %>">
                             <div id="link-error" class="error-message" style="color: rgb(235, 54, 54); font-size: small;"></div>
                         </div>
                     
                         <div class="form-group">
                             <label>Banner Image</label>
                             <div class="input-group col-xs-12">
-                                <input class="form-control file-upload-info" placeholder="Upload Banner" type="text" disabled id="bannerShow" value="">
+                                <input class="form-control file-upload-info" placeholder="Upload Banner" type="text" disabled id="bannerShow" value="<%= banner.image %>">
                                 <input class="form-control file-upload-info" type="file" name="image" id="banner" style="display: none;" accept="image/*">
                                 <span class="input-group-append">
                                     <button class="file-upload-browse btn btn-primary" id="fileUpload" type="button">Upload</button>
@@ -423,140 +424,156 @@
     <script>
 
 let cropper;
-    let currentInput;
-    let croppedImage = null;
+        let currentInput;
+        let croppedImage = null;
 
-    function handleFileInputChange(input) {
-        const file = input.files[0];
-        currentInput = input;
+        function handleFileInputChange(input) {
+            const file = input.files[0];
+            currentInput = input;
 
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                const imageToCrop = document.getElementById('imageToCrop');
-                imageToCrop.src = e.target.result;
-                $('#cropperModal').modal('show');
-            };
-            reader.readAsDataURL(file);
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const imageToCrop = document.getElementById('imageToCrop');
+                    imageToCrop.src = e.target.result;
+                    $('#cropperModal').modal('show');
+                };
+                reader.readAsDataURL(file);
+            }
         }
-    }
 
-    document.addEventListener('DOMContentLoaded', function () {
-        const fileUploadButton = document.getElementById('fileUpload');
-        const fileInput = document.getElementById('banner');
+        document.addEventListener('DOMContentLoaded', function () {
+            const fileUploadButton = document.getElementById('fileUpload');
+            const fileInput = document.getElementById('banner');
 
-        fileUploadButton.addEventListener('click', function () {
-            fileInput.click();
-        });
+            fileUploadButton.addEventListener('click', function () {
+                fileInput.click();
+            });
 
-        fileInput.addEventListener('change', function () {
-            handleFileInputChange(fileInput);
-        });
+            fileInput.addEventListener('change', function () {
+                handleFileInputChange(fileInput);
+            });
 
-        $('#cropperModal').on('shown.bs.modal', function () {
-          const imageToCrop = document.getElementById('imageToCrop');
-          cropper = new Cropper(imageToCrop, {
-              aspectRatio: 1920 / 930, // Default aspect ratio
-              viewMode: 1,
-              cropstart: function () {
+            $('#cropperModal').on('shown.bs.modal', function () {
+              const imageToCrop = document.getElementById('imageToCrop');
+              cropper = new Cropper(imageToCrop, {
+                aspectRatio: 1920 / 930, // Default aspect ratio
+                viewMode: 1,
+                cropstart: function () {
                   // Allow the user to change the aspect ratio after initialization
                   cropper.setAspectRatio(1200 / 809);
-              }
-          });
-        }).on('hidden.bs.modal', function () {
-            cropper.destroy();
-            cropper = null;
-        });
+                }
+              });
+            }).on('hidden.bs.modal', function () {
+                cropper.destroy();
+                cropper = null;
+            });
 
-        document.getElementById('cropImageBtn').addEventListener('click', function () {
-            const canvas = cropper.getCroppedCanvas();
-            canvas.toBlob(function (blob) {
-                const url = URL.createObjectURL(blob);
-                const displayInput = document.getElementById('bannerShow');
-                displayInput.value = currentInput.files[0].name;
-                croppedImage = { blob, fileName: currentInput.files[0].name };
-                currentInput.value = ''; // Clear the original file input
-                $('#cropperModal').modal('hide');
+            document.getElementById('cropImageBtn').addEventListener('click', function () {
+                const canvas = cropper.getCroppedCanvas();
+                canvas.toBlob(function (blob) {
+                    const url = URL.createObjectURL(blob);
+                    const displayInput = document.getElementById('bannerShow');
+                    displayInput.value = currentInput.files[0].name;
+                    croppedImage = { blob, fileName: currentInput.files[0].name };
+                    currentInput.value = ''; // Clear the original file input
+                    $('#cropperModal').modal('hide');
+                });
             });
         });
-    });
 
-    function validateBannerForm() {
-        clearErrorMessages();
-        const title = document.getElementById('bannerTitle').value;
-        const description = document.getElementById('description').value;
-        const startDate = document.getElementById('startDate').value;
-        const endDate = document.getElementById('endDate').value;
-        const link = document.getElementById('link').value;
-        let isValid = true;
+        function validateBannerForm() {
+            clearErrorMessages();
+            const title = document.getElementById('bannerTitle').value;
+            const description = document.getElementById('description').value;
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+            const link = document.getElementById('link').value;
+            let isValid = true;
 
-        if (title.trim() === "") {
-            displayErrorMessage('name-error', 'Please enter a banner title.');
-            isValid = false;
+            if (title.trim() === "") {
+                displayErrorMessage('name-error', 'Please enter a banner title.');
+                isValid = false;
+            }
+
+            if (description.trim() === "") {
+                displayErrorMessage('description-error', 'Please enter a description.');
+                isValid = false;
+            }
+
+            if (startDate === "") {
+                displayErrorMessage('startdate-error', 'Please select a start date.');
+                isValid = false;
+            }
+
+            if (endDate === "") {
+                displayErrorMessage('enddate-error', 'Please select an end date.');
+                isValid = false;
+            }
+
+            if (link.trim() === "") {
+                displayErrorMessage('link-error', 'Please enter a link.');
+                isValid = false;
+            }
+
+            if (!croppedImage && !document.getElementById('bannerShow').value) {
+                displayErrorMessage('images-error', 'Please upload a banner image.');
+                isValid = false;
+            }
+
+            return isValid;
         }
 
-        if (description.trim() === "") {
-            displayErrorMessage('description-error', 'Please enter a description.');
-            isValid = false;
-        }
+        async function validateAndSubmitBannerForm(event) {
+            event.preventDefault();
+            if (validateBannerForm()) {
+                const formData = new FormData(event.target);
+                if (croppedImage) {
+                    formData.append('image', croppedImage.blob, croppedImage.fileName); // Correctly append the image
+                }
 
-        if (startDate === "") {
-            displayErrorMessage('startdate-error', 'Please select a start date.');
-            isValid = false;
-        }
-
-        if (endDate === "") {
-            displayErrorMessage('enddate-error', 'Please select an end date.');
-            isValid = false;
-        }
-
-        if (link.trim() === "") {
-            displayErrorMessage('link-error', 'Please enter a link.');
-            isValid = false;
-        }
-
-        if (!croppedImage) {
-            displayErrorMessage('images-error', 'Please upload a banner image.');
-            isValid = false;
-        }
-
-        return isValid;
-    }
-
-    async function validateAndSubmitBannerForm(event) {
-        event.preventDefault();
-        if (validateBannerForm()) {
-            const formData = new FormData(event.target);
-            formData.append('image', croppedImage.blob, croppedImage.fileName); // Correctly append the image
-
-            try {
-                const response = await fetch(event.target.action, {
-                    method: 'POST',
-                    body: formData,
-                });
-
-                const result = await response.json();
-
-                if (result.status) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Success',
-                        text: result.message,
-                        customClass: {
-                            container: 'swal2-container',
-                            popup: 'swal2-popup',
-                            title: 'swal2-title',
-                            confirmButton: 'swal2-confirm',
-                            cancelButton: 'swal2-cancel',
-                        }
-                    }).then(() => {
-                        window.location.href = '/admin/banner';
+                try {
+                    const response = await fetch(event.target.action, {
+                        method: 'POST',
+                        body: formData,
                     });
-                } else {
+
+                    const result = await response.json();
+
+                    if (result.status) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: result.message,
+                            customClass: {
+                                container: 'swal2-container',
+                                popup: 'swal2-popup',
+                                title: 'swal2-title',
+                                confirmButton: 'swal2-confirm',
+                                cancelButton: 'swal2-cancel',
+                            }
+                        }).then(() => {
+                            window.location.href = '/admin/banner';
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Failed to update banner.',
+                            customClass: {
+                                container: 'swal2-container',
+                                popup: 'swal2-popup',
+                                title: 'swal2-title',
+                                confirmButton: 'swal2-confirm',
+                                cancelButton: 'swal2-cancel',
+                            }
+                        });
+                    }
+                } catch (error) {
                     Swal.fire({
                         icon: 'error',
                         title: 'Error',
-                        text: 'Failed to upload banner.',
+                        text: 'Failed to update banner.',
                         customClass: {
                             container: 'swal2-container',
                             popup: 'swal2-popup',
@@ -566,35 +583,21 @@ let cropper;
                         }
                     });
                 }
-            } catch (error) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'Failed to upload banner.',
-                    customClass: {
-                        container: 'swal2-container',
-                        popup: 'swal2-popup',
-                        title: 'swal2-title',
-                        confirmButton: 'swal2-confirm',
-                        cancelButton: 'swal2-cancel',
-                    }
-                });
             }
         }
-    }
 
-    function displayErrorMessage(elementId, message) {
-        const errorElement = document.getElementById(elementId);
-        errorElement.innerText = message;
-        errorElement.style.display = "block";
-    }
+        function displayErrorMessage(elementId, message) {
+            const errorElement = document.getElementById(elementId);
+            errorElement.innerText = message;
+            errorElement.style.display = "block";
+        }
 
-    function clearErrorMessages() {
-        const errorElements = document.getElementsByClassName('error-message');
-        Array.from(errorElements).forEach(element => {
-            element.innerText = '';
-        });
-    }
+        function clearErrorMessages() {
+            const errorElements = document.getElementsByClassName('error-message');
+            Array.from(errorElements).forEach(element => {
+                element.innerText = '';
+            });
+        }
 
 
     </script>

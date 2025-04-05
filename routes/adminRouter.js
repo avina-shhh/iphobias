@@ -73,5 +73,7 @@ router.get('/banner',adminAuth,bannerController.getBanner);
 router.get('/addBanner',adminAuth,bannerController.getAddBanner);
 router.post('/addBanner',adminAuth,bannerUploads.single('image'),bannerController.postAddBanner)
 router.delete('/deleteBanner', adminAuth, bannerController.removeBanner);
+router.get('/editBanner',adminAuth, bannerController.getEditBanner);
+router.post('/editBanner', adminAuth, bannerUploads.single('image'), bannerController.postEditBanner);
 
 module.exports = router;
