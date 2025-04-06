@@ -2,7 +2,7 @@ const express = require("express")
 const router = express.Router();
 const passport = require("passport") 
 const userController = require("../controllers/user/userController")
-
+const profileController = require("../controllers/user/profileController")
 
 router.get("/pageNotFound",userController.pageNotFound)
 router.get("/",userController.loadHomePage)
@@ -18,10 +18,14 @@ router.get('/auth/google',passport.authenticate('google',{scope:['profile','emai
 router.get('/auth/google/callback',passport.authenticate('google',{failureRedirect:'/signup'}),(req,res)=>{
     res.redirect('/')
 })
-router.get('/forgot-password',userController.getForgotPass)
-router.post('/forgot-password',userController.postForgotPass)
-router.get('/new-password',userController.getNewPass)
-router.post('/new-password',userController.postNewPass)
 router.get('/logout',userController.logout)
+
+
+// Profile Management
+router.get('/forgot-password',profileController.getForgotPass)
+router.post('/forgot-password',profileController.postForgotPass)
+router.get('/new-password',profileController.getNewPass)
+router.post('/new-password',profileController.postNewPass)
+router.get('/userProfile',profileController.getProfile)
 
 module.exports = router;
