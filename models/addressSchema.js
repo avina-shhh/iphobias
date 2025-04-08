@@ -22,7 +22,7 @@ const addressSchema = new Schema({
         },
         landMark:{
             type:String,
-            required:true
+            required:false
         },
         state:{
             type:String,
@@ -38,7 +38,7 @@ const addressSchema = new Schema({
         },
         altPhone:{
             type:String,
-            required:true
+            required:false
         }
     }]
 })
