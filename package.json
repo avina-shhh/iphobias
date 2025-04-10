@@ -7,15 +7,14 @@
   },
   "author": "",
   "license": "ISC",
-  "description": "",
   "dependencies": {
     "bcrypt": "^5.1.1",
     "dotenv": "^16.4.7",
     "ejs": "^3.1.10",
     "express": "^4.21.2",
     "express-session": "^1.18.1",
-    "mongodb": "^6.13.0",
-    "mongoose": "^8.10.1",
+    "mongodb": "^6.15.0",
+    "mongoose": "^8.13.2",
     "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.10.0",
     "nodemon": "^3.1.9",
@@ -23,5 +22,14 @@
     "passport-google-oauth20": "^2.0.0",
     "sharp": "^0.33.5",
     "uuid": "^11.1.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/avina-shhh/iphobias.git"
+  },
+  "bugs": {
+    "url": "https://github.com/avina-shhh/iphobias/issues"
+  },
+  "homepage": "https://github.com/avina-shhh/iphobias#readme",
+  "description": ""
 }
