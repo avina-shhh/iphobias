@@ -6,6 +6,7 @@ const profileController = require("../controllers/user/profileController")
 
 router.get("/pageNotFound",userController.pageNotFound)
 router.get("/",userController.loadHomePage)
+router.get("/home",userController.loadHomePage)
 router.get("/login",userController.loadLogin)
 router.post('/login',userController.postLogin)
 router.get("/signup",userController.loadSignup)
@@ -28,5 +29,8 @@ router.post('/forgot-password',profileController.postForgotPass)
 router.get('/new-password',profileController.getNewPass)
 router.post('/new-password',profileController.postNewPass)
 router.get('/userProfile',profileController.getProfile)
+router.post('/editProfile',profileController.postEditProfile);
+router.get('/newEmail',profileController.getNewEmail);
+
 
 module.exports = router;

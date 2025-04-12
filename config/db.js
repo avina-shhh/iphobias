@@ -8,6 +8,10 @@ const connectDB = async()=>{
         await mongoose.connect(process.env.MONGODB_URI)
         console.log("DB Connected")
 
+        // 🔧 Sync indexes here
+        await mongoose.model("User").syncIndexes(); 
+        console.log("Indexes synced successfully.");
+
     } catch (error) {
         
         console.log("DB Connection Error",error.message)

@@ -162,11 +162,135 @@ const getProfile = async(req,res)=>{
     }
 }
 
+async function sendNewEmailOtp(mail,otp){
+    try {
+        
+        const transporter = nodemailer.createTransport({
+            service:"gmail",
+            port:587,
+            secure:false,
+            requireTLS:true,
+            auth:{
+                user:process.env.NODEMAILER_EMAIL,
+                pass:process.env.NODEMAILER_PASS
+            }
+        })
+
+        const info = await transporter.sendMail({
+            from: process.env.NODEMAILER_EMAIL, // Sender email address
+            to : mail, 
+            subject: "Verify your email for iPhobias", // Email subject
+            text: `Dear User,
+        
+            Thank you for using iPhobias! To complete your new email verification, please use the following One-Time Password (OTP):
+            
+            OTP : ${otp}
+            
+            This OTP is valid for 5 minutes. Please do not share it with anyone.
+        
+        If you did not attempt to change your email for iPhobias, please ignore this email.
+        
+        Best Regards,
+        iPhobias Ltd.
+        98754XXXXX`,
+            html: `
+                <div style="font-family: Arial, sans-serif; color: #333;">
+                    <h2>Dear User,</h2>
+                    <p>Thank you for signing up for <strong>iPhobias</strong>! To complete your account verification, please use the following One-Time Password (OTP):</p>
+                    <h3 style="background: #f4f4f4; padding: 10px; display: inline-block; border-radius: 5px;">OTP: ${otp}</h3>
+                    <p>This OTP is valid for <strong>5 minutes</strong>. Please do not share it with anyone.</p>
+                    <p>If you did not attempt to change your email for iPhobias, please ignore this email.</p>
+                    <p>Best Regards,<br><strong>iPhobias Ltd.</strong><br>98754XXXXX</p>
+                </div>
+            `
+        })
+
+        return info.accepted.length > 0
+
+    } catch (error) {
+        console.error("Error sending email",error);
+        return false
+    }
+}
+
+const postEditProfile = async (req, res) => {
+    try {
+        const userId = req.session.user;
+
+        // Check if the user is valid
+        if (!userId) {
+            return res.json({ success: false, message: "User not authenticated" });
+        }
+
+        const findUser = await User.findById(userId);
+        if (!findUser) {
+            return res.json({ success: false, message: "User not found" });
+        }
+
+        // Extract input fields
+        const newName = req.body.name?.trim();
+        const newPhone = req.body.phone?.trim();
+        const newEmail = req.body.email?.trim();
+        
+        // If no email change, validate and update phone and name
+        if (newPhone && newPhone !== findUser.phone) {
+            const phoneExist = await User.findOne({ phone: newPhone });
+            if (phoneExist) {
+                return res.json({ success: false, message: "Phone number already in use" });
+            }
+        }
+
+        // Check if email is provided and already in use
+        if (newEmail && newEmail !== findUser.email) {
+            const emailExist = await User.findOne({ email: newEmail });
+            if (emailExist) {
+                return res.json({ success: false, message: "Email already in use" });
+            }
+
+            // Generate OTP and send to the new email
+            const otp = generateOtp();
+            const emailSent = await sendNewEmailOtp(newEmail, otp);
+            if (!emailSent) {
+                return res.json({ success: false, message: "Failed to send OTP to the new email" });
+            }
+
+            // Save OTP and new email in session for validation
+            req.session.userOTP = otp;
+            req.session.userData = { newEmail, newName, newPhone };
+
+            // Render OTP validation page
+            console.log("OTP sent :",otp)
+            return res.json({ success: true, message: "OTP sent to new email", redirectUrl: "/newEmail" });
+        }
+
+
+        if (newName) findUser.name = newName;
+        if (newPhone) findUser.phone = newPhone;
+
+        await findUser.save();
+
+        return res.json({ success: true, message: "Profile updated successfully"});
+    } catch (error) {
+        console.error("Error in postEditProfile:", error);
+        res.redirect('/pageNotFound');
+    }
+};
+
+const getNewEmail = async (req, res) => {
+    try {
+        res.render("new-email-otp");
+    } catch (error) {
+        console.error("Error in getNewEmail:", error);
+        res.redirect('/pageNotFound');
+    }
+};
+
 module.exports = {
     getForgotPass,
     postForgotPass,
     getNewPass,
     postNewPass,
     getProfile,
-    
+    postEditProfile,
+    getNewEmail
 } 
