@@ -257,6 +257,8 @@ const postEditProfile = async (req, res) => {
             // Save OTP and new email in session for validation
             req.session.userOTP = otp;
             req.session.userData = { newEmail, newName, newPhone };
+            req.session.newEmail = true;
+            req.session.save();
 
             // Render OTP validation page
             console.log("OTP sent :",otp)

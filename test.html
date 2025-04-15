@@ -35,6 +35,7 @@
 	<link rel="stylesheet" type="text/css" href="public/css/main.css">
 <!--===============================================================================================-->
 
+
 <style>
 	.nav-link.active{
     	color: #1ed760;
@@ -54,11 +55,84 @@
         text-decoration: none;
         background-color: transparent;
         display: block;
-        padding: .5rem 1rem;
+        padding: .5rem 1rem .5rem 0rem;
     }
     .sider li a:hover{
         color: #1ed760;
         text-decoration:none;
+    }
+
+	.sidebar-link {
+            font-family: 'Poppins-Medium', sans-serif;
+        }
+        
+        .section-heading {
+            font-size: 17.5px;
+            font-family: 'Poppins-Medium', sans-serif;
+            color: #333;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .form-label {
+            font-family: 'Poppins-Medium', sans-serif;
+            font-size: 17.5px;
+            color: #333;
+        }
+        
+        .form-group {
+            padding-top: 25px;
+        }
+        
+        .delete-account {
+            font-size: 14px;
+            font-family: Poppins-Medium;
+            color: red;
+            transition: color 0.3s ease;
+        }
+
+		.dropbtn {
+        background-color: #f9f9f9;
+        color: black;
+        padding: 16px;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+    }
+
+    .dropbtn:hover, .dropbtn:focus {
+        background-color: #ddd;
+    }
+
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+    }
+
+    .dropdown-content a {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+    }
+
+    .dropdown-content a:hover {background-color: #f1f1f1}
+
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+
+    .dropdown:hover .dropbtn {
+        background-color: #ddd;
     }
 
 </style>
@@ -110,11 +184,6 @@
 						<ul class="main-menu">
 							<li>
 								<a href="index.html">Home</a>
-								<ul class="sub-menu">
-									<li><a href="index.html">Homepage 1</a></li>
-									<li><a href="home-02.html">Homepage 2</a></li>
-									<li><a href="home-03.html">Homepage 3</a></li>
-								</ul>
 							</li>
 
 							<li class="active-menu">
@@ -140,16 +209,39 @@
 					</div>	
 
 					<!-- Icon header -->
-					<div class="wrap-icon-header flex-w flex-r-m">
+					<div class="wrap-icon-header flex-w flex-r-m main-menu">
+						
+						<!-- <%if(locals.user){%>
+							<div class="dropdown main-menu">
+								<li>
+									
+									<a href="#"> <img src="images/user.svg" height="24" width="24" alt=""> <%=locals.user.name%> </a>
+								</li>
+								<div class="dropdown-content">
+									<a href="/userProfile">My Profile</a>
+									<a href="/logout">Logout</a>
+								</div>
+							</div>
+						<%}else{%> -->
+							<div class="dropdown main-menu">
+								<li>
+									<a href="/login"><img src="public/images/user.svg" height="24" width="24" alt=""> Account</a>
+								</li>
+								<div class="dropdown-content">
+									<a href="/signup">Sign Up</a>
+									<a href="/login">Login</a>
+								</div>
+							</div>
+						<!-- <%}%> -->
 						<div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 js-show-modal-search">
 							<i class="zmdi zmdi-search"></i>
 						</div>
-
+		
 						<div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart" data-notify="2">
 							<i class="zmdi zmdi-shopping-cart"></i>
 						</div>
-
-						<a href="#" class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti" data-notify="0">
+		
+						<a href="#" class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti" data-notify="0">
 							<i class="zmdi zmdi-favorite-outline"></i>
 						</a>
 					</div>
@@ -257,7 +349,7 @@
 		<div class="modal-search-header flex-c-m trans-04 js-hide-modal-search">
 			<div class="container-search-header">
 				<button class="flex-c-m btn-hide-modal-search trans-04 js-hide-modal-search">
-					<img src="images/icons/icon-close2.png" alt="CLOSE">
+					<img src="public/images/icons/icon-close2.png" alt="CLOSE">
 				</button>
 
 				<form class="wrap-search-header flex-w p-l-15">
@@ -289,7 +381,7 @@
 				<ul class="header-cart-wrapitem w-full">
 					<li class="header-cart-item flex-w flex-t m-b-12">
 						<div class="header-cart-item-img">
-							<img src="images/item-cart-01.jpg" alt="IMG">
+							<img src="public/images/item-cart-01.jpg" alt="IMG">
 						</div>
 
 						<div class="header-cart-item-txt p-t-8">
@@ -305,7 +397,7 @@
 
 					<li class="header-cart-item flex-w flex-t m-b-12">
 						<div class="header-cart-item-img">
-							<img src="images/item-cart-02.jpg" alt="IMG">
+							<img src="public/images/item-cart-02.jpg" alt="IMG">
 						</div>
 
 						<div class="header-cart-item-txt p-t-8">
@@ -321,7 +413,7 @@
 
 					<li class="header-cart-item flex-w flex-t m-b-12">
 						<div class="header-cart-item-img">
-							<img src="images/item-cart-03.jpg" alt="IMG">
+							<img src="public/images/item-cart-03.jpg" alt="IMG">
 						</div>
 
 						<div class="header-cart-item-txt p-t-8">
@@ -357,115 +449,79 @@
 		
 
     <div class="container" style="color: black; height: auto; display: flex; min-height: 70vh;">
-        <div class="d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary" style="width: 280px;">
-            <ul class="flex-column mb-auto sider">
-              <li>
-                <a href="#" class="nav-link active" aria-current="page">
-                  Profile Information
-                </a>
-              </li>
-              <li>
-                <a href="#" class="nav-link link-body-emphasis ">
-                  Manage Addresses
-                </a>
-              </li>
-              <li>
-                <a href="#" class="nav-link link-body-emphasis">
-                  Saved UPI
-                </a>
-              </li>
-              <li>
-                <a href="#" class="nav-link link-body-emphasis">
-                  My Coupons
-                </a>
-              </li>
-              <li>
-                <a href="#" class="nav-link link-body-emphasis">
-                  My Reviews and Ratings
-                </a>
-              </li>
-			  <li>
-                <a href="#" class="nav-link link-body-emphasis">
-                  My Wishlist
-                </a>
-              </li>
-			  <li>
-                <a href="#" class="nav-link link-body-emphasis">
-                  Logout
-                </a>
-              </li>
-            </ul>
-        </div>
-
-		<div style="width: 5px; border-left: 1px solid rgba(0, 0, 0, 0.247);" class="m-3" > </div>
-
+		<!-- Sidebar Navigation -->
+		<div class="d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary" style="width: 280px; padding-left : 0 !important">
+			<ul class="flex-column mb-auto sider">
+				<li>
+					<a href="#" class="nav-link active" aria-current="page">
+						Profile Information
+					</a>
+				</li>
+				<li>
+					<a href="#" class="nav-link link-body-emphasis">
+						Manage Addresses
+					</a>
+				</li>
+				<li>
+					<a href="#" class="nav-link link-body-emphasis">
+						Saved UPI
+					</a>
+				</li>
+				<li>
+					<a href="#" class="nav-link link-body-emphasis">
+						My Coupons
+					</a>
+				</li>
+				<li>
+					<a href="#" class="nav-link link-body-emphasis">
+						My Reviews and Ratings
+					</a>
+				</li>
+				<li>
+					<a href="#" class="nav-link link-body-emphasis">
+						My Wishlist
+					</a>
+				</li>
+				<li>
+					<a href="#" class="nav-link link-body-emphasis">
+						Logout
+					</a>
+				</li>
+			</ul>
+		</div>
+	
+		<!-- Divider -->
+		<div style="width: 5px; border-left: 1px solid rgba(0, 0, 0, 0.247);" class="m-3"></div>
+	
+		<!-- Main Content -->
 		<div class="container p-4">
-
 			<div class="row g-5">
 				<div class="col-md-7 col-lg-8">
-				  <h4 class="mb-3" style="
-				  font-size: 17.5px;
-    font-family: 'Poppins-Medium';
-    color: #333;
-	display: flex;
-	justify-content: space-between;
-">Personal Information  <a href="" style="font-size: 15px;" >Edit</a>  </h4>
-				  <form class="needs-validation" novalidate="">
-					<div class="row g-3">
-					  <div class="col-8">
-						
-						<input type="text" class="form-control" id="firstName" placeholder="Enter New Name" value="" required="">
-						<div class="invalid-feedback">
-						  Valid first name is required.
+					<h4 class="mb-3 section-heading">
+						Enter OTP sent to your new email
+						<a href="#" id="resendOtpButton" style="font-size: 15px;" disabled>Resend OTP</a>
+					</h4>
+					
+					<form class="needs-validation" novalidate="" id="otpForm">
+						<div class="row g-3">
+							<!-- OTP Field -->
+							<div class="col-8">
+								<input type="text" class="form-control" id="otp" name="otp" placeholder="Enter OTP" required="" maxlength="6">
+								<div class="invalid-feedback">
+									Please enter the OTP sent to your email.
+								</div>
+								<p class="timer" style="margin-top: 15px;font-size: 0.9rem;color: #333;">Time remaining: <span id="countdownTimer" style="margin-left: 10px; font-size: 15px; color: #333;">01:00</span></p>
+							</div>
 						</div>
-					  </div>
-		  
-					  
-		  
-					  
-		  
-					  <div class="col-8" style="
-    padding-top: 25px;
-">
-						<label for="email" class="form-label" style="
-    font-family: 'Poppins-Medium';
-    font-size: 17.5px;
-	color: #333;
-">Email Address</label>
-						<input type="email" class="form-control" id="email" placeholder="Enter New Email Address">
-						<div class="invalid-feedback">
-						  Please enter a valid email address for shipping updates.
-						</div>
-					  </div>
-		  
-					  <div class="col-8 " style="
-    padding-top: 25px;
-">
-						<label class="form-label" style="
-    font-family: 'Poppins-Medium';
-    font-size: 17.5px;
-	color: #333;
-">Mobile Number</label>
-						<input type="text" class="form-control" id="" required="" placeholder="Enter New Mobile Number">
-						<div class="invalid-feedback">Please enter your mobile number</div>
-					  </div>
+		
+						<!-- Submit Button -->
+						<button class="mt-4 btn btn-primary btn-md" id="submitOtpButton" type="submit" disabled>Verify OTP</button>
+					</form>
 
-					</div>
-		  
-					<button class="my-4 btn btn-primary btn-md" type="submit">Save</button>
-				  </form>
-				  <a href="" style="font-size: 14px;
-                  font-family: Poppins-Medium;
-                  color: red;
-                  transition: color 0.3s ease;" 
-   onmouseover="this.style.color='rgba(255, 0, 0, 0.678)'" 
-   onmouseout="this.style.color='red'">Delete Account</a>
 				</div>
-			  </div>
-
+			</div>
 		</div>
-
-    </div>
+	</div>
 
 
 	<!-- Footer -->
@@ -583,23 +639,23 @@
 			<div class="p-t-40">
 				<div class="flex-c-m flex-w p-b-18">
 					<a href="#" class="m-all-1">
-						<img src="images/icons/icon-pay-01.png" alt="ICON-PAY">
+						<img src="public/images/icons/icon-pay-01.png" alt="ICON-PAY">
 					</a>
 
 					<a href="#" class="m-all-1">
-						<img src="images/icons/icon-pay-02.png" alt="ICON-PAY">
+						<img src="public/images/icons/icon-pay-02.png" alt="ICON-PAY">
 					</a>
 
 					<a href="#" class="m-all-1">
-						<img src="images/icons/icon-pay-03.png" alt="ICON-PAY">
+						<img src="public/images/icons/icon-pay-03.png" alt="ICON-PAY">
 					</a>
 
 					<a href="#" class="m-all-1">
-						<img src="images/icons/icon-pay-04.png" alt="ICON-PAY">
+						<img src="public/images/icons/icon-pay-04.png" alt="ICON-PAY">
 					</a>
 
 					<a href="#" class="m-all-1">
-						<img src="images/icons/icon-pay-05.png" alt="ICON-PAY">
+						<img src="public/images/icons/icon-pay-05.png" alt="ICON-PAY">
 					</a>
 				</div>
 
@@ -628,7 +684,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 		<div class="container">
 			<div class="bg0 p-t-60 p-b-30 p-lr-15-lg how-pos3-parent">
 				<button class="how-pos3 hov3 trans-04 js-hide-modal1">
-					<img src="images/icons/icon-close.png" alt="CLOSE">
+					<img src="public/images/icons/icon-close.png" alt="CLOSE">
 				</button>
 
 				<div class="row">
@@ -641,7 +697,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 								<div class="slick3 gallery-lb">
 									<div class="item-slick3" data-thumb="images/product-detail-01.jpg">
 										<div class="wrap-pic-w pos-relative">
-											<img src="images/product-detail-01.jpg" alt="IMG-PRODUCT">
+											<img src="public/images/product-detail-01.jpg" alt="IMG-PRODUCT">
 
 											<a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04" href="images/product-detail-01.jpg">
 												<i class="fa fa-expand"></i>
@@ -651,7 +707,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 
 									<div class="item-slick3" data-thumb="images/product-detail-02.jpg">
 										<div class="wrap-pic-w pos-relative">
-											<img src="images/product-detail-02.jpg" alt="IMG-PRODUCT">
+											<img src="public/images/product-detail-02.jpg" alt="IMG-PRODUCT">
 
 											<a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04" href="images/product-detail-02.jpg">
 												<i class="fa fa-expand"></i>
@@ -661,7 +717,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 
 									<div class="item-slick3" data-thumb="images/product-detail-03.jpg">
 										<div class="wrap-pic-w pos-relative">
-											<img src="images/product-detail-03.jpg" alt="IMG-PRODUCT">
+											<img src="public/images/product-detail-03.jpg" alt="IMG-PRODUCT">
 
 											<a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04" href="images/product-detail-03.jpg">
 												<i class="fa fa-expand"></i>
@@ -784,13 +840,149 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 	<script src="public/vendor/bootstrap/js/bootstrap.min.js"></script>
 <!--===============================================================================================-->
 	<script src="public/vendor/select2/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 	<script>
-		$(".js-select2").each(function(){
-			$(this).select2({
-				minimumResultsForSearch: 20,
-				dropdownParent: $(this).next('.dropDownSelect2')
-			});
-		})
+
+document.addEventListener("DOMContentLoaded", function () {
+    const otpInput = document.getElementById("otp");
+    const resendOtpButton = document.getElementById("resendOtpButton");
+    const verifyOtpButton = document.getElementById("submitOtpButton");
+    const countdownTimer = document.getElementById("countdownTimer");
+
+    let timerDuration = 60; // Timer duration in seconds
+    let timer;
+
+    // Function to start the countdown timer
+    function startTimer() {
+        resendOtpButton.disabled = true;
+        resendOtpButton.classList.remove("active");
+        countdownTimer.textContent = `01:00`;
+
+        timer = setInterval(() => {
+            timerDuration--;
+            const minutes = Math.floor(timerDuration / 60);
+            const seconds = timerDuration % 60;
+            countdownTimer.textContent = `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+
+            if (timerDuration <= 0) {
+                clearInterval(timer);
+                countdownTimer.textContent = "00:00";
+                resendOtpButton.disabled = false;
+                resendOtpButton.classList.add("active");
+            }
+        }, 1000);
+    }
+
+    // Start the timer on page load
+    startTimer();
+
+    // Resend OTP functionality
+    resendOtpButton.addEventListener("click", function (event) {
+        event.preventDefault();
+
+		if (resendOtpButton.disabled) return;
+
+        // Reset the timer
+        timerDuration = 60;
+        startTimer();
+
+        // AJAX request to resend OTP
+        fetch("/resend-otp", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    Swal.fire({
+                        icon: "success",
+                        title: "Success",
+                        text: data.message || "OTP has been resent to your email."
+                    });
+                } else {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Error",
+                        text: data.message || "Failed to resend OTP. Please try again."
+                    });
+                }
+            })
+            .catch(error => {
+                console.error(error);
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: "An unexpected error occurred. Please try again."
+                });
+            });
+    });
+
+    // Enable "Verify OTP" button when OTP input length is 6
+    otpInput.addEventListener("input", function () {
+        if (otpInput.value.length === 6) {
+            verifyOtpButton.disabled = false;
+            verifyOtpButton.classList.add("active");
+        } else {
+            verifyOtpButton.disabled = true;
+            verifyOtpButton.classList.remove("active");
+        }
+    });
+
+    // Verify OTP functionality
+    verifyOtpButton.addEventListener("click", function (event) {
+        event.preventDefault();
+
+        const otp = otpInput.value.trim();
+
+        // Validation
+        if (otp.length !== 6) {
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "Please enter a valid 6-digit OTP."
+            });
+            return;
+        }
+
+        // AJAX request to verify OTP
+        fetch("/verify-otp", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ otp: otp })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    Swal.fire({
+                        icon: "success",
+                        title: "Success",
+                        text: data.message || "New E-mail added Successfully!"
+                    }).then(() => {
+                        window.location.href = "/userProfile";
+                    });
+                } else {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Error",
+                        text: data.message || "Invalid OTP. Please try again."
+                    });
+                }
+            })
+            .catch(error => {
+                console.error(error);
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: "An unexpected error occurred. Please try again."
+                });
+            });
+    });
+});
+
 	</script>
 <!--===============================================================================================-->
 	<script src="public/vendor/daterangepicker/moment.min.js"></script>
