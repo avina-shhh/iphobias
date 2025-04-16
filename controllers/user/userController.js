@@ -238,8 +238,9 @@ const verifyOTP = async(req,res)=>{
                         phone:req.session.userData.newPhone,
                         name:req.session.userData.newName}}
                 )
+                res.json({success:true})     
+            }else if(req.session.forgotPassword){
                 res.json({success:true})
-                
             }else{
                 res.json({success:true,redirectUrl:'/sign-up'});
             }
@@ -266,7 +267,7 @@ const resendOTP = async(req,res)=>{
         req.session.save();
 
         let emailSend;
-        if(req.session.forgotPass){
+        if(req.session.forgotPass || req.session.forgotPassword){
             emailSend = await sendForgotOtp(email,otp);
         }else if(req.session.newEmail){
             emailSend = await sendNewEmailOtp(email,otp);

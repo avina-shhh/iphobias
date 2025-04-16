@@ -211,7 +211,7 @@
 					<!-- Icon header -->
 					<div class="wrap-icon-header flex-w flex-r-m main-menu">
 						
-						<!-- <%if(locals.user){%>
+						<%if(locals.user){%>
 							<div class="dropdown main-menu">
 								<li>
 									
@@ -222,7 +222,7 @@
 									<a href="/logout">Logout</a>
 								</div>
 							</div>
-						<%}else{%> -->
+						<%}else{%>
 							<div class="dropdown main-menu">
 								<li>
 									<a href="/login"><img src="/images/user.svg" height="24" width="24" alt=""> Account</a>
@@ -849,7 +849,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const verifyOtpButton = document.getElementById("submitOtpButton");
     const countdownTimer = document.getElementById("countdownTimer");
 
-    let timerDuration = 10; // Timer duration in seconds
+    let timerDuration = 60; // Timer duration in seconds
     let timer;
 
     // Function to start the countdown timer

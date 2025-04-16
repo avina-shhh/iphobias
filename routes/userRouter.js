@@ -31,6 +31,9 @@ router.post('/new-password',profileController.postNewPass)
 router.get('/userProfile',profileController.getProfile)
 router.post('/editProfile',profileController.postEditProfile);
 router.get('/newEmail',profileController.getNewEmail);
-
+router.get('/change-password',profileController.getChangePassword);
+router.post('/change-password',profileController.postChangePassword);
+router.get('/forgotPassword',profileController.getForgotPassword);
+router.delete('/delete-account',profileController.deleteAccount);
 
 module.exports = router;

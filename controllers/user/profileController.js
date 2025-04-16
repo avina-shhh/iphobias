@@ -5,6 +5,7 @@ const Banner = require('../../models/BannerSchema');
 const nodemailer = require("nodemailer")
 const env = require("dotenv").config();
 const bcrypt = require("bcrypt");
+const { get } = require("mongoose");
 
 
 function generateOtp(){
@@ -280,12 +281,114 @@ const postEditProfile = async (req, res) => {
 
 const getNewEmail = async (req, res) => {
     try {
-        res.render("new-email-otp");
+        const userId = req.session.user;
+        const userData = await User.findById(userId);
+        res.render("new-email-otp",{
+            user:userData
+        });
     } catch (error) {
         console.error("Error in getNewEmail:", error);
         res.redirect('/pageNotFound');
     }
 };
+
+const getChangePassword = async (req, res) => {
+    try {
+        const forgotPass = req.session.forgotPassword ? true : false;
+        const userId = req.session.user;
+        const userData = await User.findById(userId);
+        res.render("change-password",{
+            user:userData,
+            forgotPass:forgotPass
+        });
+    } catch (error) {
+        console.error("Error in getChangePassword:", error);
+        res.redirect('/pageNotFound');
+    }
+}
+
+const postChangePassword = async(req,res)=>{
+    try {
+        const userId = req.session.user;
+        const userData = await User.findById(userId);
+
+        const oldPass = req.body.currentPassword ? req.body.currentPassword.trim() : "";
+        const newPass = req.body.newPassword.trim();
+
+        if(req.session.forgotPassword){
+            req.session.forgotPassword = false;
+            req.session.save();
+            const passHash = await securePass(newPass);
+            await User.findByIdAndUpdate(userId,{$set:{password:passHash}});
+            return res.json({success:true})
+        }
+
+        const isMatch = await bcrypt.compare(oldPass,userData.password);
+        if(!isMatch){
+            return res.json({success:false,message:"Current password is incorrect"})
+        }
+
+        const passHash = await securePass(newPass);
+        await User.findByIdAndUpdate(userId,{$set:{password:passHash}})
+
+        res.json({success:true})
+    } catch (error) {
+        console.error("Error in postChangePassword:", error);
+        res.redirect('/pageNotFound');
+    }
+}
+
+const getForgotPassword = async (req, res) => {
+    try {
+        const userId = req.session.user;
+        const userData = await User.findById(userId);
+        
+        const otp = generateOtp();
+        const emailSent = await sendForgotOtp(userData.email, otp);
+        if (!emailSent) {
+            return res.json({ success: false, message: "Failed to send OTP to the your email" });
+        }
+        
+        console.log("OTP sent :", otp);
+        req.session.userOTP = otp;
+        req.session.userData = userData.email;
+        req.session.forgotPassword = true;
+        req.session.save();
+
+        res.render('forgot-otp',{user:userData});
+    } catch (error) {
+        console.error("Error in getForgotPassword:", error);
+        res.redirect('/pageNotFound');
+    }
+}
+
+const deleteAccount = async (req, res) => {
+    try {
+        const userId = req.session.user;
+        if (!userId) {
+            return res.json({ success: false, message: "User not authenticated" });
+        }
+
+        const findUser = await User.findById(userId);
+        if (!findUser) {
+            return res.json({ success: false, message: "User not found" });
+        }
+
+        // Delete user account
+        await User.findByIdAndDelete(userId);
+
+        // Clear session data
+        req.session.destroy((err) => {
+            if (err) {
+                console.error("Error destroying session:", err);
+            }
+            res.json({success:true}); // Redirect to login page after account deletion
+        });
+    } catch (error) {
+        console.error("Error in deleteAccount:", error);
+        res.redirect('/pageNotFound');
+    }
+}
 
 module.exports = {
     getForgotPass,
@@ -294,5 +397,9 @@ module.exports = {
     postNewPass,
     getProfile,
     postEditProfile,
-    getNewEmail
+    getNewEmail,
+    getChangePassword,
+    postChangePassword,
+    getForgotPassword,
+    deleteAccount
 } 
