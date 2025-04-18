@@ -440,12 +440,16 @@ Input, textarea : 14px/1.6 '', Arial, sans-serif;
 /*---------------------------------------------*/
 .main-menu > li:hover > a {
   text-decoration: none;
-  color: #6c7ae0;
+  color: #1ed760;
 }
 
 .main-menu > li:hover > .sub-menu {
   visibility: visible;
   opacity: 1;
+}
+
+.main-menu > li:hover a > .hover-effect path {
+  stroke: #1ed760;
 }
 
 .sub-menu li:hover > .sub-menu {
@@ -505,7 +509,7 @@ Input, textarea : 14px/1.6 '', Arial, sans-serif;
   min-width: 15px;
   height: 15px;
   padding: 0 3px;
-  background-color: #717fe0;
+  background-color: #1ed760;
 }
 
 /*---------------------------------------------*/
@@ -638,7 +642,7 @@ Input, textarea : 14px/1.6 '', Arial, sans-serif;
 
 /*---------------------------------------------*/
 .main-menu > li.active-menu > a {
-  color: #6c7ae0;
+  color: #1ed760;
 }
 
 
@@ -3051,7 +3055,7 @@ input.num-product::-webkit-inner-spin-button {
 
 .hov-cl0:hover {color: #fff;}
 .hov-bg0:hover {background-color: #fff;}
-.hov-cl1:hover {color: #717fe0;}
+.hov-cl1:hover {color: #1ed760;}
 .hov-bg1:hover {background-color: #717fe0;}
 
 /*---------------------------------------------*/
