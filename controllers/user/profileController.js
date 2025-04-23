@@ -2,6 +2,7 @@ const User = require("../../models/userSchema");
 const Category = require('../../models/categorySchema');
 const Product = require('../../models/productSchema');
 const Banner = require('../../models/BannerSchema');
+const Address = require('../../models/addressSchema')
 const nodemailer = require("nodemailer")
 const env = require("dotenv").config();
 const bcrypt = require("bcrypt");
@@ -390,6 +391,105 @@ const deleteAccount = async (req, res) => {
     }
 }
 
+const getManageAddress = async (req, res) => {
+    try {
+        const userId = req.session.user;
+        const userData = await User.findById(userId);
+        const userAddress = await Address.findOne({userId:userId});
+        
+        res.render('manage-address',{
+            user:userData,
+            address:userAddress.address
+        });
+    } catch (error) {
+        console.error("Error in getManageAddress:", error);
+        res.redirect('/pageNotFound');
+    }
+}
+
+const postAddAddress = async (req, res) => {
+    try {
+        const userId = req.session.user;
+        const userData = await User.findById(userId);
+        const {name,address,locality,landMark,city,pincode,state,phone,altPhone,addressType} = req.body;
+
+        const userAddress = await Address.findOne({userId:userId});
+        if(!userAddress){
+            const newAddress = new Address({
+                userId:userId,
+                address:[{
+                    name:name,
+                    address:address,
+                    locality:locality,
+                    landMark:landMark || "",
+                    city:city,
+                    pincode:pincode,
+                    state:state,
+                    phone:phone,
+                    altPhone:altPhone || "",
+                    addressType:addressType
+                }]
+            });
+            await newAddress.save();
+        }else{
+            userAddress.address.push({
+                addressType,name,city,address,locality,landMark,pincode,state,phone,altPhone
+            })
+            await userAddress.save();
+        }
+
+        res.status(201).json({ success: true, message: "Address added successfully." });
+
+    } catch (error) {
+        console.error("Error in postAddAddress:", error);
+        res.redirect('/pageNotFound');
+    }
+}
+
+const postEditAddress = async(req,res)=>{
+    try {
+        const userId = req.session.user; // Get the user ID from the session
+        const { addressId, name, address, locality, landMark, city, pincode, state, phone, altPhone, addressType } = req.body;
+
+        // Validate required fields
+        if (!addressId || !name || !address || !locality || !city || !pincode || !state || !phone || !addressType) {
+            return res.status(400).json({ success: false, message: "All required fields must be filled." });
+        }
+
+        // Find the user's address document
+        const userAddress = await Address.findOne({ userId });
+        if (!userAddress) {
+            return res.status(404).json({ success: false, message: "Address not found." });
+        }
+
+        // Find the specific address by its ID
+        const addressToEdit = userAddress.address.id(addressId);
+        if (!addressToEdit) {
+            return res.status(404).json({ success: false, message: "Address not found." });
+        }
+
+        // Update the address fields
+        addressToEdit.name = name;
+        addressToEdit.address = address;
+        addressToEdit.locality = locality;
+        addressToEdit.landMark = landMark || ""; // Optional field
+        addressToEdit.city = city;
+        addressToEdit.pincode = pincode;
+        addressToEdit.state = state;
+        addressToEdit.phone = phone;
+        addressToEdit.altPhone = altPhone || ""; // Optional field
+        addressToEdit.addressType = addressType;
+
+        // Save the updated document
+        await userAddress.save();
+
+        res.status(200).json({ success: true, message: "Address updated successfully." });
+    } catch (error) {
+        console.error("Error in postEditAddress:", error);
+        res.status(500).json({ success: false, message: "An error occurred while updating the address." });
+    }
+}
+
 module.exports = {
     getForgotPass,
     postForgotPass,
@@ -401,5 +501,8 @@ module.exports = {
     getChangePassword,
     postChangePassword,
     getForgotPassword,
-    deleteAccount
+    deleteAccount,
+    getManageAddress,
+    postAddAddress,
+    postEditAddress
 } 

@@ -134,6 +134,191 @@
     .dropdown:hover .dropbtn {
         background-color: #ddd;
     }
+	
+	/* Address Block Styling */
+	.address-block {
+	    border: 1px solid #ddd;
+	    border-radius: 8px;
+	    padding: 20px;
+	    margin-bottom: 20px;
+	    background-color: #f9f9f9;
+	    position: relative;
+	    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	}
+
+	.address-header {
+	    display: flex;
+	    justify-content: space-between;
+	    align-items: center;
+	    margin-bottom: 10px;
+	}
+
+	.address-name {
+	    font-size: 16px;
+	    font-family: 'Poppins-Medium', sans-serif;
+	    color: #333;
+	    margin: 0;
+	}
+
+	.three-dots {
+	    background: none;
+	    border: none;
+	    font-size: 18px;
+	    cursor: pointer;
+	    color: #333;
+	    transition: color 0.3s ease;
+	}
+
+	.three-dots:hover {
+	    color: #1ed760;
+	}
+
+	.address-details {
+	    font-size: 14px;
+	    font-family: 'Poppins-Regular', sans-serif;
+	    color: #555;
+	    line-height: 1.6;
+	    margin: 0;
+	}
+
+	/* Add New Address Button */
+	.add-address-btn {
+	    display: flex;
+	    align-items: center;
+	    justify-content: center;
+	    font-size: 14px;
+	    font-family: 'Poppins-Medium', sans-serif;
+	    color: #fff;
+	    background-color: #1ed760;
+	    border: none;
+	    border-radius: .25rem;
+	    padding: 10px 20px;
+	    cursor: pointer;
+	    transition: background-color 0.3s ease;
+	}
+
+	.add-address-btn i {
+	    margin-right: 8px;
+	    font-size: 16px;
+	}
+
+	.add-address-btn:hover {
+	    background-color: #17c653;
+	}
+	/* Address Type Label */
+.address-type {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    font-size: 12px;
+    font-family: 'Poppins-Bold', sans-serif;
+    color: #555;
+    padding: 5px 10px;
+    text-transform: uppercase;
+}
+
+/* Edit Address Form Styling */
+.edit-address-form {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 20px;
+	margin-bottom:20px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-label {
+    font-family: 'Poppins-Medium', sans-serif;
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-family: 'Poppins-Regular', sans-serif;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.btn {
+    padding: 10px 20px;
+    font-size: 14px;
+    font-family: 'Poppins-Medium', sans-serif;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-success {
+    background-color: #1ed760;
+    color: #fff;
+}
+
+.btn-success:hover {
+    background-color: #17c653;
+}
+
+.btn-secondary {
+    background-color: #ddd;
+    color: #333;
+}
+
+.btn-secondary:hover {
+    background-color: #ccc;
+}
+
+.address-type-options {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.radio-inline {
+    font-family: 'Poppins-Regular', sans-serif;
+    font-size: 14px;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.form-title {
+    font-family: 'Poppins-Medium', sans-serif;
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 20px;
+}
+.no-address-block {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    background-color: #f9f9f9;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.no-address-text {
+    font-size: 16px;
+    font-family: 'Poppins-Regular', sans-serif;
+    color: #555;
+    margin-bottom: 20px;
+}
 
 </style>
 
@@ -471,12 +656,12 @@
 		<div class="d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary" style="width: 280px; padding-left : 0 !important">
 			<ul class="flex-column mb-auto sider">
 				<li>
-					<a href="#" class="nav-link active" aria-current="page">
+					<a href="#" class="nav-link link-body-emphasis" aria-current="page">
 						Profile Information
 					</a>
 				</li>
 				<li>
-					<a href="/manage-address" class="nav-link link-body-emphasis">
+					<a href="/manage-address" class="nav-link active">
 						Manage Addresses
 					</a>
 				</li>
@@ -513,66 +698,188 @@
 	
 		<!-- Main Content -->
 		<div class="container p-4">
-			<div class="row g-5">
-				<div class="col-md-7 col-lg-8">
-					<h4 class="mb-3 section-heading">
-						Personal Information
-						<a href="#" id="editButton" style="font-size: 15px;">Edit</a>
-					</h4>
-					
-					<form class="needs-validation" novalidate="">
-						<div class="row g-3">
-							<!-- Name Field -->
-							<div class="col-8">
-								<input type="text" class="form-control" id="name" name="name" placeholder="Enter New Name" value="<%=user.name%>" disabled required="">
-								<div class="invalid-feedback">
-									Valid first name is required.
-								</div>
-							</div>
+		    <div class="row g-5">
+		        <div class="col-md-7 col-lg-8">
+		            <h4 class="mb-3 section-heading">
+		                Shipping Address
+		            </h4>
+				
+		            <!-- No Address Block -->
+		            <% if (address == null || address.length == 0) { %>
+		                <div class="no-address-block">
+		                    <p class="no-address-text">
+		                        You have not added any addresses yet.
+		                    </p>
+		                </div>
+		            <% } else { %>
+		                <!-- Address Blocks -->
+						<% address.forEach((address, index) => { %>
+						    <div class="address-block" data-index="<%= index %>">
+						        <div class="address-header">
+						            <h5 class="address-name"><%= address.name %></h5>
+						            <div class="dropdown">
+						                <button class="three-dots" id="addressMenuButton" data-toggle="dropdown" aria-expanded="false">
+						                    <i class="fa fa-ellipsis-v"></i>
+						                </button>
+						                <ul class="dropdown-menu" aria-labelledby="addressMenuButton">
+						                    <li><a class="dropdown-item edit-address-btn" href="#">Edit</a></li>
+						                    <li><a class="dropdown-item" href="#">Remove</a></li>
+						                </ul>
+						            </div>
+						        </div>
+						        <p class="address-details">
+						            <%= address.address %><br>
+						            <%= address.locality %>, <%= address.city %>, <%= address.pincode %><br>
+						            <%= address.state %><br>
+						            Phone: <%= address.phone %>
+						        </p>
+						        <!-- Address Type -->
+						        <span class="address-type"><%= address.addressType.toUpperCase() %></span>
 							
-							<!-- Email Field -->
-							<div class="col-8 form-group mb-0">
-								<label for="email" class="form-label">Email Address</label>
-								<input type="email" class="form-control" id="email" name="email" placeholder="Enter New Email Address" disabled value="<%=user.email%>">
-								<div class="invalid-feedback">
-									Please enter a valid email address for shipping updates.
+						        <!-- Edit Address Form (Hidden by Default) -->
+								<div class="edit-address-form" style="display: none;">
+								    <h4 class="form-title">Edit Address</h4>
+								    <form class="editAddressForm">
+										<!-- Hidden Input for Address ID -->
+        								<input type="hidden" name="addressId" value="<%= address._id %>">
+
+								        <div class="row">
+								            <div class="col-md-6 form-group">
+								                <label for="name" class="form-label">Name</label>
+								                <input type="text" class="form-control" name="name" value="<%= address.name %>" required>
+								            </div>
+								            <div class="col-md-6 form-group">
+								                <label for="phone" class="form-label">Phone</label>
+								                <input type="text" class="form-control" name="phone" value="<%= address.phone %>" required>
+								            </div>
+								        </div>
+								        <div class="form-group">
+								            <label for="address" class="form-label">Address</label>
+								            <textarea class="form-control" name="address" rows="3" required><%= address.address %></textarea>
+								        </div>
+								        <div class="row">
+								            <div class="col-md-6 form-group">
+								                <label for="pincode" class="form-label">Pincode</label>
+								                <input type="text" class="form-control" name="pincode" value="<%= address.pincode %>" required>
+								            </div>
+								            <div class="col-md-6 form-group">
+								                <label for="locality" class="form-label">Locality</label>
+								                <input type="text" class="form-control" name="locality" value="<%= address.locality %>" required>
+								            </div>
+								        </div>
+								        <div class="row">
+								            <div class="col-md-6 form-group">
+								                <label for="city" class="form-label">City</label>
+								                <input type="text" class="form-control" name="city" value="<%= address.city %>" required>
+								            </div>
+								            <div class="col-md-6 form-group">
+								                <label for="state" class="form-label">State</label>
+								                <input type="text" class="form-control" name="state" value="<%= address.state %>" required>
+								            </div>
+								        </div>
+								        <div class="row">
+								            <div class="col-md-6 form-group">
+								                <label for="landmark" class="form-label">Landmark (Optional)</label>
+								                <input type="text" class="form-control" name="landMark" value="<%= address.landMark || "" %>">
+								            </div>
+								            <div class="col-md-6 form-group">
+								                <label for="altPhone" class="form-label">Alternate Phone (Optional)</label>
+								                <input type="text" class="form-control" name="altPhone" value="<%= address.altPhone || "" %>">
+								            </div>
+								        </div>
+								        <div class="form-group">
+								            <label class="form-label">Address Type</label>
+								            <div class="address-type-options">
+								                <label class="radio-inline">
+								                    <input type="radio" name="addressType<%= index %>" value="home" <%= address.addressType === "home" ? "checked" : "" %>> Home
+								                </label>
+								                <label class="radio-inline">
+								                    <input type="radio" name="addressType<%= index %>" value="work" <%= address.addressType === "work" ? "checked" : "" %>> Work
+								                </label>
+								            </div>
+								        </div>
+								        <div class="form-actions">
+								            <button type="submit" class="btn btn-success save-edit-btn">Save</button>
+								            <button type="button" class="btn btn-secondary cancel-edit-btn">Cancel</button>
+								        </div>
+								    </form>
 								</div>
-							</div>
-							
-							<!-- Mobile Number Field -->
-							<div class="col-8 form-group">
-								<label class="form-label">Mobile Number</label>
-								<input type="text" class="form-control" id="phone" name="phone" placeholder="Enter New Mobile Number" disabled value="<%=user.phone ? user.phone : 'Not Found'%>">
-								<div class="invalid-feedback">
-									Please enter your mobile number
-								</div>
-							</div>
-						</div>
+						    </div>
+						<% }); %>
+		            <% } %>
 						
-						<!-- Submit Button -->
-						<button class="mb-4 btn btn-primary btn-md" id="saveButton" type="submit" style="display: none;">Save</button>
-					</form>
-					
-					<!-- Delete Account Link -->
-					<%if(!user.googleId){%>
-						<a href="/change-password" style="font-size: 14px;font-family: Poppins-Medium;">
-							Change Password
-						</a>
-						<br>
-					<%}%>
-					<br>
-					<a href="" style="font-size: 14px;
-									font-family: Poppins-Medium;
-									color: red;
-									transition: color 0.3s ease;
-									padding-top: 10px;" 
-						onmouseover="this.style.color='rgba(255, 0, 0, 0.678)'" 
-						onmouseout="this.style.color='red'" id="deleteAccount">Delete Account
-					</a>
+					<!-- Add Address Form (Hidden) -->
+					<div class="addAddressFormContainer edit-address-form" style="display: none;">
+						<h4 class="form-title">Add Address</h4>
+            			<form id=  "addAddressForm">
+            			    <div class="row">
+            			        <div class="col-md-6 form-group">
+            			            <label for="name" class="form-label">Name</label>
+            			            <input type="text" id="name" class="form-control" value="" required>
+            			        </div>
+            			        <div class="col-md-6 form-group">
+            			            <label for="phone" class="form-label">Phone</label>
+            			            <input type="text" id="phone" class="form-control" value="" required>
+            			        </div>
+            			    </div>
+            			    <div class="form-group">
+            			        <label for="address" class="form-label">Address</label>
+            			        <textarea id="address" class="form-control" rows="3" required></textarea>
+            			    </div>
+            			    <div class="row">
+            			        <div class="col-md-6 form-group">
+            			            <label for="pincode" class="form-label">Pincode</label>
+            			            <input type="text" id="pincode" class="form-control" value="" required>
+            			        </div>
+            			        <div class="col-md-6 form-group">
+            			            <label for="locality" class="form-label">Locality</label>
+            			            <input type="text" id="locality" class="form-control" value="" required>
+            			        </div>
+            			    </div>
+            			    <div class="row">
+            			        <div class="col-md-6 form-group">
+            			            <label for="city" class="form-label">City</label>
+            			            <input type="text" id="city" class="form-control" value="" required>
+            			        </div>
+            			        <div class="col-md-6 form-group">
+            			            <label for="state" class="form-label">State</label>
+            			            <input type="text" id="state" class="form-control" value="" required>
+            			        </div>
+            			    </div>
+            			    <div class="row">
+            			        <div class="col-md-6 form-group">
+            			            <label for="landmark" class="form-label">Landmark (Optional)</label>
+            			            <input type="text" id="landmark" class="form-control" value="">
+            			        </div>
+            			        <div class="col-md-6 form-group">
+            			            <label for="altPhone" class="form-label">Alternate Phone (Optional)</label>
+            			            <input type="text" id="altPhone" class="form-control" value="">
+            			        </div>
+            			    </div>
+            			    <div class="form-group">
+            			        <label class="form-label">Address Type</label>
+            			        <div class="address-type-options">
+            			            <label class="radio-inline">
+            			                <input type="radio" name="addressType" value="home" checked> Home
+            			            </label>
+            			            <label class="radio-inline">
+            			                <input type="radio" name="addressType" value="work" > Work
+            			            </label>
+            			        </div>
+            			    </div>
+            			    <div class="form-actions">
+            			        <button type="submit" class="btn btn-success save-address-btn">Save</button>
+            			        <button type="button" class="btn btn-secondary cancel-edit-btn cancel-add-btn">Cancel</button>
+            			    </div>
+            			</form>
+					</div>
 
-
-				</div>
-			</div>
+		            <!-- Add New Address Button -->
+		            <button class="add-address-btn">
+		                <i class="fa fa-plus"></i> Add New Address
+		            </button>
+		        </div>
+		    </div>
 		</div>
 	</div>
 
@@ -896,206 +1203,202 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 	<script>
 
-		document.addEventListener("DOMContentLoaded", function() {
-		    const editButton = document.getElementById("editButton");
-		    const saveButton = document.getElementById("saveButton");
-		    const inputs = document.querySelectorAll("input");
-			const input1 = document.getElementById('name');
-			const input2 = document.getElementById('email');
-			const input3 = document.getElementById('phone')
-		
-		    editButton.addEventListener("click", function(event) {
-		        event.preventDefault();
-			
-		        if (editButton.textContent === "Edit") {
-		            editButton.textContent = "Cancel";
-		            saveButton.style.display = "inline-block";
-		            input1.disabled = false;
-					input2.disabled = false;
-					input3.disabled = false
-					if(input3.value == "Not Found"){
-						input3.value = ""
-					}
 
-		        } else {
-		            editButton.textContent = "Edit";
-		            saveButton.style.display = "none";
-		            input1.disabled = true;
-					input2.disabled = true;
-					input3.disabled = true;
-					if(input3.value == ""){
-						input3.value = "Not Found"
-					}
-		        }
-		    });
-		});
+document.addEventListener("DOMContentLoaded", function () {
+    const addAddressFormContainer = document.querySelector(".addAddressFormContainer");
+    const addAddressBtn = document.querySelector(".add-address-btn");
+    const cancelAddAddressBtn = document.querySelector(".cancel-add-btn");
+    const addAddressForm = document.querySelector("#addAddressForm");
 
-		$(".js-select2").each(function(){
-			$(this).select2({
-				minimumResultsForSearch: 20,
-				dropdownParent: $(this).next('.dropDownSelect2')
-			});
-		})
+    // Show the Add Address Form when the Add button is clicked
+    addAddressBtn.addEventListener("click", function () {
+        addAddressFormContainer.style.display = "block"; // Show the form
+        addAddressBtn.style.display = "none"; // Hide the Add button
+    });
 
-		document.addEventListener("DOMContentLoaded", function () {
-		    const saveButton = document.getElementById("saveButton");
-				
-		    saveButton.addEventListener("click", function (event) {
-		        event.preventDefault();
-			
-		        // Clear previous error messages
-		        document.querySelectorAll(".invalid-feedback").forEach(el => el.style.display = "none");
-			
-		        // Get input values
-		        const name = document.getElementById("name").value.trim();
-		        const email = document.getElementById("email").value.trim();
-		        const phone = document.getElementById("phone").value.trim();
-			
-		        // Validation flags
-		        let isValid = true;
-			
-		        // Validate name
-		        if (name === "") {
-		            const nameError = document.querySelector("#name + .invalid-feedback");
-		            nameError.textContent = "Name is required.";
-		            nameError.style.display = "block";
-		            isValid = false;
-		        }
-			
-		        // Validate email
-		        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-		        if (email === "") {
-		            const emailError = document.querySelector("#email + .invalid-feedback");
-		            emailError.textContent = "Email is required.";
-		            emailError.style.display = "block";
-		            isValid = false;
-		        } else if (!emailRegex.test(email)) {
-		            const emailError = document.querySelector("#email + .invalid-feedback");
-		            emailError.textContent = "Invalid email format.";
-		            emailError.style.display = "block";
-		            isValid = false;
-		        }
-			
-		        // Validate phone
-		        const phoneRegex = /^[0-9]{10}$/; // Example: 10-digit phone number
-		        if (phone === "") {
-		            const phoneError = document.querySelector("#phone + .invalid-feedback");
-		            phoneError.textContent = "Phone number is required.";
-		            phoneError.style.display = "block";
-		            isValid = false;
-		        } else if (!phoneRegex.test(phone)) {
-		            const phoneError = document.querySelector("#phone + .invalid-feedback");
-		            phoneError.textContent = "Invalid phone number format.";
-		            phoneError.style.display = "block";
-		            isValid = false;
-		        }
-			
-		        // If validation fails, stop submission
-		        if (!isValid) return;
-			
-		        // Prepare data for AJAX
-		        const formData = {
-		            name: name,
-		            email: email,
-		            phone: phone
-		        };
-			
-		        // AJAX request
-		        fetch("/editProfile", {
-		            method: "POST",
-		            headers: {
-		                "Content-Type": "application/json"
-		            },
-		            body: JSON.stringify(formData)
-		        })
-		            .then(response => response.json())
-		            .then(data => {
-		                if (data.success) {
-		                    // Handle success response
-		                    Swal.fire({
-		                        icon: "success",
-		                        title: "Success",
-		                        text: data.message || "Profile updated successfully!"
-		                    }).then(()=>{
-								window.location.href = data.redirectUrl || "/userProfile"; // Redirect to the profile page or any other page
-                			})
-		                } else {
-		                    // Handle error response
-		                    Swal.fire({
-		                        icon: "error",
-		                        title: "Error",
-		                        text: data.message || "An error occurred. Please try again."
-		                    })
-		                }
-		            })
-		            .catch(error => {
-		                // Handle network or unexpected errors
-						console.log(error);
-		                Swal.fire({
-		                    icon: "error",
-		                    title: "Error",
-		                    text: "An unexpected error occurred. Please try again."
-		                });
-		            });
-		    });
-		});
+    // Hide the Add Address Form and reset fields when the Cancel button is clicked
+    cancelAddAddressBtn.addEventListener("click", function () {
+        addAddressBtn.style.display = "block"; // Show the Add button
+        addAddressFormContainer.style.display = "none"; // Hide the form
+        addAddressForm.reset(); // Reset all fields in the form
+    });
+});
 
-		document.addEventListener("DOMContentLoaded", function () {
-		    const deleteAccountLink = document.getElementById('deleteAccount') // Select the "Delete Account" link
+document.addEventListener("DOMContentLoaded", function () {
+    const editAddressForms = document.querySelectorAll(".edit-address-form");
+    const editAddressBtns = document.querySelectorAll(".edit-address-btn");
+    const cancelEditBtns = document.querySelectorAll(".cancel-edit-btn");
 
-		    deleteAccountLink.addEventListener("click", function (event) {
-		        event.preventDefault(); // Prevent the default link behavior
-			
-		        Swal.fire({
-		            title: "Are you sure?",
-		            text: "This action will permanently delete your account and cannot be undone.",
-		            icon: "warning",
-		            showCancelButton: true,
-		            confirmButtonColor: "#d33",
-		            cancelButtonColor: "#3085d6",
-		            confirmButtonText: "Yes",
-		            cancelButtonText: "Cancel"
-		        }).then((result) => {
-		            if (result.isConfirmed) {
-		                // Send a request to delete the account
-		                fetch("/delete-account", {
-		                    method: "DELETE",
-		                    headers: {
-		                        "Content-Type": "application/json"
-		                    }
-		                })
-		                    .then(response => response.json())
-		                    .then(data => {
-		                        if (data.success) {
-		                            Swal.fire({
-		                                icon: "success",
-		                                title: "Deleted!",
-		                                text: "Your account has been deleted.",
-		                                showConfirmButton: false,
-		                                timer: 2000
-		                            }).then(() => {
-		                                window.location.href = "/"; // Redirect to the homepage or login page
-		                            });
-		                        } else {
-		                            Swal.fire({
-		                                icon: "error",
-		                                title: "Error",
-		                                text: data.message || "An error occurred. Please try again."
-		                            });
-		                        }
-		                    })
-		                    .catch(error => {
-		                        console.error("Error deleting account:", error);
-		                        Swal.fire({
-		                            icon: "error",
-		                            title: "Error",
-		                            text: "An unexpected error occurred. Please try again."
-		                        });
-		                    });
-		            }
-		        });
-		    });
-		});
+    // Show the Edit Address Form when the Edit button is clicked
+    editAddressBtns.forEach((editBtn, index) => {
+        editBtn.addEventListener("click", function (event) {
+            event.preventDefault();
+            const editForm = editAddressForms[index];
+            editForm.style.display = "block"; // Show the form
+        });
+    });
+
+    // Hide the Edit Address Form and reset fields when the Cancel button is clicked
+    cancelEditBtns.forEach((cancelBtn, index) => {
+        cancelBtn.addEventListener("click", function () {
+            const editForm = editAddressForms[index];
+            editForm.style.display = "none"; // Hide the form
+            const form = editForm.querySelector("form");
+            form.reset(); // Reset all fields in the form
+        });
+    });
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    const validateForm = (formData) => {
+        const errors = [];
+
+        // Validate Name
+        if (!formData.name.trim()) {
+            errors.push("Name is required.");
+        }
+
+        // Validate Phone
+        if (!/^\d{10}$/.test(formData.phone)) {
+            errors.push("Phone must be exactly 10 digits.");
+        }
+
+        // Validate AltPhone (if provided)
+        if (formData.altPhone && !/^\d{10}$/.test(formData.altPhone)) {
+            errors.push("Alternate Phone must be exactly 10 digits.");
+        }
+
+        // Ensure AltPhone is not equal to Phone
+        if (formData.altPhone && formData.altPhone === formData.phone) {
+            errors.push("Alternate Phone must not be the same as Phone.");
+        }
+
+        // Validate Address
+        if (!formData.address.trim()) {
+            errors.push("Address is required.");
+        }
+
+        // Validate Locality
+        if (!formData.locality.trim()) {
+            errors.push("Locality is required.");
+        }
+
+        // Validate City
+        if (!formData.city.trim()) {
+            errors.push("City is required.");
+        }
+
+        // Validate State
+        if (!formData.state.trim()) {
+            errors.push("State is required.");
+        }
+
+        // Validate Pincode
+        if (!/^\d{6}$/.test(formData.pincode)) {
+            errors.push("Pincode must be exactly 6 digits.");
+        }
+
+        return errors;
+    };
+
+    // Handle Add Address Form Submission
+    const addAddressForm = document.querySelector("#addAddressForm");
+    if (addAddressForm) {
+        addAddressForm.addEventListener("submit", async function (event) {
+            event.preventDefault();
+
+            const formData = {
+                name: document.getElementById("name").value,
+                phone: document.getElementById("phone").value,
+                address: document.getElementById("address").value,
+                city: document.getElementById("city").value,
+                state: document.getElementById("state").value,
+                pincode: document.getElementById("pincode").value,
+                locality: document.getElementById("locality").value,
+                landMark: document.getElementById("landmark")?.value || "",
+                altPhone: document.getElementById("altPhone")?.value || "",
+                addressType: document.querySelector('input[name="addressType"]:checked').value,
+            };
+
+            const errors = validateForm(formData);
+            if (errors.length > 0) {
+                Swal.fire("Validation Error", errors.join("<br>"), "error");
+                return;
+            }
+
+            try {
+                const response = await fetch("/add-address", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(formData),
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    Swal.fire("Success", "Address added successfully!", "success").then(() => {
+                        location.reload(); // Reload the page to reflect the new address
+                    });
+                } else {
+                    Swal.fire("Error", result.message || "Failed to add address.", "error");
+                }
+            } catch (error) {
+                console.error("Error adding address:", error);
+                Swal.fire("Error", "An error occurred while adding the address.", "error");
+            }
+        });
+    }
+
+    // Handle Edit Address Form Submission
+    document.querySelectorAll(".editAddressForm").forEach((form, index) => {
+        form.addEventListener("submit", async function (event) {
+            event.preventDefault();
+
+            const formData = {
+                addressId: form.querySelector("input[name='addressId']").value,
+                name: form.querySelector("input[name='name']").value,
+                phone: form.querySelector("input[name='phone']").value,
+                address: form.querySelector("textarea[name='address']").value,
+                city: form.querySelector("input[name='city']").value,
+                state: form.querySelector("input[name='state']").value,
+                pincode: form.querySelector("input[name='pincode']").value,
+                locality: form.querySelector("input[name='locality']").value,
+                landMark: form.querySelector("input[name='landMark']").value || "",
+                altPhone: form.querySelector("input[name='altPhone']").value || "",
+                addressType: form.querySelector(`input[name="addressType${index}"]:checked`).value,
+            };
+
+            const errors = validateForm(formData);
+            if (errors.length > 0) {
+                Swal.fire("Validation Error", errors.join("<br>"), "error");
+                return;
+            }
+
+            try {
+                const response = await fetch(`/edit-address`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(formData),
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    Swal.fire("Success", "Address updated successfully!", "success").then(() => {
+                        location.reload(); // Reload the page to reflect the updated address
+                    });
+                } else {
+                    Swal.fire("Error", result.message || "Failed to update address.", "error");
+                }
+            } catch (error) {
+                console.error("Error updating address:", error);
+                Swal.fire("Error", "An error occurred while updating the address.", "error");
+            }
+        });
+    });
+});
 
 	</script>
 <!--===============================================================================================-->

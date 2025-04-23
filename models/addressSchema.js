@@ -12,6 +12,10 @@ const addressSchema = new Schema({
             type:String,
             required:true
         },
+        address:{
+            type:String,
+            required:true
+        },
         name:{
             type:String,
             required:true
@@ -30,6 +34,10 @@ const addressSchema = new Schema({
         },
         pincode:{
             type:Number,
+            required:true
+        },
+        locality:{
+            type:String,
             required:true
         },
         phone:{

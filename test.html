@@ -217,6 +217,108 @@
     text-transform: uppercase;
 }
 
+/* Edit Address Form Styling */
+.edit-address-form {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 20px;
+	margin-bottom:20px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-label {
+    font-family: 'Poppins-Medium', sans-serif;
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-family: 'Poppins-Regular', sans-serif;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.btn {
+    padding: 10px 20px;
+    font-size: 14px;
+    font-family: 'Poppins-Medium', sans-serif;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-success {
+    background-color: #1ed760;
+    color: #fff;
+}
+
+.btn-success:hover {
+    background-color: #17c653;
+}
+
+.btn-secondary {
+    background-color: #ddd;
+    color: #333;
+}
+
+.btn-secondary:hover {
+    background-color: #ccc;
+}
+
+.address-type-options {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.radio-inline {
+    font-family: 'Poppins-Regular', sans-serif;
+    font-size: 14px;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.form-title {
+    font-family: 'Poppins-Medium', sans-serif;
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 20px;
+}
+.no-address-block {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    background-color: #f9f9f9;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.no-address-text {
+    font-size: 16px;
+    font-family: 'Poppins-Regular', sans-serif;
+    color: #555;
+    margin-bottom: 20px;
+}
 </style>
 
 </head>
@@ -610,28 +712,99 @@
 		            </h4>
 				
 		            <!-- Address Block -->
-<div class="address-block">
-    <div class="address-header">
-        <h5 class="address-name">Ranjan Kumar</h5>
-        <div class="dropdown">
-            <button class="three-dots" id="addressMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="fa fa-ellipsis-v"></i>
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="addressMenuButton">
-                <li><a class="dropdown-item" href="#">Edit</a></li>
-                <li><a class="dropdown-item" href="#">Remove</a></li>
-            </ul>
-        </div>
-    </div>
-    <p class="address-details">
-        Silver Star Appartment, Flat no. B-302, Plot no. 50, 63, 64, 65<br>
-        Sector-18, Kamothe, PANVEL 410209<br>
-        Maharashtra<br>
-        Phone: 9769902936
-    </p>
-    <!-- Address Type -->
-    <span class="address-type">HOME</span>
-</div>
+					<div class="no-address-block" >
+						<p class="no-address-text">
+							You have not added any addresses yet.
+						</p>
+					</div>
+
+					<div class="address-block">
+					    <div class="address-header">
+					        <h5 class="address-name">Ranjan Kumar</h5>
+					        <div class="dropdown">
+					            <button class="three-dots" id="addressMenuButton" data-toggle="dropdown" aria-expanded="false">
+					                <i class="fa fa-ellipsis-v"></i>
+					            </button>
+					            <ul class="dropdown-menu" aria-labelledby="addressMenuButton">
+					                <li><a class="dropdown-item edit-address-btn" href="#">Edit</a></li>
+					                <li><a class="dropdown-item" href="#">Remove</a></li>
+					            </ul>
+					        </div>
+					    </div>
+					    <p class="address-details">
+					        Silver Star Appartment, Flat no. B-302, Plot no. 50, 63, 64, 65<br>
+					        Sector-18, Kamothe, PANVEL 410209<br>
+					        Maharashtra<br>
+					        Phone: 9769902936
+					    </p>
+					    <!-- Address Type -->
+					    <span class="address-type">HOME</span>
+					</div> 
+
+					<div class="addAddressFormContainer edit-address-form">
+						<h4 class="form-title">Add Address</h4>
+            			<form id=  "addAddressForm">
+            			    <div class="row">
+            			        <div class="col-md-6 form-group">
+            			            <label for="name" class="form-label">Name</label>
+            			            <input type="text" id="name" class="form-control" value="" required>
+            			        </div>
+            			        <div class="col-md-6 form-group">
+            			            <label for="phone" class="form-label">Phone</label>
+            			            <input type="text" id="phone" class="form-control" value="" required>
+            			        </div>
+            			    </div>
+            			    <div class="form-group">
+            			        <label for="address" class="form-label">Address</label>
+            			        <textarea id="address" class="form-control" rows="3" required></textarea>
+            			    </div>
+            			    <div class="row">
+            			        <div class="col-md-6 form-group">
+            			            <label for="pincode" class="form-label">Pincode</label>
+            			            <input type="text" id="pincode" class="form-control" value="" required>
+            			        </div>
+            			        <div class="col-md-6 form-group">
+            			            <label for="locality" class="form-label">Locality</label>
+            			            <input type="text" id="locality" class="form-control" value="" required>
+            			        </div>
+            			    </div>
+            			    <div class="row">
+            			        <div class="col-md-6 form-group">
+            			            <label for="city" class="form-label">City</label>
+            			            <input type="text" id="city" class="form-control" value="" required>
+            			        </div>
+            			        <div class="col-md-6 form-group">
+            			            <label for="state" class="form-label">State</label>
+            			            <input type="text" id="state" class="form-control" value="" required>
+            			        </div>
+            			    </div>
+            			    <div class="row">
+            			        <div class="col-md-6 form-group">
+            			            <label for="landmark" class="form-label">Landmark (Optional)</label>
+            			            <input type="text" id="landmark" class="form-control" value="">
+            			        </div>
+            			        <div class="col-md-6 form-group">
+            			            <label for="altPhone" class="form-label">Alternate Phone (Optional)</label>
+            			            <input type="text" id="altPhone" class="form-control" value="">
+            			        </div>
+            			    </div>
+            			    <div class="form-group">
+            			        <label class="form-label">Address Type</label>
+            			        <div class="address-type-options">
+            			            <label class="radio-inline">
+            			                <input type="radio" name="addressType" value="home" checked> Home
+            			            </label>
+            			            <label class="radio-inline">
+            			                <input type="radio" name="addressType" value="work" > Work
+            			            </label>
+            			        </div>
+            			    </div>
+            			    <div class="form-actions">
+            			        <button type="submit" class="btn btn-success save-address-btn">Save</button>
+            			        <button type="button" class="btn btn-secondary cancel-edit-btn">Cancel</button>
+            			    </div>
+            			</form>
+					</div>
 				
 		            <!-- Add New Address Button -->
 		            <button class="add-address-btn">
@@ -961,6 +1134,158 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 	<script src="public/vendor/select2/select2.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 	<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+    const addressBlocks = document.querySelectorAll(".address-block");
+    const addAddressBtn = document.querySelector(".add-address-btn");
+    let currentEditForm = null;
+
+    // Function to create a new form dynamically
+    function createEditForm(addressData = {}, isEdit = false) {
+    const form = document.createElement("div");
+    form.classList.add("edit-address-form");
+	if(!isEdit){
+		addressData.addressType = "home"
+	}
+    form.innerHTML = `
+        <h4 class="form-title">${isEdit ? "Edit Address" : "Add Address"}</h4>
+        <form id="editAddressForm">
+            <div class="row">
+                <div class="col-md-6 form-group">
+                    <label for="name" class="form-label">Name</label>
+                    <input type="text" id="name" class="form-control" value="${addressData.name || ""}" required>
+                </div>
+                <div class="col-md-6 form-group">
+                    <label for="phone" class="form-label">Phone</label>
+                    <input type="text" id="phone" class="form-control" value="${addressData.phone || ""}" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="address" class="form-label">Address</label>
+                <textarea id="address" class="form-control" rows="3" required>${addressData.address || ""}</textarea>
+            </div>
+            <div class="row">
+                <div class="col-md-6 form-group">
+                    <label for="pincode" class="form-label">Pincode</label>
+                    <input type="text" id="pincode" class="form-control" value="${addressData.pincode || ""}" required>
+                </div>
+                <div class="col-md-6 form-group">
+                    <label for="locality" class="form-label">Locality</label>
+                    <input type="text" id="locality" class="form-control" value="${addressData.locality || ""}" required>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 form-group">
+                    <label for="city" class="form-label">City</label>
+                    <input type="text" id="city" class="form-control" value="${addressData.city || ""}" required>
+                </div>
+                <div class="col-md-6 form-group">
+                    <label for="state" class="form-label">State</label>
+                    <input type="text" id="state" class="form-control" value="${addressData.state || ""}" required>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 form-group">
+                    <label for="landmark" class="form-label">Landmark (Optional)</label>
+                    <input type="text" id="landmark" class="form-control" value="${addressData.landmark || ""}">
+                </div>
+                <div class="col-md-6 form-group">
+                    <label for="altPhone" class="form-label">Alternate Phone (Optional)</label>
+                    <input type="text" id="altPhone" class="form-control" value="${addressData.altPhone || ""}">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Address Type</label>
+                <div class="address-type-options">
+                    <label class="radio-inline">
+                        <input type="radio" name="addressType" value="home" ${addressData.addressType === "home" ? "checked" : ""}> Home
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="addressType" value="work" ${addressData.addressType === "work" ? "checked" : ""}> Work
+                    </label>
+                </div>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-success save-address-btn">Save</button>
+                <button type="button" class="btn btn-secondary cancel-edit-btn">Cancel</button>
+            </div>
+        </form>
+    `;
+    return form;
+}
+
+    // Function to cancel the current edit form
+    function cancelCurrentEditForm() {
+        if (currentEditForm) {
+            currentEditForm.remove();
+            currentEditForm = null;
+        }
+        addressBlocks.forEach(block => block.style.display = "block");
+    }
+
+    // Add event listeners to all "Edit" buttons
+    addressBlocks.forEach(block => {
+        const editButton = block.querySelector(".edit-address-btn");
+        editButton.addEventListener("click", function (event) {
+            event.preventDefault();
+            cancelCurrentEditForm();
+
+            // Hide the current address block
+            block.style.display = "none";
+
+            // Create and display the edit form
+            const addressData = {
+                name: block.querySelector(".address-name").textContent.trim(),
+                phone: block.querySelector(".address-details").textContent.match(/Phone: (\d+)/)?.[1] || "",
+                address: block.querySelector(".address-details").innerHTML.split("<br>")[0].trim(),
+                city: "PANVEL", // Replace with actual data
+                state: "Maharashtra", // Replace with actual data
+                pincode: "410209", // Replace with actual data
+                locality: "Kamothe", // Replace with actual data
+                landmark: "Sector-18, Kamothe", // Replace with actual data
+                altPhone: "", // Replace with actual data
+                addressType: block.querySelector(".address-type").textContent.toLowerCase(),
+            };
+            const form = createEditForm(addressData,isEdit = true);
+            block.insertAdjacentElement("afterend", form);
+            currentEditForm = form;
+
+            // Add event listener for "Cancel" button
+            const cancelEditBtn = form.querySelector(".cancel-edit-btn");
+            cancelEditBtn.addEventListener("click", cancelCurrentEditForm);
+
+            // Add event listener for "Save" button
+            const editAddressFormElement = form.querySelector("#editAddressForm");
+            editAddressFormElement.addEventListener("submit", function (event) {
+                event.preventDefault();
+                alert("Address updated successfully!");
+                cancelCurrentEditForm();
+            });
+        });
+    });
+
+    // Add event listener to "Add Address" button
+    addAddressBtn.addEventListener("click", function () {
+        cancelCurrentEditForm();
+
+        // Create and display a blank form
+        const form = createEditForm();
+        addAddressBtn.insertAdjacentElement("beforebegin", form);
+        currentEditForm = form;
+
+        // Add event listener for "Cancel" button
+        const cancelEditBtn = form.querySelector(".cancel-edit-btn");
+        cancelEditBtn.addEventListener("click", cancelCurrentEditForm);
+
+        // Add event listener for "Save" button
+        const editAddressFormElement = form.querySelector("#editAddressForm");
+        editAddressFormElement.addEventListener("submit", function (event) {
+            event.preventDefault();
+            alert("New address added successfully!");
+            cancelCurrentEditForm();
+        });
+    });
+});
 
 document.addEventListener("DOMContentLoaded", function () {
     const otpInput = document.getElementById("otp");
