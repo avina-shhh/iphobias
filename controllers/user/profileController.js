@@ -125,6 +125,8 @@ const postForgotPass = async(req,res)=>{
 const getNewPass = async(req,res)=>{
     try {
         if(req.session.validForNewPass){
+            req.session.validForNewPass = false;
+            req.session.save();
             res.render('newPass');
         }else{
             res.redirect('/login')
@@ -490,6 +492,46 @@ const postEditAddress = async(req,res)=>{
     }
 }
 
+const getSavedUpi = async(req,res)=>{
+    try {
+        res.render('saved-upi');
+    } catch (error) {
+        console.error("Error in getSavedUpi:", error);
+        res.redirect('/pageNotFound');
+    }
+}
+
+const deleteAddress = async(req,res)=>{
+    try {
+        const userId = req.session.user;
+        const {addressId} = req.body;
+
+        if(!addressId){
+            return res.status(400).json({ success: false, message: "Address ID is required." });
+        }
+
+        // Find the user's address document
+        const userAddress = await Address.findOne({ userId });
+        if (!userAddress) {
+            return res.status(404).json({ success: false, message: "Address not found." });
+        }
+
+        // Remove the specific address by its ID
+        const addressIndex = userAddress.address.findIndex((addr) => addr._id.toString() === addressId);
+        if (addressIndex === -1) {
+            return res.status(404).json({ success: false, message: "Address not found." });
+        }
+
+        userAddress.address.splice(addressIndex, 1); // Remove the address
+        await userAddress.save(); // Save the updated document
+
+        res.status(200).json({ success: true, message: "Address deleted successfully." });
+    } catch (error) {
+        console.error("Error in deleteAddress:", error);
+        res.status(500).json({ success: false, message: "An error occurred while deleting the address." });
+    }
+};
+
 module.exports = {
     getForgotPass,
     postForgotPass,
@@ -504,5 +546,7 @@ module.exports = {
     deleteAccount,
     getManageAddress,
     postAddAddress,
-    postEditAddress
+    postEditAddress,
+    getSavedUpi,
+    deleteAddress
 } 

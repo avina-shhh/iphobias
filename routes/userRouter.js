@@ -31,13 +31,15 @@ router.get('/new-password',profileController.getNewPass)
 router.post('/new-password',profileController.postNewPass)
 router.get('/userProfile',userAuth,profileController.getProfile)
 router.post('/editProfile',profileController.postEditProfile);
-router.get('/newEmail',profileController.getNewEmail);
-router.get('/change-password',profileController.getChangePassword);
+router.get('/newEmail',userAuth,profileController.getNewEmail);
+router.get('/change-password',userAuth,profileController.getChangePassword);
 router.post('/change-password',profileController.postChangePassword);
-router.get('/forgotPassword',profileController.getForgotPassword);
+router.get('/forgotPassword',userAuth,profileController.getForgotPassword); //After Login Forgot Password
 router.delete('/delete-account',profileController.deleteAccount);
-router.get('/manage-address',profileController.getManageAddress);
+router.get('/manage-address',userAuth,profileController.getManageAddress);
 router.post('/add-address',profileController.postAddAddress);
 router.post('/edit-address',profileController.postEditAddress);
+router.get('/saved-upi',userAuth,profileController.getSavedUpi);
+router.delete('/delete-address',profileController.deleteAddress);
 
 module.exports = router;

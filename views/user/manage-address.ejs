@@ -656,7 +656,7 @@
 		<div class="d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary" style="width: 280px; padding-left : 0 !important">
 			<ul class="flex-column mb-auto sider">
 				<li>
-					<a href="#" class="nav-link link-body-emphasis" aria-current="page">
+					<a href="/userProfile" class="nav-link link-body-emphasis" aria-current="page">
 						Profile Information
 					</a>
 				</li>
@@ -666,7 +666,7 @@
 					</a>
 				</li>
 				<li>
-					<a href="#" class="nav-link link-body-emphasis">
+					<a href="/saved-upi" class="nav-link link-body-emphasis">
 						Saved UPI
 					</a>
 				</li>
@@ -723,7 +723,7 @@
 						                </button>
 						                <ul class="dropdown-menu" aria-labelledby="addressMenuButton">
 						                    <li><a class="dropdown-item edit-address-btn" href="#">Edit</a></li>
-						                    <li><a class="dropdown-item" href="#">Remove</a></li>
+						                    <li><a class="dropdown-item delete-address-btn" data-address-id="<%=address._id%>" href="#">Remove</a></li>
 						                </ul>
 						            </div>
 						        </div>
@@ -1396,6 +1396,68 @@ document.addEventListener("DOMContentLoaded", function () {
                 console.error("Error updating address:", error);
                 Swal.fire("Error", "An error occurred while updating the address.", "error");
             }
+        });
+    });
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    const deleteAddressBtns = document.querySelectorAll(".delete-address-btn");
+
+    deleteAddressBtns.forEach((deleteBtn) => {
+        deleteBtn.addEventListener("click", function (event) {
+            event.preventDefault();
+
+            const addressId = deleteBtn.getAttribute("data-address-id");
+
+            Swal.fire({
+                title: "Are you sure?",
+                text: "This action will delete the address and cannot be undone.",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "Yes",
+                cancelButtonText: "Cancel",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Send a DELETE request to the server
+                    fetch(`/delete-address`, {
+                        method: "DELETE",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ addressId }),
+                    })
+                        .then((response) => response.json())
+                        .then((data) => {
+                            if (data.success) {
+                                Swal.fire({
+                                    icon: "success",
+                                    title: "Deleted!",
+                                    text: "The address has been deleted.",
+                                    showConfirmButton: false,
+                                    timer: 2000,
+                                }).then(() => {
+                                    location.reload(); // Reload the page to reflect the changes
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Error",
+                                    text: data.message || "An error occurred. Please try again.",
+                                });
+                            }
+                        })
+                        .catch((error) => {
+                            console.error("Error deleting address:", error);
+                            Swal.fire({
+                                icon: "error",
+                                title: "Error",
+                                text: "An unexpected error occurred. Please try again.",
+                            });
+                        });
+                }
+            });
         });
     });
 });

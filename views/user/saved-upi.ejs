@@ -5,34 +5,34 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <!--===============================================================================================-->	
-	<link rel="icon" type="image/png" href="/images/icons/favicon.png"/>
+	<link rel="icon" type="image/png" href="images/icons/favicon.png"/>
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="/vendor/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="/fonts/iconic/css/material-design-iconic-font.min.css">
+	<link rel="stylesheet" type="text/css" href="fonts/iconic/css/material-design-iconic-font.min.css">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="/fonts/linearicons-v1.0.0/icon-font.min.css">
+	<link rel="stylesheet" type="text/css" href="fonts/linearicons-v1.0.0/icon-font.min.css">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="/vendor/animate/animate.css">
+	<link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
 <!--===============================================================================================-->	
-	<link rel="stylesheet" type="text/css" href="/vendor/css-hamburgers/hamburgers.min.css">
+	<link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="/vendor/animsition/css/animsition.min.css">
+	<link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="/vendor/select2/select2.min.css">
+	<link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
 <!--===============================================================================================-->	
-	<link rel="stylesheet" type="text/css" href="/vendor/daterangepicker/daterangepicker.css">
+	<link rel="stylesheet" type="text/css" href="vendor/daterangepicker/daterangepicker.css">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="/vendor/slick/slick.css">
+	<link rel="stylesheet" type="text/css" href="vendor/slick/slick.css">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="/vendor/MagnificPopup/magnific-popup.css">
+	<link rel="stylesheet" type="text/css" href="vendor/MagnificPopup/magnific-popup.css">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="/vendor/perfect-scrollbar/perfect-scrollbar.css">
+	<link rel="stylesheet" type="text/css" href="vendor/perfect-scrollbar/perfect-scrollbar.css">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="/css/util.css">
-	<link rel="stylesheet" type="text/css" href="/css/main.css">
+	<link rel="stylesheet" type="text/css" href="css/util.css">
+	<link rel="stylesheet" type="text/css" href="css/main.css">
 <!--===============================================================================================-->
 
 
@@ -134,6 +134,191 @@
     .dropdown:hover .dropbtn {
         background-color: #ddd;
     }
+	
+	/* Address Block Styling */
+	.address-block {
+	    border: 1px solid #ddd;
+	    border-radius: 8px;
+	    padding: 20px;
+	    margin-bottom: 20px;
+	    background-color: #f9f9f9;
+	    position: relative;
+	    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	}
+
+	.address-header {
+	    display: flex;
+	    justify-content: space-between;
+	    align-items: center;
+	    margin-bottom: 10px;
+	}
+
+	.address-name {
+	    font-size: 16px;
+	    font-family: 'Poppins-Medium', sans-serif;
+	    color: #333;
+	    margin: 0;
+	}
+
+	.three-dots {
+	    background: none;
+	    border: none;
+	    font-size: 18px;
+	    cursor: pointer;
+	    color: #333;
+	    transition: color 0.3s ease;
+	}
+
+	.three-dots:hover {
+	    color: #1ed760;
+	}
+
+	.address-details {
+	    font-size: 14px;
+	    font-family: 'Poppins-Regular', sans-serif;
+	    color: #555;
+	    line-height: 1.6;
+	    margin: 0;
+	}
+
+	/* Add New Address Button */
+	.add-address-btn {
+	    display: flex;
+	    align-items: center;
+	    justify-content: center;
+	    font-size: 14px;
+	    font-family: 'Poppins-Medium', sans-serif;
+	    color: #fff;
+	    background-color: #1ed760;
+	    border: none;
+	    border-radius: .25rem;
+	    padding: 10px 20px;
+	    cursor: pointer;
+	    transition: background-color 0.3s ease;
+	}
+
+	.add-address-btn i {
+	    margin-right: 8px;
+	    font-size: 16px;
+	}
+
+	.add-address-btn:hover {
+	    background-color: #17c653;
+	}
+	/* Address Type Label */
+.address-type {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    font-size: 12px;
+    font-family: 'Poppins-Bold', sans-serif;
+    color: #555;
+    padding: 5px 10px;
+    text-transform: uppercase;
+}
+
+/* Edit Address Form Styling */
+.edit-address-form {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 20px;
+	margin-bottom:20px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-label {
+    font-family: 'Poppins-Medium', sans-serif;
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-family: 'Poppins-Regular', sans-serif;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.btn {
+    padding: 10px 20px;
+    font-size: 14px;
+    font-family: 'Poppins-Medium', sans-serif;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-success {
+    background-color: #1ed760;
+    color: #fff;
+}
+
+.btn-success:hover {
+    background-color: #17c653;
+}
+
+.btn-secondary {
+    background-color: #ddd;
+    color: #333;
+}
+
+.btn-secondary:hover {
+    background-color: #ccc;
+}
+
+.address-type-options {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.radio-inline {
+    font-family: 'Poppins-Regular', sans-serif;
+    font-size: 14px;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.form-title {
+    font-family: 'Poppins-Medium', sans-serif;
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 20px;
+}
+.no-address-block {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    background-color: #f9f9f9;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.no-address-text {
+    font-size: 16px;
+    font-family: 'Poppins-Regular', sans-serif;
+    color: #555;
+    margin-bottom: 20px;
+}
 
 </style>
 
@@ -176,7 +361,7 @@
 					
 					<!-- Logo desktop -->		
 					<a href="#" class="logo">
-						<img src="/images/icons/logo-01.png" alt="IMG-LOGO">
+						<img src="images/icons/logo-01.png" alt="IMG-LOGO">
 					</a>
 
 					<!-- Menu desktop -->
@@ -215,7 +400,7 @@
 							<div class="dropdown main-menu">
 								<li>
 									
-									<a href="#"> 
+									<a href="#">
 										<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" class="hover-effect" style="vertical-align: middle;">
 											<g clip-path="url(#clip0_11829_87876)">
 											  <path d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21Z" stroke="black" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -258,7 +443,7 @@
 									<a href="/login">Login</a>
 								</div>
 							</div>
-						<!-- <%}%> -->
+						<%}%>
 						<div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 js-show-modal-search">
 							<i class="zmdi zmdi-search"></i>
 						</div>
@@ -279,7 +464,7 @@
 		<div class="wrap-header-mobile">
 			<!-- Logo moblie -->		
 			<div class="logo-mobile">
-				<a href="index.html"><img src="/images/icons/logo-01.png" alt="IMG-LOGO"></a>
+				<a href="index.html"><img src="images/icons/logo-01.png" alt="IMG-LOGO"></a>
 			</div>
 
 			<!-- Icon header -->
@@ -367,7 +552,7 @@
 		<div class="modal-search-header flex-c-m trans-04 js-hide-modal-search">
 			<div class="container-search-header">
 				<button class="flex-c-m btn-hide-modal-search trans-04 js-hide-modal-search">
-					<img src="/images/icons/icon-close2.png" alt="CLOSE">
+					<img src="images/icons/icon-close2.png" alt="CLOSE">
 				</button>
 
 				<form class="wrap-search-header flex-w p-l-15">
@@ -399,7 +584,7 @@
 				<ul class="header-cart-wrapitem w-full">
 					<li class="header-cart-item flex-w flex-t m-b-12">
 						<div class="header-cart-item-img">
-							<img src="/images/item-cart-01.jpg" alt="IMG">
+							<img src="images/item-cart-01.jpg" alt="IMG">
 						</div>
 
 						<div class="header-cart-item-txt p-t-8">
@@ -415,7 +600,7 @@
 
 					<li class="header-cart-item flex-w flex-t m-b-12">
 						<div class="header-cart-item-img">
-							<img src="/images/item-cart-02.jpg" alt="IMG">
+							<img src="images/item-cart-02.jpg" alt="IMG">
 						</div>
 
 						<div class="header-cart-item-txt p-t-8">
@@ -431,7 +616,7 @@
 
 					<li class="header-cart-item flex-w flex-t m-b-12">
 						<div class="header-cart-item-img">
-							<img src="/images/item-cart-03.jpg" alt="IMG">
+							<img src="images/item-cart-03.jpg" alt="IMG">
 						</div>
 
 						<div class="header-cart-item-txt p-t-8">
@@ -471,17 +656,17 @@
 		<div class="d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary" style="width: 280px; padding-left : 0 !important">
 			<ul class="flex-column mb-auto sider">
 				<li>
-					<a href="#" class="nav-link active" aria-current="page">
+					<a href="/userProfile" class="nav-link link-body-emphasis" aria-current="page">
 						Profile Information
 					</a>
 				</li>
 				<li>
-					<a href="manage-address" class="nav-link link-body-emphasis">
+					<a href="/manage-address" class="nav-link link-body-emphasis">
 						Manage Addresses
 					</a>
 				</li>
 				<li>
-					<a href="/saved-upi" class="nav-link link-body-emphasis">
+					<a href="/saved-upi" class="nav-link active">
 						Saved UPI
 					</a>
 				</li>
@@ -513,31 +698,20 @@
 	
 		<!-- Main Content -->
 		<div class="container p-4">
-			<div class="row g-5">
-				<div class="col-md-7 col-lg-8">
-					<h4 class="mb-3 section-heading">
-						Enter OTP sent to your new email
-						<a href="#" id="resendOtpButton" style="font-size: 15px;" disabled>Resend OTP</a>
+		    <div class="row g-5">
+		        <div class="col-md-7 col-lg-8">
+		            <h4 class="mb-3 section-heading">
+						Saved UPIs
 					</h4>
-					
-					<form class="needs-validation" novalidate="" id="otpForm">
-						<div class="row g-3">
-							<!-- OTP Field -->
-							<div class="col-8">
-								<input type="text" class="form-control" id="otp" name="otp" placeholder="Enter OTP" required="" maxlength="6">
-								<div class="invalid-feedback">
-									Please enter the OTP sent to your email.
-								</div>
-								<p class="timer" style="margin-top: 15px;font-size: 0.9rem;color: #333;">Time remaining: <span id="countdownTimer" style="margin-left: 10px; font-size: 15px; color: #333;">01:00</span></p>
-							</div>
-						</div>
-		
-						<!-- Submit Button -->
-						<button class="mt-4 btn btn-primary btn-md" id="submitOtpButton" type="submit" disabled>Verify OTP</button>
-					</form>
-
-				</div>
-			</div>
+				
+		            <!-- Address Block -->
+					<div class="no-address-block" >
+						<p class="no-address-text">
+							No UPIs saved to be shown
+						</p>
+					</div>
+		        </div>
+		    </div>
 		</div>
 	</div>
 
@@ -657,23 +831,23 @@
 			<div class="p-t-40">
 				<div class="flex-c-m flex-w p-b-18">
 					<a href="#" class="m-all-1">
-						<img src="/images/icons/icon-pay-01.png" alt="ICON-PAY">
+						<img src="images/icons/icon-pay-01.png" alt="ICON-PAY">
 					</a>
 
 					<a href="#" class="m-all-1">
-						<img src="/images/icons/icon-pay-02.png" alt="ICON-PAY">
+						<img src="images/icons/icon-pay-02.png" alt="ICON-PAY">
 					</a>
 
 					<a href="#" class="m-all-1">
-						<img src="/images/icons/icon-pay-03.png" alt="ICON-PAY">
+						<img src="images/icons/icon-pay-03.png" alt="ICON-PAY">
 					</a>
 
 					<a href="#" class="m-all-1">
-						<img src="/images/icons/icon-pay-04.png" alt="ICON-PAY">
+						<img src="images/icons/icon-pay-04.png" alt="ICON-PAY">
 					</a>
 
 					<a href="#" class="m-all-1">
-						<img src="/images/icons/icon-pay-05.png" alt="ICON-PAY">
+						<img src="images/icons/icon-pay-05.png" alt="ICON-PAY">
 					</a>
 				</div>
 
@@ -702,7 +876,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 		<div class="container">
 			<div class="bg0 p-t-60 p-b-30 p-lr-15-lg how-pos3-parent">
 				<button class="how-pos3 hov3 trans-04 js-hide-modal1">
-					<img src="/images/icons/icon-close.png" alt="CLOSE">
+					<img src="images/icons/icon-close.png" alt="CLOSE">
 				</button>
 
 				<div class="row">
@@ -715,7 +889,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 								<div class="slick3 gallery-lb">
 									<div class="item-slick3" data-thumb="images/product-detail-01.jpg">
 										<div class="wrap-pic-w pos-relative">
-											<img src="/images/product-detail-01.jpg" alt="IMG-PRODUCT">
+											<img src="images/product-detail-01.jpg" alt="IMG-PRODUCT">
 
 											<a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04" href="images/product-detail-01.jpg">
 												<i class="fa fa-expand"></i>
@@ -725,7 +899,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 
 									<div class="item-slick3" data-thumb="images/product-detail-02.jpg">
 										<div class="wrap-pic-w pos-relative">
-											<img src="/images/product-detail-02.jpg" alt="IMG-PRODUCT">
+											<img src="images/product-detail-02.jpg" alt="IMG-PRODUCT">
 
 											<a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04" href="images/product-detail-02.jpg">
 												<i class="fa fa-expand"></i>
@@ -735,7 +909,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 
 									<div class="item-slick3" data-thumb="images/product-detail-03.jpg">
 										<div class="wrap-pic-w pos-relative">
-											<img src="/images/product-detail-03.jpg" alt="IMG-PRODUCT">
+											<img src="images/product-detail-03.jpg" alt="IMG-PRODUCT">
 
 											<a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04" href="images/product-detail-03.jpg">
 												<i class="fa fa-expand"></i>
@@ -850,171 +1024,30 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 	</div>
 
 <!--===============================================================================================-->	
-	<script src="/vendor/jquery/jquery-3.2.1.min.js"></script>
+	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
 <!--===============================================================================================-->
-	<script src="/vendor/animsition/js/animsition.min.js"></script>
+	<script src="vendor/animsition/js/animsition.min.js"></script>
 <!--===============================================================================================-->
-	<script src="/vendor/bootstrap/js/popper.js"></script>
-	<script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
+	<script src="vendor/bootstrap/js/popper.js"></script>
+	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
 <!--===============================================================================================-->
-	<script src="/vendor/select2/select2.min.js"></script>
+	<script src="vendor/select2/select2.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 	<script>
-
-document.addEventListener("DOMContentLoaded", function () {
-    const otpInput = document.getElementById("otp");
-    const resendOtpButton = document.getElementById("resendOtpButton");
-    const verifyOtpButton = document.getElementById("submitOtpButton");
-    const countdownTimer = document.getElementById("countdownTimer");
-
-    let timerDuration = 60; // Timer duration in seconds
-    let timer;
-
-    // Function to start the countdown timer
-    function startTimer() {
-        resendOtpButton.disabled = true;
-        resendOtpButton.classList.remove("active");
-        countdownTimer.textContent = `01:00`;
-
-        timer = setInterval(() => {
-            timerDuration--;
-            const minutes = Math.floor(timerDuration / 60);
-            const seconds = timerDuration % 60;
-            countdownTimer.textContent = `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
-
-            if (timerDuration <= 0) {
-                clearInterval(timer);
-                countdownTimer.textContent = "00:00";
-                resendOtpButton.disabled = false;
-                resendOtpButton.classList.add("active");
-            }
-        }, 1000);
-    }
-
-    // Start the timer on page load
-    startTimer();
-
-    // Resend OTP functionality
-    resendOtpButton.addEventListener("click", function (event) {
-        event.preventDefault();
-
-		if (resendOtpButton.disabled) return;
-
-        // Reset the timer
-        timerDuration = 60;
-        startTimer();
-
-        // AJAX request to resend OTP
-        fetch("/resend-otp", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    Swal.fire({
-                        icon: "success",
-                        title: "Success",
-                        text: data.message || "OTP has been resent to your email."
-                    });
-                } else {
-                    Swal.fire({
-                        icon: "error",
-                        title: "Error",
-                        text: data.message || "Failed to resend OTP. Please try again."
-                    });
-                }
-            })
-            .catch(error => {
-                console.error(error);
-                Swal.fire({
-                    icon: "error",
-                    title: "Error",
-                    text: "An unexpected error occurred. Please try again."
-                });
-            });
-    });
-
-    // Enable "Verify OTP" button when OTP input length is 6
-    otpInput.addEventListener("input", function () {
-        if (otpInput.value.length === 6) {
-            verifyOtpButton.disabled = false;
-            verifyOtpButton.classList.add("active");
-        } else {
-            verifyOtpButton.disabled = true;
-            verifyOtpButton.classList.remove("active");
-        }
-    });
-
-    // Verify OTP functionality
-    verifyOtpButton.addEventListener("click", function (event) {
-        event.preventDefault();
-
-        const otp = otpInput.value.trim();
-
-        // Validation
-        if (otp.length !== 6) {
-            Swal.fire({
-                icon: "error",
-                title: "Error",
-                text: "Please enter a valid 6-digit OTP."
-            });
-            return;
-        }
-
-        // AJAX request to verify OTP
-        fetch("/verify-otp", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ otp: otp })
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    Swal.fire({
-                        icon: "success",
-                        title: "Success",
-                        text: data.message || "New E-mail added Successfully!"
-                    }).then(() => {
-                        window.location.href = "/userProfile";
-                    });
-                } else {
-                    Swal.fire({
-                        icon: "error",
-                        title: "Error",
-                        text: data.message || "Invalid OTP. Please try again."
-                    });
-                }
-            })
-            .catch(error => {
-                console.error(error);
-                Swal.fire({
-                    icon: "error",
-                    title: "Error",
-                    text: "An unexpected error occurred. Please try again."
-                });
-            });
-    });
-});
-
 	</script>
 <!--===============================================================================================-->
-	<script src="/vendor/daterangepicker/moment.min.js"></script>
-	<script src="/vendor/daterangepicker/daterangepicker.js"></script>
+	<script src="vendor/daterangepicker/moment.min.js"></script>
+	<script src="vendor/daterangepicker/daterangepicker.js"></script>
 <!--===============================================================================================-->
-	<script src="/vendor/slick/slick.min.js"></script>
-	<script src="/js/slick-custom.js"></script>
+	<script src="vendor/slick/slick.min.js"></script>
+	<script src="js/slick-custom.js"></script>
 <!--===============================================================================================-->
-	<script src="/vendor/parallax100/parallax100.js"></script>
+	<script src="vendor/parallax100/parallax100.js"></script>
 	<script>
         $('.parallax100').parallax100();
 	</script>
 <!--===============================================================================================-->
-	<script src="/vendor/MagnificPopup/jquery.magnific-popup.min.js"></script>
+	<script src="vendor/MagnificPopup/jquery.magnific-popup.min.js"></script>
 	<script>
 		$('.gallery-lb').each(function() { // the containers for all your galleries
 			$(this).magnificPopup({
@@ -1028,9 +1061,9 @@ document.addEventListener("DOMContentLoaded", function () {
 		});
 	</script>
 <!--===============================================================================================-->
-	<script src="/vendor/isotope/isotope.pkgd.min.js"></script>
+	<script src="vendor/isotope/isotope.pkgd.min.js"></script>
 <!--===============================================================================================-->
-	<script src="/vendor/sweetalert/sweetalert.min.js"></script>
+	<script src="vendor/sweetalert/sweetalert.min.js"></script>
 	<script>
 		$('.js-addwish-b2, .js-addwish-detail').on('click', function(e){
 			e.preventDefault();
@@ -1068,7 +1101,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	
 	</script>
 <!--===============================================================================================-->
-	<script src="/vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+	<script src="vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
 	<script>
 		$('.js-pscroll').each(function(){
 			$(this).css('position','relative');
@@ -1085,7 +1118,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		});
 	</script>
 <!--===============================================================================================-->
-	<script src="/js/main.js"></script>
+	<script src="js/main.js"></script>
 
 </body>
 </html>

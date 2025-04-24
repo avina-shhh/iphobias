@@ -227,9 +227,9 @@ const verifyOTP = async(req,res)=>{
         if(otp === req.session.userOTP){
             if(req.session.forgotPass){
                 req.session.forgotPass = false;
-                req.session.save();
                 req.session.validForNewPass = true;
-                res.json({success:true,redirectCUrl:'/new-password'})
+                req.session.save();
+                res.json({success:true,redirectUrl:'/new-password'})
             }else  if(req.session.newEmail){
                 req.session.newEmail = false;
                 req.session.save();
