@@ -6,8 +6,6 @@ const profileController = require("../controllers/user/profileController")
 const {userAuth,adminAuth} = require("../middlewares/auth")
 
 router.get("/pageNotFound",userController.pageNotFound)
-router.get("/",userController.loadHomePage)
-router.get("/home",userController.loadHomePage)
 router.get("/login",userController.loadLogin)
 router.post('/login',userController.postLogin)
 router.get("/signup",userController.loadSignup)
@@ -23,11 +21,16 @@ router.get('/auth/google/callback',passport.authenticate('google',{failureRedire
 })
 router.get('/logout',userController.logout)
 
+// After Login Routes
+router.get("/",userController.loadHomePage)
+router.get("/home",userController.loadHomePage)
+router.get("/shop",userController.loadShop)
+
 
 // Profile Management
-router.get('/forgot-password',profileController.getForgotPass)
+router.get('/forgot-password',profileController.getForgotPass) //Before Login
 router.post('/forgot-password',profileController.postForgotPass)
-router.get('/new-password',profileController.getNewPass)
+router.get('/new-password',profileController.getNewPass) //Before Login
 router.post('/new-password',profileController.postNewPass)
 router.get('/userProfile',userAuth,profileController.getProfile)
 router.post('/editProfile',profileController.postEditProfile);
