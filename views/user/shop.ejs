@@ -611,9 +611,11 @@
 
 			<!-- Load more -->
 			<div class="flex-c-m flex-w w-full p-t-45">
-				<a href="#" class="flex-c-m stext-101 cl5 size-103 bg2 bor1 hov-btn1 p-lr-15 trans-04">
-					Load More
-				</a>
+				<% if (products.length < totalProducts) { %>
+					<button id="loadMoreBtn" class="flex-c-m stext-101 cl5 size-103 bg2 bor1 hov-btn1 p-lr-15 trans-04" currentLimit="<%=currentLimit%>">
+						Load More
+					</button>
+				<% } %>
 			</div>
 		</div>
 	</div>
@@ -1024,6 +1026,57 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 				ps.update();
 			})
 		});
+
+		document.getElementById('loadMoreBtn')?.addEventListener('click', function () {
+    	    const currentLimit = parseInt(this.getAttribute('currentLimit'));
+    	    const newLimit = currentLimit + 4; // Increase limit by 4
+    	    window.location.href = `/shop?limit=${newLimit}`;
+    	});
+
+		// Wait for the DOM to load
+		document.addEventListener('DOMContentLoaded', function () {
+        const isotopeGrid = document.querySelector('.isotope-grid');
+        const noProductsMessage = document.createElement('div');
+        noProductsMessage.className = 'col-12 text-center p-t-40 no-products-message';
+        noProductsMessage.innerHTML = '<h4 class="stext-101 cl6">No Products Found</h4>';
+        noProductsMessage.style.display = 'none'; // Initially hidden
+        isotopeGrid.parentNode.appendChild(noProductsMessage);
+
+        const loadMoreButton = document.getElementById('loadMoreBtn');
+
+        // Initialize Isotope
+        const iso = new Isotope(isotopeGrid, {
+            itemSelector: '.isotope-item',
+            layoutMode: 'fitRows'
+        });
+
+        // Function to check for visible items and toggle the "No Products Found" message and "Load More" button
+        function checkVisibleItems() {
+            const visibleItems = isotopeGrid.querySelectorAll('.isotope-item:not([style*="display: none"])');
+            if (visibleItems.length === 0) {
+                noProductsMessage.style.display = 'block'; // Show "No Products Found"
+                if (loadMoreButton) loadMoreButton.style.display = 'none'; // Hide "Load More" button
+            } else {
+                noProductsMessage.style.display = 'none'; // Hide "No Products Found"
+                if (loadMoreButton) loadMoreButton.style.display = ''; // Show "Load More" button
+            }
+        }
+
+        // Listen for filter button clicks
+        const filterButtons = document.querySelectorAll('[data-filter]');
+        filterButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const filterValue = this.getAttribute('data-filter');
+                iso.arrange({ filter: filterValue });
+
+                // Use Isotope's `arrangeComplete` event to ensure the filter is applied before checking
+                iso.once('arrangeComplete', checkVisibleItems);
+            });
+        });
+
+        // Perform an initial check for visible items
+        checkVisibleItems();
+    });
 	</script>
 <!--===============================================================================================-->
 	<script src="js/main.js"></script>

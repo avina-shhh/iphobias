@@ -326,6 +326,7 @@
                       <table class="table">
                         <thead style= "text-align: center;">
                           <tr>
+                            <th>Sl No.</th>
                             <th>Name</th>
                             <th>Brand</th>
                             <th>Category</th>
@@ -340,6 +341,7 @@
                         <tbody style="color: #fff; text-align: center;">
                           <%for(let i=0;i<data.length;i++){%>
                           <tr>
+                            <td><%=i+1%></td>
                             <td><%=data[i].productName%></td>
                             <td><%=data[i].brand%></td>
                             <td><%=data[i].category.name%></td>
