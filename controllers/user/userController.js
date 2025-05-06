@@ -102,7 +102,7 @@ async function sendOtp(mail,otp){
         
         If you did not attempt to sign up for iPhobias, please ignore this email.
         
-        Welcome to iPhobias! We’re excited to have you on board.
+        Welcome to iPhobias! We're excited to have you on board.
         
         Best Regards,
         iPhobias Ltd.
@@ -114,7 +114,7 @@ async function sendOtp(mail,otp){
                     <h3 style="background: #f4f4f4; padding: 10px; display: inline-block; border-radius: 5px;">OTP: ${otp}</h3>
                     <p>This OTP is valid for <strong>5 minutes</strong>. Please do not share it with anyone.</p>
                     <p>If you did not attempt to sign up for iPhobias, please ignore this email.</p>
-                    <p>Welcome to <strong>iPhobias</strong>! We’re excited to have you on board.</p>
+                    <p>Welcome to <strong>iPhobias</strong>! We're excited to have you on board.</p>
                     <p>Best Regards,<br><strong>iPhobias Ltd.</strong><br>98754XXXXX</p>
                 </div>
             `
@@ -405,23 +405,90 @@ const loadShop = async (req, res) => {
         const categories = await Category.find({ isListed: true });
         const categoryIds = categories.map(category => category._id.toString());
 
-        const limit = parseInt(req.query.limit) || 8; // Default limit is 8
-        const products = await Product.find({
+        const categoryFilter = req.query.category || 'all';
+        const limit = parseInt(req.query.limit) || 8;
+        const sort = req.query.sort || 'newest';
+        const priceRange = req.query.price || 'all';
+        const brandFilter = req.query.brand || 'all';
+        const searchQuery = req.query.search || '';
+
+        const filter = {
             isBlocked: false,
-            category: { $in: categoryIds },
             quantity: { $gt: 0 }
-        })
-            .sort({ createdAt: -1 })
+        }
+
+        // Add search filter
+        if (searchQuery) {
+            filter.$or = [
+                { productName: { $regex: searchQuery, $options: 'i' } },
+                { brand: { $in: await Brand.find({ brandName: { $regex: searchQuery, $options: 'i' } }).distinct('_id') } }
+            ];
+        }
+        
+        if(categoryFilter !== 'all'){
+            const category = await Category.findOne({ name: categoryFilter });
+            if (category) {
+                filter.category = category._id;
+            }
+        } else {
+            filter.category = { $in: categoryIds }
+        }
+
+        // Add brand filter
+        if(brandFilter !== 'all') {
+            filter.brand = brandFilter;
+        }
+
+        // Add price range filter
+        switch(priceRange) {
+            case '0-50':
+                filter.salePrice = { $gte: 0, $lte: 50 };
+                break;
+            case '50-100':
+                filter.salePrice = { $gt: 50, $lte: 100 };
+                break;
+            case '100-150':
+                filter.salePrice = { $gt: 100, $lte: 150 };
+                break;
+            case '150-200':
+                filter.salePrice = { $gt: 150, $lte: 200 };
+                break;
+            case '200+':
+                filter.salePrice = { $gt: 200 };
+                break;
+            default:
+                // No price filter for 'all' or invalid values
+                break;
+        }
+
+        // Define sort options
+        let sortOption = {};
+        switch(sort) {
+            case 'price-low-high':
+                sortOption = { salePrice: 1 };
+                break;
+            case 'price-high-low':
+                sortOption = { salePrice: -1 };
+                break;
+            case 'oldest':
+                sortOption = { createdAt: 1 };
+                break;
+            case 'newest':
+            default:
+                sortOption = { createdAt: -1 };
+                break;
+        }
+
+        const products = await Product.find(filter)
+            .sort(sortOption)
             .limit(limit);
 
-        const totalProducts = await Product.countDocuments({
-            isBlocked: false,
-            category: { $in: categoryIds },
-            quantity: { $gt: 0 }
-        });
-
+        const totalProducts = await Product.countDocuments(filter);
         const brands = await Brand.find({ isBlocked: false });
-        const categoriesWithIds = categories.map(category => ({ _id: category._id, name: category.name }));
+        const categoriesWithIds = categories.map(category => ({ 
+            _id: category._id, 
+            name: category.name 
+        }));
 
         res.render('shop', {
             user: userData,
@@ -429,7 +496,12 @@ const loadShop = async (req, res) => {
             categories: categoriesWithIds,
             brand: brands,
             totalProducts: totalProducts,
-            currentLimit: limit
+            currentLimit: limit,
+            selectedCategory: categoryFilter,
+            selectedSort: sort,
+            selectedPrice: priceRange,
+            selectedBrand: brandFilter,
+            searchQuery: searchQuery
         });
     } catch (error) {
         console.error("Error in loadShop:", error);
@@ -449,5 +521,5 @@ module.exports = {
     loadLogin,
     postLogin,
     logout,
-    loadShop
+    loadShop,
 } 
