@@ -3,8 +3,9 @@ const router = express.Router();
 const passport = require("passport") 
 const userController = require("../controllers/user/userController")
 const profileController = require("../controllers/user/profileController")
-const {userAuth,adminAuth} = require("../middlewares/auth")
-
+const {userAuth} = require("../middlewares/auth")
+const productController = require("../controllers/user/productController")
+const cartController = require("../controllers/user/cartController")
 
 // Error Pages
 router.get("/pageNotFound", userController.pageNotFound)
@@ -40,6 +41,7 @@ router.get('/auth/google/callback',
 router.get("/", userController.loadHomePage)
 router.get("/home", userController.loadHomePage)
 router.get("/shop", userController.loadShop)
+router.get("/product-details", productController.productDetails)
 
 
 // Password Management Routes (Before Login)
@@ -74,5 +76,16 @@ router.delete('/delete-address', profileController.deleteAddress)
 
 // Payment Management Routes
 router.get('/saved-upi', userAuth, profileController.getSavedUpi)
+
+
+// Add to Cart Routes
+router.post('/add-to-cart', userAuth, productController.addToCart);
+
+
+// Cart Routes
+router.get('/cart', userAuth, cartController.getCart);
+router.post('/cart/update', userAuth, cartController.updateCart);
+router.post('/cart/remove', userAuth, cartController.removeFromCart);
+router.post('/cart/select-address', userAuth, cartController.selectShippingAddress);
 
 module.exports = router;

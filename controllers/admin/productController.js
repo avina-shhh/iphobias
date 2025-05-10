@@ -21,7 +21,7 @@ const loadAddProduct = async(req,res)=>{
 
 const postAddProduct = async(req,res)=>{
     try {
-        const { productName, description, brand, category, regularPrice, salePrice, quantity, color } = req.body;
+        const { productName, description, brand, category, regularPrice, salePrice, quantity, color, highlights } = req.body;
         const productImages = req.files.map(file => file.filename);
 
         const newProduct = new Product({
@@ -32,7 +32,8 @@ const postAddProduct = async(req,res)=>{
             regularPrice,
             salePrice,
             quantity,
-            color,
+            color: color || '', // Make color optional
+            highlights: highlights || '', // Make highlights optional
             productImage: productImages
         });
 
@@ -57,6 +58,7 @@ const postAddProduct = async(req,res)=>{
          req.files.forEach(file => {
             fs.unlinkSync(path.join(__dirname, '../../public/uploads/temp', file.filename));
         });
+        console.error("Error in postAddProduct",error)
         res.redirect('/admin/pageerror');
     }
 
@@ -114,19 +116,20 @@ const addOffer = async(req,res)=>{
         const productId = req.body.productId;
         const productFind = await Product.findById(productId);
         const categoryFind = await Category.findById(productFind.category);
-        const offerPrice = Math.floor(productFind.regularPrice*(percentage/100));
         
-        if(categoryFind.categoryOffer>percentage){
+        // Check if category has an offer
+        if(categoryFind.categoryOffer > percentage){
             return res.json({status:false,message:"This Product's Category already have an Offer"})
         }
 
-        productFind.salePrice -= offerPrice
+        // Calculate and update product offer
+        const offerPrice = Math.floor(productFind.regularPrice * (percentage / 100));
+        productFind.salePrice = productFind.regularPrice - offerPrice;
         productFind.offerPrice = offerPrice;
+        productFind.productOffer = percentage;
         await productFind.save();
-        categoryFind.categoryOffer = 0;
-        await categoryFind.save();
 
-        res.json({status:true});
+        res.json({status:true, message: "Product offer added successfully"});
     } catch (error) {
         console.error("Error in addOffer in Product:",error)
         res.status(500).json({status:false,message:"Internal Server Error"});
@@ -137,11 +140,23 @@ const removeOffer = async(req,res)=>{
     try {
         const productId = req.body.productId;
         const productFind = await Product.findById(productId);
-        productFind.salePrice += productFind.offerPrice;
-        productFind.offerPrice = 0;
+        const categoryFind = await Category.findById(productFind.category);
+
+        // If category has an offer, apply it
+        if(categoryFind.categoryOffer > 0) {
+            const categoryDiscountAmount = Math.floor(productFind.regularPrice * (categoryFind.categoryOffer / 100));
+            productFind.salePrice = productFind.regularPrice - categoryDiscountAmount;
+            productFind.offerPrice = categoryDiscountAmount;
+        } else {
+            // If no category offer, reset to regular price
+            productFind.salePrice = productFind.regularPrice;
+            productFind.offerPrice = 0;
+        }
+
+        productFind.productOffer = 0;
         await productFind.save();
 
-        res.json({status:true});
+        res.json({status:true, message: "Product offer removed successfully"});
     } catch (error) {
         console.error("Error in removeOffer in Product:",error)
         res.status(500).json({status:false,message:"Internal Server Error"});
@@ -247,7 +262,8 @@ const postEditProduct = async (req, res) => {
             regularPrice: data.regularPrice,
             salePrice: data.salePrice,
             quantity: data.quantity,
-            color: data.color,
+            color: data.color || '', // Make color optional
+            highlights: data.highlights || '', // Make highlights optional
             category: data.category,
             productImage: productImages
         }, { new: true });

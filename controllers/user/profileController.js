@@ -7,7 +7,7 @@ const nodemailer = require("nodemailer")
 const env = require("dotenv").config();
 const bcrypt = require("bcrypt");
 const { get } = require("mongoose");
-
+const Cart = require('../../models/cartSchema');
 
 function generateOtp(){
     return Math.floor(100000 + Math.random() * 900000).toString();
@@ -157,8 +157,10 @@ const getProfile = async(req,res)=>{
     try {
         const userId = req.session.user;
         const userData = await User.findById(userId);
+        const cart = await Cart.findOne({userId:userId});
         res.render('profile',{
-            user:userData
+            user:userData,
+            cart:cart
         })
     } catch (error) {
         console.error("Error in getProfile",error);
@@ -286,8 +288,10 @@ const getNewEmail = async (req, res) => {
     try {
         const userId = req.session.user;
         const userData = await User.findById(userId);
+        const cart = await Cart.findOne({userId:userId});
         res.render("new-email-otp",{
-            user:userData
+            user:userData,
+            cart:cart
         });
     } catch (error) {
         console.error("Error in getNewEmail:", error);
@@ -300,9 +304,11 @@ const getChangePassword = async (req, res) => {
         const forgotPass = req.session.forgotPassword ? true : false;
         const userId = req.session.user;
         const userData = await User.findById(userId);
+        const cart = await Cart.findOne({userId:userId});
         res.render("change-password",{
             user:userData,
-            forgotPass:forgotPass
+            forgotPass:forgotPass,
+            cart:cart
         });
     } catch (error) {
         console.error("Error in getChangePassword:", error);
@@ -345,7 +351,8 @@ const getForgotPassword = async (req, res) => {
     try {
         const userId = req.session.user;
         const userData = await User.findById(userId);
-        
+        const cart = await Cart.findOne({userId:userId});
+
         const otp = generateOtp();
         const emailSent = await sendForgotOtp(userData.email, otp);
         if (!emailSent) {
@@ -358,7 +365,7 @@ const getForgotPassword = async (req, res) => {
         req.session.forgotPassword = true;
         req.session.save();
 
-        res.render('forgot-otp',{user:userData});
+        res.render('forgot-otp',{user:userData,cart:cart});
     } catch (error) {
         console.error("Error in getForgotPassword:", error);
         res.redirect('/pageNotFound');
@@ -398,10 +405,12 @@ const getManageAddress = async (req, res) => {
         const userId = req.session.user;
         const userData = await User.findById(userId);
         const userAddress = await Address.findOne({userId:userId});
+        const cart = await Cart.findOne({userId:userId});
         
         res.render('manage-address',{
             user:userData,
-            address:userAddress.address
+            address:userAddress.address,
+            cart:cart
         });
     } catch (error) {
         console.error("Error in getManageAddress:", error);
@@ -494,7 +503,14 @@ const postEditAddress = async(req,res)=>{
 
 const getSavedUpi = async(req,res)=>{
     try {
-        res.render('saved-upi');
+        const userId = req.session.user;
+        const userData = await User.findById(userId);
+        const cart = await Cart.findOne({userId:userId});   
+
+        res.render('saved-upi',{
+            user:userData,
+            cart:cart
+        });
     } catch (error) {
         console.error("Error in getSavedUpi:", error);
         res.redirect('/pageNotFound');

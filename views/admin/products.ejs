@@ -348,7 +348,7 @@
                             <td><%=data[i].salePrice%></td>
                             <td><%=data[i].offerPrice%></td>
                             <td>
-                              <%if(data[i].offerPrice===0){%>
+                              <%if(data[i].productOffer===0){%>
                                 <a href="#"  class="btn btn-outline-info" style="width: 85px;" onclick="addOffer('<%=data[i]._id%>')">Add</a>
                               <%}else{%>
                                 <a href="#" class="btn btn-info" style="width: 85px;" onclick="removeOffer('<%=data[i]._id%>')">Remove </a>

@@ -88,12 +88,15 @@ const addOffer = async(req,res)=>{
         await Category.updateOne({_id:categoryId},{$set:{categoryOffer:percentage}})
         
         for(const product of products){
-            product.productOffer = 0;
-            product.salePrice = product.regularPrice;
+            // Calculate new sale price with category offer
+            const discountAmount = Math.floor(product.regularPrice * (percentage / 100));
+            product.salePrice = product.regularPrice - discountAmount;
+            product.offerPrice = discountAmount;
+            product.productOffer = 0; // Reset product offer as category offer takes precedence
             await product.save();
         }
 
-        res.json({status:true});
+        res.json({status:true, message: "Category offer added successfully"});
 
     } catch (error) {
         console.error("Error in addOffer controller:", error);
@@ -105,7 +108,6 @@ const addOffer = async(req,res)=>{
 
 const removeOffer = async(req,res)=>{
     try {
-        
         const categoryId = req.body.categoryId;
         const category = await Category.findById(categoryId);
 
@@ -117,16 +119,21 @@ const removeOffer = async(req,res)=>{
         const products = await Product.find({category:category._id});
         if(products.length > 0){
             for(const product of products){
-                product.salePrice += Math.floor(product,regularPrice *(percentage/100))
+                // Remove the category offer discount
+                const discountAmount = Math.floor(product.regularPrice * (percentage / 100));
+                product.salePrice = product.regularPrice; // Reset to regular price
+                product.offerPrice = 0; // Reset offer price
                 product.productOffer = 0;
                 await product.save();
             }
         }
         category.categoryOffer = 0;
         await category.save();
-        res.json({status:true})
+        
+        res.json({status:true, message: "Category offer removed successfully"})
 
     } catch (error) {
+        console.error("Error in removeOffer controller:", error);
         res.status(500).json({status:false,message:"Internal Server Error"})
     }
 }

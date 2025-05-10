@@ -363,20 +363,28 @@
                         
                         <div class="col-md-3 mb-3">
                           <label for="color">Color</label>
-                          <input type="text" class="form-control" id="color" placeholder="Color" name="color">
+                          <input type="text" class="form-control" id="color" placeholder="Color (Optional)" name="color">
                           <div id="color-error" class="error-message" style="color: rgb(235, 54, 54); font-size: small;"></div>
                         </div>
                       </div>
                       
-                      <div class="form-group">
-                        <label for="exampleSelectGender">Category</label>
-                        <select class="form-control" id="exampleSelectGender" name="category">
-                          <% for (let i = 0; i < category.length; i++) { %>
-                            <option value="<%= category[i]._id %>">
-                              <%= category[i].name %>
-                            </option>
-                          <% } %>
-                        </select>
+                      <div class="form-group row">
+                        <div class="col-md-3 mb-3">
+                          <label for="exampleSelectGender">Category</label>
+                          <select class="form-control" id="exampleSelectGender" name="category">
+                            <% for (let i = 0; i < category.length; i++) { %>
+                              <option value="<%= category[i]._id %>">
+                                <%= category[i].name %>
+                              </option>
+                            <% } %>
+                          </select>
+                        </div>
+
+                        <div class="col-md-3 mb-3">
+                          <label for="highlights">Highlights</label>
+                          <input type="text" class="form-control" id="highlights" placeholder="Highlights (Optional)" name="highlights">
+                          <div id="highlights-error" class="error-message" style="color: rgb(235, 54, 54); font-size: small;"></div>
+                        </div>
                       </div>
                       
                       <div class="form-group">
@@ -610,6 +618,7 @@
       const color = document.getElementsByName('color')[0].value;
       const category = document.getElementsByName('category')[0].value;
       const quantity = document.getElementsByName('quantity')[0].value;
+      const highlights = document.getElementsByName('highlights')[0].value;
       let isValid = true;
 
       if (name.trim() === "") {
@@ -620,7 +629,7 @@
       if (description.trim() === "") {
         displayErrorMessage('description-error', 'Please enter a product description.');
         isValid = false;
-      } else if (!/^[a-zA-Z\s]+$/.test(description.trim())) {
+      } else if (!/^[a-zA-Z\s.,!?-]+$/.test(description.trim())) {
         displayErrorMessage('description-error', 'Product description should contain only alphabetic characters.');
         isValid = false;
       }
@@ -645,8 +654,15 @@
         isValid = false;
       }
 
-      if (color.trim() === "") {
-          displayErrorMessage('color-error', 'Please enter a color.');
+      // Validate color (optional field)
+      if (color.trim() !== "" && !/^[a-zA-Z\s]+$/.test(color.trim())) {
+          displayErrorMessage('color-error', 'Color should contain only letters and spaces.');
+          isValid = false;
+      }
+
+      // Validate highlights (optional field)
+      if (highlights.trim() !== "" && !/^[a-zA-Z0-9\s.,!?-|]+$/.test(highlights.trim())) {
+          displayErrorMessage('highlights-error', 'Highlights should contain only letters, numbers, and basic punctuation.');
           isValid = false;
       }
 

@@ -6,6 +6,7 @@ const Brand = require('../../models/brandSchema');
 const nodemailer = require("nodemailer")
 const env = require("dotenv").config();
 const bcrypt = require("bcrypt");
+const Cart = require('../../models/cartSchema');
 
 const pageNotFound = async(req,res)=>{
     try {
@@ -24,6 +25,7 @@ const loadHomePage = async(req,res)=>{
     try {
         
         const user = req.session.user;
+        const cart = await Cart.findOne({userId:user});
         const categories = await Category.find({isListed:true});
         let productData = await Product.find({
             isBlocked:false,
@@ -39,9 +41,9 @@ const loadHomePage = async(req,res)=>{
 
         if(user){
             const userData = await User.findOne({_id:user})
-            return res.render('home',{user : userData,products:productData,banners:banners,categories})
+            return res.render('home',{user : userData,products:productData,banners:banners,categories,cart})
         }else{
-            return res.render("home",{products:productData,banners:banners,categories})
+            return res.render("home",{products:productData,banners:banners,categories,cart})
         }
     } catch (error) {
         console.error("Home Page Not Found",error)
@@ -402,8 +404,15 @@ const loadShop = async (req, res) => {
     try {
         const user = req.session.user;
         const userData = await User.findOne({ _id: user });
+        const cart = await Cart.findOne({userId:user});
+        
+        // First get all listed categories and non-blocked brands
         const categories = await Category.find({ isListed: true });
-        const categoryIds = categories.map(category => category._id.toString());
+        const brands = await Brand.find({ isBlocked: false });
+        
+        // Get IDs for categories and brand names for products
+        const categoryIds = categories.map(category => category._id);
+        const brandNames = brands.map(brand => brand.brandName);
 
         const categoryFilter = req.query.category || 'all';
         const limit = parseInt(req.query.limit) || 8;
@@ -412,31 +421,44 @@ const loadShop = async (req, res) => {
         const brandFilter = req.query.brand || 'all';
         const searchQuery = req.query.search || '';
 
+        // Base filter to ensure we only get products with listed categories and non-blocked brands
         const filter = {
             isBlocked: false,
-            quantity: { $gt: 0 }
+            quantity: { $gt: 0 },
+            category: { $in: categoryIds },
+            brand: { $in: brandNames }  // Using brand names instead of IDs
         }
 
         // Add search filter
         if (searchQuery) {
             filter.$or = [
                 { productName: { $regex: searchQuery, $options: 'i' } },
-                { brand: { $in: await Brand.find({ brandName: { $regex: searchQuery, $options: 'i' } }).distinct('_id') } }
+                { brand: { $regex: searchQuery, $options: 'i' } }  // Search in brand names directly
             ];
         }
         
         if(categoryFilter !== 'all'){
-            const category = await Category.findOne({ name: categoryFilter });
+            const category = await Category.findOne({ 
+                name: categoryFilter,
+                isListed: true 
+            });
             if (category) {
                 filter.category = category._id;
+            } else {
+                // If category doesn't exist or is unlisted, return no products
+                filter.category = null; // This will ensure no products are returned
             }
-        } else {
-            filter.category = { $in: categoryIds }
         }
 
         // Add brand filter
         if(brandFilter !== 'all') {
-            filter.brand = brandFilter;
+            const brand = await Brand.findOne({ 
+                brandName: brandFilter,
+                isBlocked: false 
+            });
+            if (brand) {
+                filter.brand = brand.brandName;  // Use brandName instead of ID
+            }
         }
 
         // Add price range filter
@@ -484,7 +506,6 @@ const loadShop = async (req, res) => {
             .limit(limit);
 
         const totalProducts = await Product.countDocuments(filter);
-        const brands = await Brand.find({ isBlocked: false });
         const categoriesWithIds = categories.map(category => ({ 
             _id: category._id, 
             name: category.name 
@@ -501,7 +522,8 @@ const loadShop = async (req, res) => {
             selectedSort: sort,
             selectedPrice: priceRange,
             selectedBrand: brandFilter,
-            searchQuery: searchQuery
+            searchQuery: searchQuery,
+            cart:cart
         });
     } catch (error) {
         console.error("Error in loadShop:", error);

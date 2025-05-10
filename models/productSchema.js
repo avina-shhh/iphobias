@@ -32,13 +32,21 @@ const productSchema = new Schema({
         type:Number,
         default:0
     },
+    productOffer: {
+        type: Number,
+        default: 0
+    },
     quantity:{
         type:Number,
         default:true
     },
     color:{
         type:String,
-        required:true
+        required:false
+    },
+    highlights: {
+        type: String,    // Changed from [String] to String
+        default: ''      // Default empty string instead of empty array
     },
     productImage:{
         type:[String],
