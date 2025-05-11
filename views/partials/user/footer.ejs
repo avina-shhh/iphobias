@@ -351,40 +351,40 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 <!--===============================================================================================-->
 <script src="vendor/sweetalert/sweetalert.min.js"></script>
 <script>
-    $('.js-addwish-b2').on('click', function(e){
+    $('.js-addwish-b2, .js-addwish-detail').on('click', async function(e){
         e.preventDefault();
-    });
-
-    $('.js-addwish-b2').each(function(){
-        var nameProduct = $(this).parent().parent().find('.js-name-b2').html();
-        $(this).on('click', function(){
+        const productId = $(this).closest('[data-product-id]').data('product-id');
+        
+        try {
+            const response = await fetch('/addToWishlist', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ productId })
+            });
+            
+            const data = await response.json();
+            
+            if (data.redirect) {
+                window.location.href = data.redirect;
+                return;
+            }
+            
+            if (data.success) {
+                const nameProduct = $(this).parent().parent().find('.js-name-b2, .js-name-detail').html();
             swal(nameProduct, "is added to wishlist !", "success");
 
             $(this).addClass('js-addedwish-b2');
             $(this).off('click');
-        });
+            } else {
+                swal("Error", data.message || "Failed to add to wishlist", "error");
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            swal("Error", "Failed to add to wishlist", "error");
+        }
     });
-
-    $('.js-addwish-detail').each(function(){
-        var nameProduct = $(this).parent().parent().parent().find('.js-name-detail').html();
-
-        $(this).on('click', function(){
-            swal(nameProduct, "is added to wishlist !", "success");
-
-            $(this).addClass('js-addedwish-detail');
-            $(this).off('click');
-        });
-    });
-
-    /*---------------------------------------------*/
-
-    $('.js-addcart-detail').each(function(){
-        var nameProduct = $(this).parent().parent().parent().parent().find('.js-name-detail').html();
-        $(this).on('click', function(){
-            swal(nameProduct, "is added to cart !", "success");
-        });
-    });
-
 </script>
 <!--===============================================================================================-->
 <script src="vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>

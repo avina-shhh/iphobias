@@ -1,1 +1,1223 @@
- 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Product</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->	
+	<link rel="icon" type="image/png" href="images/icons/favicon.png"/>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="fonts/iconic/css/material-design-iconic-font.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="fonts/linearicons-v1.0.0/icon-font.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="vendor/daterangepicker/daterangepicker.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/slick/slick.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/MagnificPopup/magnific-popup.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/perfect-scrollbar/perfect-scrollbar.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="css/util.css">
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+<!--===============================================================================================-->
+
+
+<style>
+	.nav-link.active{
+    	color: #1ed760;
+	};
+    
+    
+    
+    
+    .sider > li > a:hover {
+        color: #1ed760;
+        text-decoration:none;
+    }
+    .sider > li > a{
+        font-size: 14px;
+        font-family: Poppins-Medium;
+        color: #333  ;
+        text-decoration: none;
+        background-color: transparent;
+        display: block;
+        padding: .5rem 1rem .5rem 0rem;
+    }
+    .sider li a:hover{
+        color: #1ed760;
+        text-decoration:none;
+    }
+
+	.sidebar-link {
+            font-family: 'Poppins-Medium', sans-serif;
+        }
+        
+        .section-heading {
+            font-size: 17.5px;
+            font-family: 'Poppins-Medium', sans-serif;
+            color: #333;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .form-label {
+            font-family: 'Poppins-Medium', sans-serif;
+            font-size: 17.5px;
+            color: #333;
+        }
+        
+        .form-group {
+            padding-top: 25px;
+        }
+        
+        .delete-account {
+            font-size: 14px;
+            font-family: Poppins-Medium;
+            color: red;
+            transition: color 0.3s ease;
+        }
+
+		.dropbtn {
+        background-color: #f9f9f9;
+        color: black;
+        padding: 16px;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+    }
+
+    .dropbtn:hover, .dropbtn:focus {
+        background-color: #ddd;
+    }
+
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+    }
+
+    .dropdown-content a {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+    }
+
+    .dropdown-content a:hover {background-color: #f1f1f1}
+
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+
+    .dropdown:hover .dropbtn {
+        background-color: #ddd;
+    }
+
+    .wishlist-product-link {
+        color: #212121;
+        font-size: 16px;
+        font-weight: 500;
+        text-decoration: none;
+        transition: color 0.2s;
+    }
+    .wishlist-product-link:hover {
+        color: #2874f0;
+    }
+    .wishlist-trash {
+        color: #b0b0b0;
+        background: none;
+        border: none;
+        outline: none;
+        font-size: 22px;
+        cursor: pointer;
+        transition: color 0.2s;
+    }
+    .wishlist-trash:hover {
+        color: #ff6161;
+    }
+    .wishlist-row {
+        background: #fff;
+        transition: background 0.2s;
+    }
+    .wishlist-row:hover {
+        background: #f8f9fa;
+    }
+    .wishlist-divider {
+        border: none;
+        border-top: 1px solid #e0e0e0;
+        margin: 0 0 0 0;
+        width: 100%;
+    }
+
+</style>
+
+</head>
+<body class="animsition">
+	
+	<!-- Header -->
+	<header class="header-v4">
+		<!-- Header desktop -->
+		<div class="container-menu-desktop">
+			<!-- Topbar -->
+			<div class="top-bar">
+				<div class="content-topbar flex-sb-m h-full container">
+					<div class="left-top-bar">
+						Free shipping for standard order over $100
+					</div>
+
+					<div class="right-top-bar flex-w h-full">
+						<a href="#" class="flex-c-m trans-04 p-lr-25">
+							Help & FAQs
+						</a>
+
+						<a href="#" class="flex-c-m trans-04 p-lr-25">
+							My Account
+						</a>
+
+						<a href="#" class="flex-c-m trans-04 p-lr-25">
+							EN
+						</a>
+
+						<a href="#" class="flex-c-m trans-04 p-lr-25">
+							USD
+						</a>
+					</div>
+				</div>
+			</div>
+
+			<div class="wrap-menu-desktop how-shadow1">
+				<nav class="limiter-menu-desktop container">
+					
+					<!-- Logo desktop -->		
+					<a href="#" class="logo">
+						<img src="images/icons/logo-01.png" alt="IMG-LOGO">
+					</a>
+
+					<!-- Menu desktop -->
+					<div class="menu-desktop">
+						<ul class="main-menu">
+							<li>
+								<a href="/">Home</a>
+							</li>
+
+							<li class="active-menu">
+								<a href="product.html">Shop</a>
+							</li>
+
+							<li class="label1" data-label1="hot">
+								<a href="shoping-cart.html">Features</a>
+							</li>
+
+							<li>
+								<a href="blog.html">Blog</a>
+							</li>
+
+							<li>
+								<a href="about.html">About</a>
+							</li>
+
+							<li>
+								<a href="contact.html">Contact</a>
+							</li>
+						</ul>
+					</div>	
+
+					<!-- Icon header -->
+					<div class="wrap-icon-header flex-w flex-r-m main-menu">
+						<%if(locals.user){%>
+							<div class="dropdown main-menu">
+								<li>
+									<a href="#">
+										<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" class="hover-effect" style="vertical-align: middle;">
+											<g clip-path="url(#clip0_11829_87876)">
+											  <path d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21Z" stroke="black" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+											  <path d="M12 15C14.0711 15 15.75 13.3211 15.75 11.25C15.75 9.17893 14.0711 7.5 12 7.5C9.92893 7.5 8.25 9.17893 8.25 11.25C8.25 13.3211 9.92893 15 12 15Z" stroke="black" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+											  <path d="M5.98047 18.6904C6.54476 17.5789 7.40581 16.6454 8.46816 15.9933C9.53052 15.3413 10.7527 14.9961 11.9992 14.9961C13.2457 14.9961 14.4679 15.3413 15.5303 15.9933C16.5926 16.6454 17.4537 17.5789 18.018 18.6904" stroke="black" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+											</g>
+											<defs>
+											  <clipPath id="clip0_11829_87876">
+												<rect width="24" height="24" fill="white"/>
+											  </clipPath>
+											</defs>
+										</svg>
+										<%=locals.user.name%> </a>
+								</li>
+								<div class="dropdown-content">
+									<a href="/userProfile">My Profile</a>
+									<a href="/logout">Logout</a>
+								</div>
+							</div>
+						<%}else{%>
+							<div class="dropdown main-menu">
+								<li>
+									<a href="/login">
+										<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" class="hover-effect" style="vertical-align: middle;">
+											<g clip-path="url(#clip0_11829_87876)">
+											  <path d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21Z" stroke="black" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+											  <path d="M12 15C14.0711 15 15.75 13.3211 15.75 11.25C15.75 9.17893 14.0711 7.5 12 7.5C9.92893 7.5 8.25 9.17893 8.25 11.25C8.25 13.3211 9.92893 15 12 15Z" stroke="black" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+											  <path d="M5.98047 18.6904C6.54476 17.5789 7.40581 16.6454 8.46816 15.9933C9.53052 15.3413 10.7527 14.9961 11.9992 14.9961C13.2457 14.9961 14.4679 15.3413 15.5303 15.9933C16.5926 16.6454 17.4537 17.5789 18.018 18.6904" stroke="black" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+											</g>
+											<defs>
+											  <clipPath id="clip0_11829_87876">
+												<rect width="24" height="24" fill="white"/>
+											  </clipPath>
+											</defs>
+										</svg>
+										Account</a>
+								</li>
+								<div class="dropdown-content">
+									<a href="/signup">Sign Up</a>
+									<a href="/login">Login</a>
+								</div>
+							</div>
+						<%}%>
+						<div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 js-show-modal-search">
+							<i class="zmdi zmdi-search"></i>
+						</div>
+						<a href="/cart" class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti" data-notify="<%= cart && cart.items ? cart.items.length : 0 %>">
+							<i class="zmdi zmdi-shopping-cart"></i>
+						</a>
+						<a href="#" class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti" data-notify="0">
+							<i class="zmdi zmdi-favorite-outline"></i>
+						</a>
+					</div>
+				</nav>
+			</div>	
+		</div>
+
+		<!-- Header Mobile -->
+		<div class="wrap-header-mobile">
+			<!-- Logo moblie -->		
+			<div class="logo-mobile">
+				<a href="index.html"><img src="images/icons/logo-01.png" alt="IMG-LOGO"></a>
+			</div>
+
+			<!-- Icon header -->
+			<div class="wrap-icon-header flex-w flex-r-m m-r-15">
+				<div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 js-show-modal-search">
+					<i class="zmdi zmdi-search"></i>
+				</div>
+
+				<a href="/cart" class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti" data-notify="<%= cart && cart.items ? cart.items.length : 0 %>">
+					<i class="zmdi zmdi-shopping-cart"></i>
+				</a>
+
+				<a href="#" class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti" data-notify="0">
+					<i class="zmdi zmdi-favorite-outline"></i>
+				</a>
+			</div>
+
+			<!-- Button show menu -->
+			<div class="btn-show-menu-mobile hamburger hamburger--squeeze">
+				<span class="hamburger-box">
+					<span class="hamburger-inner"></span>
+				</span>
+			</div>
+		</div>
+
+
+		<!-- Menu Mobile -->
+		<div class="menu-mobile">
+			<ul class="topbar-mobile">
+				<li>
+					<div class="left-top-bar">
+						Free shipping for standard order over $100
+					</div>
+				</li>
+
+				<li>
+					<div class="right-top-bar flex-w h-full">
+						<a href="#" class="flex-c-m p-lr-10 trans-04">
+							Help & FAQs
+						</a>
+
+						<a href="#" class="flex-c-m p-lr-10 trans-04">
+							My Account
+						</a>
+
+						<a href="#" class="flex-c-m p-lr-10 trans-04">
+							EN
+						</a>
+
+						<a href="#" class="flex-c-m p-lr-10 trans-04">
+							USD
+						</a>
+					</div>
+				</li>
+			</ul>
+
+			<ul class="main-menu-m">
+				<li>
+					<a href="/">Home</a>
+				</li>
+
+				<li>
+					<a href="product.html">Shop</a>
+				</li>
+
+				<li>
+					<a href="shoping-cart.html" class="label1 rs1" data-label1="hot">Features</a>
+				</li>
+
+				<li>
+					<a href="blog.html">Blog</a>
+				</li>
+
+				<li>
+					<a href="about.html">About</a>
+				</li>
+
+				<li>
+					<a href="contact.html">Contact</a>
+				</li>
+			</ul>
+		</div>
+
+		<!-- Modal Search -->
+		<div class="modal-search-header flex-c-m trans-04 js-hide-modal-search">
+			<div class="container-search-header">
+				<button class="flex-c-m btn-hide-modal-search trans-04 js-hide-modal-search">
+					<img src="images/icons/icon-close2.png" alt="CLOSE">
+				</button>
+
+				<form class="wrap-search-header flex-w p-l-15">
+					<button class="flex-c-m trans-04">
+						<i class="zmdi zmdi-search"></i>
+					</button>
+					<input class="plh3" type="text" name="search" placeholder="Search...">
+				</form>
+			</div>
+		</div>
+	</header>
+
+	<!-- Cart -->
+	
+		
+
+    <div class="container" style="color: black; height: auto; display: flex; min-height: 70vh;">
+		<!-- Sidebar Navigation -->
+		<div class="d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary" style="width: 280px; padding-left : 0 !important">
+			<ul class="flex-column mb-auto sider">
+				<li>
+					<a href="#" class="nav-link link-body-emphasis" aria-current="page">
+						Profile Information
+					</a>
+				</li>
+				<li>
+					<a href="/manage-address" class="nav-link link-body-emphasis">
+						Manage Addresses
+					</a>
+				</li>
+				<li>
+					<a href="/saved-upi" class="nav-link link-body-emphasis">
+						Saved UPI
+					</a>
+				</li>
+				<li>
+					<a href="#" class="nav-link link-body-emphasis">
+						My Coupons
+					</a>
+				</li>
+				<li>
+					<a href="#" class="nav-link link-body-emphasis">
+						My Reviews and Ratings
+					</a>
+				</li>
+				<li>
+					<a href="#" class="nav-link link-body-emphasis active">
+						My Wishlist
+					</a>
+				</li>
+				<li>
+					<a href="#" class="nav-link link-body-emphasis">
+						Logout
+					</a>
+				</li>
+			</ul>
+		</div>
+	
+		<!-- Divider -->
+		<div style="width: 5px; border-left: 1px solid rgba(0, 0, 0, 0.247);" class="m-3"></div>
+	
+		<!-- Main Content -->
+        <div class="container p-4">
+            <div class="card shadow-sm">
+                <div class="card-body p-0">
+                    <h5 class="section-heading p-3 pb-2">
+                        My Wishlist (<%= wishlist && wishlist.products.length ? wishlist.products.length : 0 %>)
+                    </h5>
+                    <% if (wishlist && wishlist.products.length > 0) { %>
+                        <% if (wishlist.products.length === 1) { %>
+                            <hr class="wishlist-divider">
+                            <% const p = wishlist.products[0].productId; %>
+                            <div class="row align-items-start mx-0 p-3 wishlist-row" style="justify-content: space-between;">
+                                <div class="col-2 col-md-1 px-0 d-flex justify-content-center">
+                                    <img src="/uploads/productImg/<%= p.productImage[0] %>" alt="<%= p.productName %>" class="img-fluid">
+                                </div>
+                                <div class="col-9 col-md-10 px-0">
+                                    <div class="d-flex flex-column flex-md-row align-items-md-center">
+                                        <div class="flex-grow-1">
+                                            <a href="/product-details?id=<%= p._id %>" class="wishlist-product-link">
+                                                <%= p.productName %>
+                                            </a>
+                                            <div class="mt-2">
+                                                <span style="font-size: 20px; font-weight: 600; color: #212121;">₹<%= p.salePrice %></span>
+                                                <% if (p.regularPrice && p.regularPrice > p.salePrice) { %>
+                                                    <span style="color: #878787; text-decoration: line-through; margin-left: 8px;">₹<%= p.regularPrice %></span>
+                                                    <span style="color: #388e3c; font-weight: 500; margin-left: 8px;">
+                                                        <%= Math.round(100 * (p.regularPrice - p.salePrice) / p.regularPrice) %>% off
+                                                    </span>
+                                                <% } %>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <button class="wishlist-trash btn-remove-wishlist" data-product-id="<%= p._id %>">
+                                        <i class="zmdi zmdi-delete"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        <% } else { %>
+                            <% wishlist.products.forEach((item, idx) => { 
+                                const p = item.productId;
+                            %>
+                                <% if (idx === 0) { %>
+                                    <hr class="wishlist-divider"><!-- Top divider for first product -->
+                                    <div class="row align-items-start mx-0 p-3 wishlist-row" style="justify-content: space-between;">
+                                        <div class="col-2 col-md-1 px-0 justify-content-center">
+                                            <img src="/uploads/productImg/<%= p.productImage[0] %>" alt="<%= p.productName %>" class="img-fluid">
+                                        </div>
+                                        <div class="col-9 col-md-10 px-0">
+                                            <div class="d-flex flex-column flex-md-row align-items-md-center">
+                                                <div class="flex-grow-1">
+                                                    <a href="/product-details?id=<%= p._id %>" class="wishlist-product-link">
+                                                        <%= p.productName %>
+                                                    </a>
+                                                    <div class="mt-2">
+                                                        <span style="font-size: 20px; font-weight: 600; color: #212121;">₹<%= p.salePrice %></span>
+                                                        <% if (p.regularPrice && p.regularPrice > p.salePrice) { %>
+                                                            <span style="color: #878787; text-decoration: line-through; margin-left: 8px;">₹<%= p.regularPrice %></span>
+                                                            <span style="color: #388e3c; font-weight: 500; margin-left: 8px;">
+                                                                <%= Math.round(100 * (p.regularPrice - p.salePrice) / p.regularPrice) %>% off
+                                                            </span>
+                                                        <% } %>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <button class="wishlist-trash btn-remove-wishlist" data-product-id="<%= p._id %>">
+                                                <i class="zmdi zmdi-delete"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <hr class="wishlist-divider"><!-- Bottom divider for first product -->
+                                <% } else if (idx === wishlist.products.length - 1) { %>
+                                    <div class="row align-items-start mx-0 p-3 wishlist-row" style="justify-content: space-between;">
+                                        <div class="col-2 col-md-1 px-0 justify-content-center">
+                                            <img src="/uploads/productImg/<%= p.productImage[0] %>" alt="<%= p.productName %>" class="img-fluid">
+                                        </div>
+                                        <div class="col-9 col-md-10 px-0">
+                                            <div class="d-flex flex-column flex-md-row align-items-md-center">
+                                                <div class="flex-grow-1">
+                                                    <a href="/product-details?id=<%= p._id %>" class="wishlist-product-link">
+                                                        <%= p.productName %>
+                                                    </a>
+                                                    <div class="mt-2">
+                                                        <span style="font-size: 20px; font-weight: 600; color: #212121;">₹<%= p.salePrice %></span>
+                                                        <% if (p.regularPrice && p.regularPrice > p.salePrice) { %>
+                                                            <span style="color: #878787; text-decoration: line-through; margin-left: 8px;">₹<%= p.regularPrice %></span>
+                                                            <span style="color: #388e3c; font-weight: 500; margin-left: 8px;">
+                                                                <%= Math.round(100 * (p.regularPrice - p.salePrice) / p.regularPrice) %>% off
+                                                            </span>
+                                                        <% } %>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <button class="wishlist-trash btn-remove-wishlist" data-product-id="<%= p._id %>">
+                                                <i class="zmdi zmdi-delete"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <!-- No divider for last product -->
+                                <% } else { %>
+                                    <hr class="wishlist-divider"><!-- Top divider for middle products -->
+                                    <div class="row align-items-start mx-0 p-3 wishlist-row" style="justify-content: space-between;">
+                                        <div class="col-2 col-md-1 px-0 justify-content-center">
+                                            <img src="/uploads/productImg/<%= p.productImage[0] %>" alt="<%= p.productName %>" class="img-fluid" >
+                                        </div>
+                                        <div class="col-9 col-md-10 px-0">
+                                            <div class="d-flex flex-column flex-md-row align-items-md-center">
+                                                <div class="flex-grow-1">
+                                                    <a href="/product-details?id=<%= p._id %>" class="wishlist-product-link">
+                                                        <%= p.productName %>
+                                                    </a>
+                                                    <div class="mt-2">
+                                                        <span style="font-size: 20px; font-weight: 600; color: #212121;">₹<%= p.salePrice %></span>
+                                                        <% if (p.regularPrice && p.regularPrice > p.salePrice) { %>
+                                                            <span style="color: #878787; text-decoration: line-through; margin-left: 8px;">₹<%= p.regularPrice %></span>
+                                                            <span style="color: #388e3c; font-weight: 500; margin-left: 8px;">
+                                                                <%= Math.round(100 * (p.regularPrice - p.salePrice) / p.regularPrice) %>% off
+                                                            </span>
+                                                        <% } %>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <button class="wishlist-trash btn-remove-wishlist" data-product-id="<%= p._id %>">
+                                                <i class="zmdi zmdi-delete"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <hr class="wishlist-divider"><!-- Bottom divider for middle products -->
+                                <% } %>
+                            <% }); %>
+                        <% } %>
+                    <% } else { %>
+                        <div class="text-center p-t-50 p-b-50">
+                            <h3 class="stext-101 cl2">Your wishlist is empty</h3>
+                            <a href="/shop" class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04">
+                                Continue Shopping
+                            </a>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+	</div>
+
+
+	<!-- Footer -->
+	<footer class="bg3 p-t-75 p-b-32">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-6 col-lg-3 p-b-50">
+					<h4 class="stext-301 cl0 p-b-30">
+						Categories
+					</h4>
+
+					<ul>
+						<li class="p-b-10">
+							<a href="#" class="stext-107 cl7 hov-cl1 trans-04">
+								Women
+							</a>
+						</li>
+
+						<li class="p-b-10">
+							<a href="#" class="stext-107 cl7 hov-cl1 trans-04">
+								Men
+							</a>
+						</li>
+
+						<li class="p-b-10">
+							<a href="#" class="stext-107 cl7 hov-cl1 trans-04">
+								Shoes
+							</a>
+						</li>
+
+						<li class="p-b-10">
+							<a href="#" class="stext-107 cl7 hov-cl1 trans-04">
+								Watches
+							</a>
+						</li>
+					</ul>
+				</div>
+
+				<div class="col-sm-6 col-lg-3 p-b-50">
+					<h4 class="stext-301 cl0 p-b-30">
+						Help
+					</h4>
+
+					<ul>
+						<li class="p-b-10">
+							<a href="#" class="stext-107 cl7 hov-cl1 trans-04">
+								Track Order
+							</a>
+						</li>
+
+						<li class="p-b-10">
+							<a href="#" class="stext-107 cl7 hov-cl1 trans-04">
+								Returns 
+							</a>
+						</li>
+
+						<li class="p-b-10">
+							<a href="#" class="stext-107 cl7 hov-cl1 trans-04">
+								Shipping
+							</a>
+						</li>
+
+						<li class="p-b-10">
+							<a href="#" class="stext-107 cl7 hov-cl1 trans-04">
+								FAQs
+							</a>
+						</li>
+					</ul>
+				</div>
+
+				<div class="col-sm-6 col-lg-3 p-b-50">
+					<h4 class="stext-301 cl0 p-b-30">
+						GET IN TOUCH
+					</h4>
+
+					<p class="stext-107 cl7 size-201">
+						Any questions? Let us know in store at 8th floor, 379 Hudson St, New York, NY 10018 or call us on (+1) 96 716 6879
+					</p>
+
+					<div class="p-t-27">
+						<a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16">
+							<i class="fa fa-facebook"></i>
+						</a>
+
+						<a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16">
+							<i class="fa fa-instagram"></i>
+						</a>
+
+						<a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16">
+							<i class="fa fa-pinterest-p"></i>
+						</a>
+					</div>
+				</div>
+
+				<div class="col-sm-6 col-lg-3 p-b-50">
+					<h4 class="stext-301 cl0 p-b-30">
+						Newsletter
+					</h4>
+
+					<form>
+						<div class="wrap-input1 w-full p-b-4">
+							<input class="input1 bg-none plh1 stext-107 cl7" type="text" name="email" placeholder="email@example.com">
+							<div class="focus-input1 trans-04"></div>
+						</div>
+
+						<div class="p-t-18">
+							<button class="flex-c-m stext-101 cl0 size-103 bg1 bor1 hov-btn2 p-lr-15 trans-04">
+								Subscribe
+							</button>
+						</div>
+					</form>
+				</div>
+			</div>
+
+			<div class="p-t-40">
+				<div class="flex-c-m flex-w p-b-18">
+					<a href="#" class="m-all-1">
+						<img src="images/icons/icon-pay-01.png" alt="ICON-PAY">
+					</a>
+
+					<a href="#" class="m-all-1">
+						<img src="images/icons/icon-pay-02.png" alt="ICON-PAY">
+					</a>
+
+					<a href="#" class="m-all-1">
+						<img src="images/icons/icon-pay-03.png" alt="ICON-PAY">
+					</a>
+
+					<a href="#" class="m-all-1">
+						<img src="images/icons/icon-pay-04.png" alt="ICON-PAY">
+					</a>
+
+					<a href="#" class="m-all-1">
+						<img src="images/icons/icon-pay-05.png" alt="ICON-PAY">
+					</a>
+				</div>
+
+				<p class="stext-107 cl6 txt-center">
+					<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved |Made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a> &amp; distributed by <a href="https://themewagon.com" target="_blank">ThemeWagon</a>
+<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+
+				</p>
+			</div>
+		</div>
+	</footer>
+
+
+	<!-- Back to top -->
+	<div class="btn-back-to-top" id="myBtn">
+		<span class="symbol-btn-back-to-top">
+			<i class="zmdi zmdi-chevron-up"></i>
+		</span>
+	</div>
+
+	<!-- Modal1 -->
+	<div class="wrap-modal1 js-modal1 p-t-60 p-b-20">
+		<div class="overlay-modal1 js-hide-modal1"></div>
+
+		<div class="container">
+			<div class="bg0 p-t-60 p-b-30 p-lr-15-lg how-pos3-parent">
+				<button class="how-pos3 hov3 trans-04 js-hide-modal1">
+					<img src="images/icons/icon-close.png" alt="CLOSE">
+				</button>
+
+				<div class="row">
+					<div class="col-md-6 col-lg-7 p-b-30">
+						<div class="p-l-25 p-r-30 p-lr-0-lg">
+							<div class="wrap-slick3 flex-sb flex-w">
+								<div class="wrap-slick3-dots"></div>
+								<div class="wrap-slick3-arrows flex-sb-m flex-w"></div>
+
+								<div class="slick3 gallery-lb">
+									<div class="item-slick3" data-thumb="images/product-detail-01.jpg">
+										<div class="wrap-pic-w pos-relative">
+											<img src="images/product-detail-01.jpg" alt="IMG-PRODUCT">
+
+											<a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04" href="images/product-detail-01.jpg">
+												<i class="fa fa-expand"></i>
+											</a>
+										</div>
+									</div>
+
+									<div class="item-slick3" data-thumb="images/product-detail-02.jpg">
+										<div class="wrap-pic-w pos-relative">
+											<img src="images/product-detail-02.jpg" alt="IMG-PRODUCT">
+
+											<a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04" href="images/product-detail-02.jpg">
+												<i class="fa fa-expand"></i>
+											</a>
+										</div>
+									</div>
+
+									<div class="item-slick3" data-thumb="images/product-detail-03.jpg">
+										<div class="wrap-pic-w pos-relative">
+											<img src="images/product-detail-03.jpg" alt="IMG-PRODUCT">
+
+											<a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04" href="images/product-detail-03.jpg">
+												<i class="fa fa-expand"></i>
+											</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="col-md-6 col-lg-5 p-b-30">
+						<div class="p-r-50 p-t-5 p-lr-0-lg">
+							<h4 class="mtext-105 cl2 js-name-detail p-b-14">
+								Lightweight Jacket
+							</h4>
+
+							<span class="mtext-106 cl2">
+								$58.79
+							</span>
+
+							<p class="stext-102 cl3 p-t-23">
+								Nulla eget sem vitae eros pharetra viverra. Nam vitae luctus ligula. Mauris consequat ornare feugiat.
+							</p>
+							
+							<!--  -->
+							<div class="p-t-33">
+								<div class="flex-w flex-r-m p-b-10">
+									<div class="size-203 flex-c-m respon6">
+										Size
+									</div>
+
+									<div class="size-204 respon6-next">
+										<div class="rs1-select2 bor8 bg0">
+											<select class="js-select2" name="time">
+												<option>Choose an option</option>
+												<option>Size S</option>
+												<option>Size M</option>
+												<option>Size L</option>
+												<option>Size XL</option>
+											</select>
+											<div class="dropDownSelect2"></div>
+										</div>
+									</div>
+								</div>
+
+								<div class="flex-w flex-r-m p-b-10">
+									<div class="size-203 flex-c-m respon6">
+										Color
+									</div>
+
+									<div class="size-204 respon6-next">
+										<div class="rs1-select2 bor8 bg0">
+											<select class="js-select2" name="time">
+												<option>Choose an option</option>
+												<option>Red</option>
+												<option>Blue</option>
+												<option>White</option>
+												<option>Grey</option>
+											</select>
+											<div class="dropDownSelect2"></div>
+										</div>
+									</div>
+								</div>
+
+								<div class="flex-w flex-r-m p-b-10">
+									<div class="size-204 flex-w flex-m respon6-next">
+										<div class="wrap-num-product flex-w m-r-20 m-tb-10">
+											<div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
+												<i class="fs-16 zmdi zmdi-minus"></i>
+											</div>
+
+											<input class="mtext-104 cl3 txt-center num-product" type="number" name="num-product" value="1">
+
+											<div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
+												<i class="fs-16 zmdi zmdi-plus"></i>
+											</div>
+										</div>
+
+										<button class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail">
+											Add to cart
+										</button>
+									</div>
+								</div>	
+							</div>
+
+							<!--  -->
+							<div class="flex-w flex-m p-l-100 p-t-40 respon7">
+								<div class="flex-m bor9 p-r-10 m-r-11">
+									<a href="#" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 js-addwish-detail tooltip100" data-tooltip="Add to Wishlist">
+										<i class="zmdi zmdi-favorite"></i>
+									</a>
+								</div>
+
+								<a href="#" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100" data-tooltip="Facebook">
+									<i class="fa fa-facebook"></i>
+								</a>
+
+								<a href="#" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100" data-tooltip="Twitter">
+									<i class="fa fa-twitter"></i>
+								</a>
+
+								<a href="#" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100" data-tooltip="Google Plus">
+									<i class="fa fa-google-plus"></i>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+<!--===============================================================================================-->	
+	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/animsition/js/animsition.min.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/bootstrap/js/popper.js"></script>
+	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/select2/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<script>
+
+		document.addEventListener("DOMContentLoaded", function() {
+		    const editButton = document.getElementById("editButton");
+		    const saveButton = document.getElementById("saveButton");
+		    const inputs = document.querySelectorAll("input");
+			const input1 = document.getElementById('name');
+			const input2 = document.getElementById('email');
+			const input3 = document.getElementById('phone')
+		
+		    editButton.addEventListener("click", function(event) {
+		        event.preventDefault();
+			
+		        if (editButton.textContent === "Edit") {
+		            editButton.textContent = "Cancel";
+		            saveButton.style.display = "inline-block";
+		            input1.disabled = false;
+					input2.disabled = false;
+					input3.disabled = false
+					if(input3.value == "Not Found"){
+						input3.value = ""
+					}
+
+		        } else {
+		            editButton.textContent = "Edit";
+		            saveButton.style.display = "none";
+		            input1.disabled = true;
+					input2.disabled = true;
+					input3.disabled = true;
+					if(input3.value == ""){
+						input3.value = "Not Found"
+					}
+		        }
+		    });
+		});
+
+		$(".js-select2").each(function(){
+			$(this).select2({
+				minimumResultsForSearch: 20,
+				dropdownParent: $(this).next('.dropDownSelect2')
+			});
+		})
+
+		document.addEventListener("DOMContentLoaded", function () {
+		    const saveButton = document.getElementById("saveButton");
+				
+		    saveButton.addEventListener("click", function (event) {
+		        event.preventDefault();
+			
+		        // Clear previous error messages
+		        document.querySelectorAll(".invalid-feedback").forEach(el => el.style.display = "none");
+			
+		        // Get input values
+		        const name = document.getElementById("name").value.trim();
+		        const email = document.getElementById("email").value.trim();
+		        const phone = document.getElementById("phone").value.trim();
+			
+		        // Validation flags
+		        let isValid = true;
+			
+		        // Validate name
+		        if (name === "") {
+		            const nameError = document.querySelector("#name + .invalid-feedback");
+		            nameError.textContent = "Name is required.";
+		            nameError.style.display = "block";
+		            isValid = false;
+		        }
+			
+		        // Validate email
+		        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+		        if (email === "") {
+		            const emailError = document.querySelector("#email + .invalid-feedback");
+		            emailError.textContent = "Email is required.";
+		            emailError.style.display = "block";
+		            isValid = false;
+		        } else if (!emailRegex.test(email)) {
+		            const emailError = document.querySelector("#email + .invalid-feedback");
+		            emailError.textContent = "Invalid email format.";
+		            emailError.style.display = "block";
+		            isValid = false;
+		        }
+			
+		        // Validate phone
+		        const phoneRegex = /^[0-9]{10}$/; // Example: 10-digit phone number
+		        if (phone === "") {
+		            const phoneError = document.querySelector("#phone + .invalid-feedback");
+		            phoneError.textContent = "Phone number is required.";
+		            phoneError.style.display = "block";
+		            isValid = false;
+		        } else if (!phoneRegex.test(phone)) {
+		            const phoneError = document.querySelector("#phone + .invalid-feedback");
+		            phoneError.textContent = "Invalid phone number format.";
+		            phoneError.style.display = "block";
+		            isValid = false;
+		        }
+			
+		        // If validation fails, stop submission
+		        if (!isValid) return;
+			
+		        // Prepare data for AJAX
+		        const formData = {
+		            name: name,
+		            email: email,
+		            phone: phone
+		        };
+			
+		        // AJAX request
+		        fetch("/editProfile", {
+		            method: "POST",
+		            headers: {
+		                "Content-Type": "application/json"
+		            },
+		            body: JSON.stringify(formData)
+		        })
+		            .then(response => response.json())
+		            .then(data => {
+		                if (data.success) {
+		                    // Handle success response
+		                    Swal.fire({
+		                        icon: "success",
+		                        title: "Success",
+		                        text: data.message || "Profile updated successfully!"
+		                    }).then(()=>{
+								window.location.href = data.redirectUrl || "/userProfile"; // Redirect to the profile page or any other page
+                			})
+		                } else {
+		                    // Handle error response
+		                    Swal.fire({
+		                        icon: "error",
+		                        title: "Error",
+		                        text: data.message || "An error occurred. Please try again."
+		                    })
+		                }
+		            })
+		            .catch(error => {
+		                // Handle network or unexpected errors
+						console.log(error);
+		                Swal.fire({
+		                    icon: "error",
+		                    title: "Error",
+		                    text: "An unexpected error occurred. Please try again."
+		                });
+		            });
+		    });
+		});
+
+		document.addEventListener("DOMContentLoaded", function () {
+		    const deleteAccountLink = document.getElementById('deleteAccount') // Select the "Delete Account" link
+
+		    deleteAccountLink.addEventListener("click", function (event) {
+		        event.preventDefault(); // Prevent the default link behavior
+			
+		        Swal.fire({
+		            title: "Are you sure?",
+		            text: "This action will permanently delete your account and cannot be undone.",
+		            icon: "warning",
+		            showCancelButton: true,
+		            confirmButtonColor: "#d33",
+		            cancelButtonColor: "#3085d6",
+		            confirmButtonText: "Yes",
+		            cancelButtonText: "Cancel"
+		        }).then((result) => {
+		            if (result.isConfirmed) {
+		                // Send a request to delete the account
+		                fetch("/delete-account", {
+		                    method: "DELETE",
+		                    headers: {
+		                        "Content-Type": "application/json"
+		                    }
+		                })
+		                    .then(response => response.json())
+		                    .then(data => {
+		                        if (data.success) {
+		                            Swal.fire({
+		                                icon: "success",
+		                                title: "Deleted!",
+		                                text: "Your account has been deleted.",
+		                                showConfirmButton: false,
+		                                timer: 2000
+		                            }).then(() => {
+		                                window.location.href = "/"; // Redirect to the homepage or login page
+		                            });
+		                        } else {
+		                            Swal.fire({
+		                                icon: "error",
+		                                title: "Error",
+		                                text: data.message || "An error occurred. Please try again."
+		                            });
+		                        }
+		                    })
+		                    .catch(error => {
+		                        console.error("Error deleting account:", error);
+		                        Swal.fire({
+		                            icon: "error",
+		                            title: "Error",
+		                            text: "An unexpected error occurred. Please try again."
+		                        });
+		                    });
+		            }
+		        });
+		    });
+		});
+
+	</script>
+<!--===============================================================================================-->
+	<script src="vendor/daterangepicker/moment.min.js"></script>
+	<script src="vendor/daterangepicker/daterangepicker.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/slick/slick.min.js"></script>
+	<script src="js/slick-custom.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/parallax100/parallax100.js"></script>
+	<script>
+        $('.parallax100').parallax100();
+	</script>
+<!--===============================================================================================-->
+	<script src="vendor/MagnificPopup/jquery.magnific-popup.min.js"></script>
+	<script>
+		$('.gallery-lb').each(function() { // the containers for all your galleries
+			$(this).magnificPopup({
+		        delegate: 'a', // the selector for gallery item
+		        type: 'image',
+		        gallery: {
+		        	enabled:true
+		        },
+		        mainClass: 'mfp-fade'
+		    });
+		});
+	</script>
+<!--===============================================================================================-->
+	<script src="vendor/isotope/isotope.pkgd.min.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/sweetalert/sweetalert.min.js"></script>
+	<script>
+		$('.js-addwish-b2, .js-addwish-detail').on('click', function(e){
+			e.preventDefault();
+		});
+
+		$('.js-addwish-b2').each(function(){
+			var nameProduct = $(this).parent().parent().find('.js-name-b2').html();
+			$(this).on('click', function(){
+				swal(nameProduct, "is added to wishlist !", "success");
+
+				$(this).addClass('js-addedwish-b2');
+				$(this).off('click');
+			});
+		});
+
+		$('.js-addwish-detail').each(function(){
+			var nameProduct = $(this).parent().parent().parent().find('.js-name-detail').html();
+
+			$(this).on('click', function(){
+				swal(nameProduct, "is added to wishlist !", "success");
+
+				$(this).addClass('js-addedwish-detail');
+				$(this).off('click');
+			});
+		});
+
+		/*---------------------------------------------*/
+
+		$('.js-addcart-detail').each(function(){
+			var nameProduct = $(this).parent().parent().parent().parent().find('.js-name-detail').html();
+			$(this).on('click', function(){
+				swal(nameProduct, "is added to cart !", "success");
+			});
+		});
+	
+	</script>
+<!--===============================================================================================-->
+	<script src="vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+	<script>
+		$('.js-pscroll').each(function(){
+			$(this).css('position','relative');
+			$(this).css('overflow','hidden');
+			var ps = new PerfectScrollbar(this, {
+				wheelSpeed: 1,
+				scrollingThreshold: 1000,
+				wheelPropagation: false,
+			});
+
+			$(window).on('resize', function(){
+				ps.update();
+			})
+		});
+	</script>
+<!--===============================================================================================-->
+	<script src="js/main.js"></script>
+
+</body>
+</html>

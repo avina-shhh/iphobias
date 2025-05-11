@@ -6,6 +6,7 @@ const profileController = require("../controllers/user/profileController")
 const {userAuth} = require("../middlewares/auth")
 const productController = require("../controllers/user/productController")
 const cartController = require("../controllers/user/cartController")
+const wishlistController = require('../controllers/user/wishlistController');
 
 // Error Pages
 router.get("/pageNotFound", userController.pageNotFound)
@@ -87,5 +88,10 @@ router.get('/cart', userAuth, cartController.getCart);
 router.post('/cart/update', userAuth, cartController.updateCart);
 router.post('/cart/remove', userAuth, cartController.removeFromCart);
 router.post('/cart/select-address', userAuth, cartController.selectShippingAddress);
+
+// Wishlist Routes
+router.post('/addToWishlist', wishlistController.addToWishlist);
+router.post('/wishlist/remove', userAuth, wishlistController.removeFromWishlist);
+router.get('/wishlist', userAuth, wishlistController.getWishlist);
 
 module.exports = router;
