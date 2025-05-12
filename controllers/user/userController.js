@@ -7,6 +7,7 @@ const nodemailer = require("nodemailer")
 const env = require("dotenv").config();
 const bcrypt = require("bcrypt");
 const Cart = require('../../models/cartSchema');
+const Wishlist = require('../../models/wishlistSchema');
 
 const pageNotFound = async(req,res)=>{
     try {
@@ -27,6 +28,7 @@ const loadHomePage = async(req,res)=>{
         const user = req.session.user;
         const cart = await Cart.findOne({userId:user});
         const categories = await Category.find({isListed:true});
+        const wishlist = await Wishlist.findOne({ userId:user }).populate('products.productId');
         let productData = await Product.find({
             isBlocked:false,
             category:{$in:categories.map(category=>category._id)},
@@ -41,9 +43,9 @@ const loadHomePage = async(req,res)=>{
 
         if(user){
             const userData = await User.findOne({_id:user})
-            return res.render('home',{user : userData,products:productData,banners:banners,categories,cart})
+            return res.render('home',{user : userData,products:productData,banners:banners,categories,cart,wishlist})
         }else{
-            return res.render("home",{products:productData,banners:banners,categories,cart})
+            return res.render("home",{products:productData,banners:banners,categories,cart,wishlist})
         }
     } catch (error) {
         console.error("Home Page Not Found",error)

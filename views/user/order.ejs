@@ -174,7 +174,116 @@
         margin: 0 0 0 0;
         width: 100%;
     }
+    .order-row {
+        background: #fff;
+        transition: background-color 0.2s;
+        border-bottom: 1px solid #eee;
+    }
+    .order-row:hover {
+        background-color: #f8f9fa;
+    }
+    .order-status {
+        display: flex;
+        align-items: center;
+    }
+    .cancel-order-btn {
+        font-size: 14px;
+        padding: 6px 12px;
+    }
+    .price-tag {
+    font-size: 18px;
+    font-weight: 500;
+    color: #212121;
+}
 
+.order-row {
+    background: #fff;
+    transition: background-color 0.2s;
+    border-bottom: 1px solid #eee;
+    min-height: 140px;
+    position: relative;
+}
+
+.order-row:hover {
+    background-color: #f8f9fa;
+}
+
+.cancel-order-btn {
+    font-size: 14px;
+    padding: 6px 12px;
+}
+
+.wishlist-product-link {
+    color: #212121;
+    font-size: 16px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.wishlist-product-link:hover {
+    color: #2874f0;
+}
+.order-container {
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.order-header {
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.order-row {
+    background: #fff;
+    transition: background-color 0.2s;
+    min-height: 120px;
+    position: relative;
+}
+
+.order-row:hover {
+    background-color: #f8f9fa;
+}
+
+.price-tag {
+    font-size: 16px;
+    font-weight: 500;
+    color: #212121;
+}
+.section-heading {
+    font-size: 16px;
+    font-weight: 500;
+    color: #212121;
+    padding-bottom: 12px;
+}
+
+.product-link {
+    color: #212121;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.product-link:hover {
+    color: #2874f0;
+}
+
+.badge {
+    padding: 6px 12px;
+    font-weight: 500;
+    font-size: 12px;
+}
+
+.cancel-order-btn {
+    font-size: 13px;
+    padding: 4px 12px;
+    border-radius: 4px;
+}
+
+.cancel-order-btn:hover {
+    background-color: #dc3545;
+    color: white;
+} 
 </style>
 
 </head>
@@ -467,147 +576,78 @@
 	
 		<!-- Main Content -->
         <div class="container p-4">
-            <div class="card shadow-sm">
-                <div class="card-body p-0">
-                    <h5 class="section-heading p-3 pb-2">
-                        My Wishlist (<%= wishlist && wishlist.products.length ? wishlist.products.length : 0 %>)
+            <div class="card">
+                <div class="card-body px-0">
+                    <h5 class="section-heading px-3">
+                        My Orders (<%= orders ? orders.length : 0 %>)
                     </h5>
-                    <% if (wishlist && wishlist.products.length > 0) { %>
-                        <% if (wishlist.products.length === 1) { %>
-                            <hr class="wishlist-divider">
-                            <% const p = wishlist.products[0].productId; %>
-                            <div class="row align-items-start mx-0 p-3 wishlist-row" style="justify-content: space-between;" data-product-id="<%= p._id %>">
-                                <div class="col-2 col-md-1 px-0 d-flex justify-content-center">
-                                    <img src="/uploads/productImg/<%= p.productImage[0] %>" alt="<%= p.productName %>" class="img-fluid">
-                                </div>
-                                <div class="col-9 col-md-10 px-0">
-                                    <div class="d-flex flex-column flex-md-row align-items-md-center">
-                                        <div class="flex-grow-1">
-                                            <a href="/product-details?id=<%= p._id %>" class="wishlist-product-link">
-                                                <%= p.productName %>
-                                            </a>
-                                            <div class="mt-2">
-                                                <span style="font-size: 20px; font-weight: 600; color: #212121;">₹<%= p.salePrice %></span>
-                                                <% if (p.regularPrice && p.regularPrice > p.salePrice) { %>
-                                                    <span style="color: #878787; text-decoration: line-through; margin-left: 8px;">₹<%= p.regularPrice %></span>
-                                                    <span style="color: #388e3c; font-weight: 500; margin-left: 8px;">
-                                                        <%= Math.round(100 * (p.regularPrice - p.salePrice) / p.regularPrice) %>% off
-                                                    </span>
-                                                <% } %>
-                                            </div>
+                    <% if (orders && orders.length > 0) { %>
+                        <% orders.forEach(order => { %>
+                            <div class="border-bottom">
+                                <!-- Order Header -->
+                                <div class="px-3 py-2 border-bottom bg-light" style="border-top: 1px solid lightgray;">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <small class="text-muted">Order ID: <%= order.orderId %></small>
+                                            <small class="d-block text-muted">
+                                                Ordered on <%= new Date(order.createdOn).toLocaleDateString() %>
+                                            </small>
+                                        </div>
+                                        <div class="text-end" style="display: flex; gap: 10px;">
+                                            <% let statusColor = order.status === 'Pending' ? 'warning' : 
+                                               order.status === 'Delivered' ? 'success' : 
+                                               order.status === 'Cancelled' ? 'danger' : 'primary' %>
+                                               <div class="mt-1">
+                                                   <strong>Total: ₹<%= order.finalPrice %></strong>
+                                                </div>
+                                                <span class="badge bg-<%= statusColor %>" style="display: flex; align-items: center; font-size: 12px; padding: 5px 15px;">
+                                                   <%= order.status %>
+                                                </span>
                                         </div>
                                     </div>
                                 </div>
-                                <div>
-                                    <button class="wishlist-trash btn-remove-wishlist" data-product-id="<%= p._id %>">
-                                        <i class="zmdi zmdi-delete"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        <% } else { %>
-                            <% wishlist.products.forEach((item, idx) => { 
-                                const p = item.productId;
-                            %>
-                                <% if (idx === 0) { %>
-                                    <hr class="wishlist-divider"><!-- Top divider for first product -->
-                                    <div class="row align-items-start mx-0 p-3 wishlist-row" style="justify-content: space-between;" data-product-id="<%= p._id %>">
-                                        <div class="col-2 col-md-1 px-0 justify-content-center">
-                                            <img src="/uploads/productImg/<%= p.productImage[0] %>" alt="<%= p.productName %>" class="img-fluid">
-                                        </div>
-                                        <div class="col-9 col-md-10 px-0">
-                                            <div class="d-flex flex-column flex-md-row align-items-md-center">
-                                                <div class="flex-grow-1">
-                                                    <a href="/product-details?id=<%= p._id %>" class="wishlist-product-link">
-                                                        <%= p.productName %>
-                                                    </a>
-                                                    <div class="mt-2">
-                                                        <span style="font-size: 20px; font-weight: 600; color: #212121;">₹<%= p.salePrice %></span>
-                                                        <% if (p.regularPrice) { %>
-                                                            <span style="color: #878787; text-decoration: line-through; margin-left: 8px;">₹<%= p.regularPrice %></span>
-                                                            <span style="color: #388e3c; font-weight: 500; margin-left: 8px;">
-                                                                <%= Math.round(100 * (p.regularPrice - p.salePrice) / p.regularPrice) %>% off
-                                                            </span>
-                                                        <% } %>
-                                                    </div>
+                            
+                                <!-- Order Items -->
+                                <% order.orderedItems.forEach(item => { %>
+                                    <div class="px-3 py-3 order-item">
+                                        <div class="row align-items-center">
+                                            <div class="col-2">
+                                                <a href="/product-details?id=<%= item.product._id %>">
+                                                    <img src="/uploads/productImg/<%= item.product.productImage[0] %>" 
+                                                         alt="<%= item.product.productName %>" 
+                                                         class="img-fluid"
+                                                         style="max-width: 80px; object-fit: contain;">
+                                                </a>
+                                            </div>
+                                            <div class="col-7">
+                                                <a href="/product-details?id=<%= item.product._id %>" 
+                                                   class="product-link">
+                                                    <%= item.product.productName %>
+                                                </a>
+                                                <div class="mt-1">
+                                                    <span class="text-dark" style="font-weight: bold;">₹<%= item.price %></span>
+                                                    <small class="text-muted ms-2 ml-2">Quantity: <%= item.quantity %></small>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div>
-                                            <button class="wishlist-trash btn-remove-wishlist" data-product-id="<%= p._id %>">
-                                                <i class="zmdi zmdi-delete"></i>
-                                            </button>
-                                        </div>
                                     </div>
-                                    <hr class="wishlist-divider"><!-- Bottom divider for first product -->
-                                <% } else if (idx === wishlist.products.length - 1) { %>
-                                    <div class="row align-items-start mx-0 p-3 wishlist-row" style="justify-content: space-between;" data-product-id="<%= p._id %>">
-                                        <div class="col-2 col-md-1 px-0 justify-content-center">
-                                            <img src="/uploads/productImg/<%= p.productImage[0] %>" alt="<%= p.productName %>" class="img-fluid">
-                                        </div>
-                                        <div class="col-9 col-md-10 px-0">
-                                            <div class="d-flex flex-column flex-md-row align-items-md-center">
-                                                <div class="flex-grow-1">
-                                                    <a href="/product-details?id=<%= p._id %>" class="wishlist-product-link">
-                                                        <%= p.productName %>
-                                                    </a>
-                                                    <div class="mt-2">
-                                                        <span style="font-size: 20px; font-weight: 600; color: #212121;">₹<%= p.salePrice %></span>
-                                                        <% if (p.regularPrice && p.regularPrice > p.salePrice) { %>
-                                                            <span style="color: #878787; text-decoration: line-through; margin-left: 8px;">₹<%= p.regularPrice %></span>
-                                                            <span style="color: #388e3c; font-weight: 500; margin-left: 8px;">
-                                                                <%= Math.round(100 * (p.regularPrice - p.salePrice) / p.regularPrice) %>% off
-                                                            </span>
-                                                        <% } %>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <button class="wishlist-trash btn-remove-wishlist" data-product-id="<%= p._id %>">
-                                                <i class="zmdi zmdi-delete"></i>
-                                            </button>
-                                        </div>
+                                <% }); %>
+                                
+                                <!-- Cancel Button -->
+                                <% if (order.status === 'Pending') { %>
+                                    <div class="px-3 py-2 text-end border-top">
+                                        <button class="btn btn-outline-danger btn-sm cancel-order-btn" 
+                                                data-order-id="<%= order._id %>">
+                                            Cancel Order
+                                        </button>
                                     </div>
-                                    <!-- No divider for last product -->
-                                <% } else { %> 
-                                    <div class="row align-items-start mx-0 p-3 wishlist-row" style="justify-content: space-between;" data-product-id="<%= p._id %>">
-                                        <div class="col-2 col-md-1 px-0 justify-content-center">
-                                            <img src="/uploads/productImg/<%= p.productImage[0] %>" alt="<%= p.productName %>" class="img-fluid" >
-                                        </div>
-                                        <div class="col-9 col-md-10 px-0">
-                                            <div class="d-flex flex-column flex-md-row align-items-md-center">
-                                                <div class="flex-grow-1">
-                                                    <a href="/product-details?id=<%= p._id %>" class="wishlist-product-link">
-                                                        <%= p.productName %>
-                                                    </a>
-                                                    <div class="mt-2">
-                                                        <span style="font-size: 20px; font-weight: 600; color: #212121;">₹<%= p.salePrice %></span>
-                                                        <% if (p.regularPrice) { %>
-                                                            <span style="color: #878787; text-decoration: line-through; margin-left: 8px;">₹<%= p.regularPrice %></span>
-                                                            <span style="color: #388e3c; font-weight: 500; margin-left: 8px;">
-                                                                <%= Math.round(100 * (p.regularPrice - p.salePrice) / p.regularPrice) %>% off
-                                                            </span>
-                                                        <% } %>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <button class="wishlist-trash btn-remove-wishlist" data-product-id="<%= p._id %>">
-                                                <i class="zmdi zmdi-delete"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <hr class="wishlist-divider"><!-- Bottom divider for middle products -->
                                 <% } %>
-                            <% }); %>
-                        <% } %>
+                            </div>
+                        <% }); %>
                     <% } else { %>
-                        <div class="text-center p-t-50 p-b-50">
-                            <h3 class="stext-101 cl2">Your wishlist is empty</h3>
-                            <a href="/shop" class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04">
-                                Continue Shopping
-                            </a>
+                        <div class="text-center py-5">
+                            <h6 class="text-muted">No orders yet</h6>
+                            <a href="/shop" class="btn btn-primary btn-sm mt-3">Start Shopping</a>
                         </div>
                     <% } %>
                 </div>
@@ -1086,69 +1126,46 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 	<script src="js/main.js"></script>
 
 	<script>
-document.addEventListener("DOMContentLoaded", function () {
-    // Make wishlist row clickable
-    document.querySelectorAll('.wishlist-row').forEach(function(row) {
-        row.addEventListener('click', function(event) {
-            // Prevent redirect if trash button was clicked
-            if (event.target.closest('.btn-remove-wishlist')) return;
-            const productId = this.getAttribute('data-product-id');
-            if (productId) {
-                window.location.href = '/product-details?id=' + productId;
-            }
-        });
-    });
-
-    // Prevent row click when trash button is clicked
-    document.querySelectorAll('.btn-remove-wishlist').forEach(function(btn) {
-        btn.addEventListener('click', function(event) {
-            event.stopPropagation();
-            event.preventDefault();
-            const productId = this.getAttribute('data-product-id');
+document.addEventListener('DOMContentLoaded', function() {
+    const cancelButtons = document.querySelectorAll('.cancel-order-btn');
+    cancelButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const orderId = this.dataset.orderId;
             Swal.fire({
-                title: "Remove from wishlist?",
-                text: "Are you sure you want to remove this product from your wishlist?",
-                icon: "warning",
+                title: 'Cancel Order',
+                text: 'Are you sure you want to cancel this order?',
+                icon: 'warning',
                 showCancelButton: true,
-                confirmButtonColor: "#d33",
-                cancelButtonColor: "#3085d6",
-                confirmButtonText: "Yes",
-                cancelButtonText: "Cancel"
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, cancel it!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    fetch(`/wishlist/remove`, {
-                        method: "POST",
+                    // Add your cancel order API call here
+                    fetch(`/order/cancel/${orderId}`, {
+                        method: 'POST',
                         headers: {
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify({ productId })
+                            'Content-Type': 'application/json'
+                        }
                     })
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
                             Swal.fire({
-                                icon: "success",
-                                title: "Removed!",
-                                text: "Product removed from wishlist.",
+                                icon: 'success',
+                                title: 'Order Cancelled',
                                 showConfirmButton: false,
-                                timer: 1200
+                                timer: 1500
                             }).then(() => {
                                 window.location.reload();
                             });
                         } else {
                             Swal.fire({
-                                icon: "error",
-                                title: "Error",
-                                text: data.message || "Could not remove product."
+                                icon: 'error',
+                                title: 'Error',
+                                text: data.message || 'Could not cancel order'
                             });
                         }
-                    })
-                    .catch(() => {
-                        Swal.fire({
-                            icon: "error",
-                            title: "Error",
-                            text: "An unexpected error occurred."
-                        });
                     });
                 }
             });

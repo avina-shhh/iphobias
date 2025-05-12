@@ -88,10 +88,16 @@ router.get('/cart', userAuth, cartController.getCart);
 router.post('/cart/update', userAuth, cartController.updateCart);
 router.post('/cart/remove', userAuth, cartController.removeFromCart);
 router.post('/cart/select-address', userAuth, cartController.selectShippingAddress);
+router.post('/cart/place-order', userAuth, cartController.placeOrder)
 
 // Wishlist Routes
 router.post('/addToWishlist', wishlistController.addToWishlist);
 router.post('/wishlist/remove', userAuth, wishlistController.removeFromWishlist);
 router.get('/wishlist', userAuth, wishlistController.getWishlist);
+
+// Order Routes
+router.get('/order',userAuth,cartController.getOrder)
+router.post('/order/cancel/:orderId', userAuth, cartController.cancelOrder)
+router.post('/order/create-razorpay-order', userAuth, cartController.createRazorpayOrder)
 
 module.exports = router;

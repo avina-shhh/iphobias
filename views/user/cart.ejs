@@ -73,6 +73,7 @@
         background-color: #ddd;
     }
 </style>
+	<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 </head>
 <body class="animsition">
 	
@@ -499,16 +500,22 @@
 
 							<div class="size-209 p-t-1">
 								<span class="mtext-110 cl2">
-									₹<%=subtotal+40%>
+									₹<%= (subtotal !== 0 && subtotal<1000) ? (subtotal + 50) : subtotal %>
 								</span>
-								<span class="stext-112 cl8 ml-1" style="font-size: 10px; text-transform: none;">
-									<i class="fa fa-info-circle" style=" font-size:11px; vertical-align:auto;"></i> Shipping charges included 
-								</span>
+								<%if(subtotal !== 0 && subtotal<1000){%>
+									<span class="stext-112 cl8 ml-1" style="font-size: 10px; text-transform: none;">
+										<i class="fa fa-info-circle" style=" font-size:11px; vertical-align:auto;"></i> Shipping charges included 
+									</span>
+								<%}else{%>
+									<span class="stext-112 cl8 ml-1" style="font-size: 10px; text-transform: none;">
+										<i class="fa fa-info-circle" style=" font-size:11px; vertical-align:auto;"></i> Free Delivery on all orders above ₹1000 
+									</span>
+								<%}%>
 							</div>
 						</div>
 
-						<button class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
-							Proceed to Checkout
+						<button id="placeOrderBtn" class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer" type="button">
+						    Proceed to Checkout
 						</button>
 					</div>
 				</div>
@@ -888,6 +895,97 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+
+	const placeOrderBtn = document.getElementById('placeOrderBtn');
+	if (placeOrderBtn) {
+	    placeOrderBtn.addEventListener('click', function() {
+	        // Get selected address
+	        const selected = document.querySelector('input[name="shippingAddress"]:checked');
+	        if (!selected) {
+	            Swal.fire({
+	                icon: 'warning',
+	                title: 'No Address Selected',
+	                text: 'Please select a shipping address before placing your order.'
+	            });
+	            return;
+	        }
+
+	        // Get total amount (update this if you have discounts/shipping)
+	        const totalText = document.querySelector('.mtext-110.cl2').innerText.replace(/[^\d]/g, '');
+	        const amount = parseInt(totalText);
+
+	        // 1. Create Razorpay order
+	        fetch('/order/create-razorpay-order', {
+	            method: 'POST',
+	            headers: { 'Content-Type': 'application/json' },
+	            body: JSON.stringify({ amount })
+	        })
+	        .then(res => res.json())
+	        .then(data => {
+	            if (data.success) {
+	                // 2. Open Razorpay checkout
+	                const options = {
+	                    key: 'rzp_test_AXEzBmFb11tnm7', // Replace with your Razorpay key_id
+	                    amount: data.order.amount,
+	                    currency: data.order.currency,
+	                    name: 'iPhone Phobias',
+	                    description: 'Order Payment',
+	                    order_id: data.order.id,
+	                    handler: function (response) {
+	                        // 3. On payment success, send details to backend to place order
+	                        fetch('/cart/place-order', {
+	                            method: 'POST',
+	                            headers: { 'Content-Type': 'application/json' },
+	                            body: JSON.stringify({
+	                                addressId: selected.value,
+	                                razorpay_payment_id: response.razorpay_payment_id,
+	                                razorpay_order_id: response.razorpay_order_id,
+	                                razorpay_signature: response.razorpay_signature
+	                            })
+	                        })
+	                        .then(res => res.json())
+	                        .then(orderData => {
+	                            if (orderData.success) {
+	                                Swal.fire({
+	                                    icon: 'success',
+	                                    title: 'Order Placed!',
+	                                    text: 'Your order has been placed successfully.',
+	                                    showConfirmButton: false,
+	                                    timer: 1500
+	                                }).then(() => {
+	                                    window.location.href = '/order';
+	                                });
+	                            } else {
+	                                Swal.fire({
+	                                    icon: 'error',
+	                                    title: 'Error',
+	                                    text: orderData.message || 'Could not place order.'
+	                                });
+	                            }
+	                        });
+	                    },
+	                    theme: { color: "#3399cc" }
+	                };
+	                const rzp = new Razorpay(options);
+	                rzp.open();
+	            } else {
+	                Swal.fire({
+	                    icon: 'error',
+	                    title: 'Error',
+	                    text: data.message || 'Could not initiate payment.'
+	                });
+	            }
+	        })
+	        .catch(() => {
+	            Swal.fire({
+	                icon: 'error',
+	                title: 'Error',
+	                text: 'An unexpected error occurred.'
+	            });
+	        });
+	    });
+	}
+
 });
 </script>
 
